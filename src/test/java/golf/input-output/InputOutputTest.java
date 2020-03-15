@@ -3,20 +3,15 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class PhysicsTest {
+public class InputOutputTest {
 
   @Test
-  public void frictionTest() {
+  public void canSaveCourseTest() {
     assertThat("Hello", containsString("Hello"));
   }
 
   @Test
-  public void gravityTest() {
-    assertThat("Hello", containsString("Hello"));
-  }
-
-  @Test
-  public void inclineTest() {
+  public void canLoadCourseTest() {
     assertThat("Hello", containsString("Hello"));
   }
 

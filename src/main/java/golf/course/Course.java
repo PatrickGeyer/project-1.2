@@ -6,8 +6,8 @@ public class Course {
     public Vector2d start = new Vector2d(0,0);
     public Vector2d goal = new Vector2d(10, 10);
     public double g = 9.81;              // Gravitational acceleration
-    public double ballWeight = 45.00;    // Mass of ball (g)
-    public double mu = 0.131;            // Coefficient of friction (rolling ball) // Typical 0.065<=mu<=0.196
+    public double ballMass = 45.00;    // Mass of ball (g)
+    public double frictionCoefficient = 0.131;            // Coefficient of friction (rolling ball) // Typical 0.065<=mu<=0.196
     public double vmax = 3.0;            // Maximum initial ball speed [m/s]
     public double goalTolerance = 0.02;  // Distance from hole for a successful putt [m]
     public String height = "0";         // String of a function that returns height for each x, y coordinate

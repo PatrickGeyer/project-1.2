@@ -1,3 +1,2 @@
-==Course Designer==
-Provide inputs for course height/friction functions along with a real-time visual of course that can be pulled from the visualizer.
-Then use the input-output module to allow the saving/loading/playing of the course.
+==Input/Output==
+A class that reads files and returns a Course Object, or takes a course object and writes it to a file.
