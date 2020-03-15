@@ -1,10 +1,25 @@
+package golf.physics;
+
+import golf.course.*;
+import golf.course.object.Object;
+
+// public interface PhysicsEngine {
+// }
+
 public class PhysicsEngine {
 
-    Vector2d g = (−𝑚𝑔h,𝑥 (𝑥, 𝑦), −𝑚𝑔h,𝑦 (𝑥, 𝑦));
-    Float frictionForce = −𝜇𝑚𝑔 𝑣⁄‖𝑣‖;
+    // Vector2d g = (−𝑚𝑔h,𝑥 (𝑥, 𝑦), −𝑚𝑔h,𝑦 (𝑥, 𝑦));
+    // Float frictionForce = −𝜇𝑚𝑔 𝑣⁄‖𝑣‖;
 
     // Equations of motion below
     // 𝑥̈ =−𝑔h,𝑥(𝑥,𝑦)−𝜇𝑔𝑥̇⁄√𝑥̇2 +𝑦̇2; 𝑦̈ =−𝑔h,𝑦(𝑥,𝑦)−𝜇𝑔𝑦̇⁄√𝑥̇2 +𝑦̇2.
+
+    public Vector2d force(Object obj, Course c) {
+        return new Vector2d(
+            - c.g * c.friction(obj.position),
+            0
+        );
+    }
 
 }
 
