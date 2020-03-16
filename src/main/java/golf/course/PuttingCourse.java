@@ -2,9 +2,12 @@ package golf.course;
 import golf.physics.*;
 import net.objecthunter.exp4j.*;
 
-public class Course {
+public class PuttingCourse {
+    public Function2d height;
+    public Vector2d flag = new Vector2d(10, 10);
     public Vector2d start = new Vector2d(0,0);
-    public Vector2d goal = new Vector2d(10, 10);
+
+
     public double g = 9.81;              // Gravitational acceleration
     public double ballMass = 45.00;    // Mass of ball (g)
     public double frictionCoefficient = 0.131;            // Coefficient of friction (rolling ball) // Typical 0.065<=mu<=0.196
