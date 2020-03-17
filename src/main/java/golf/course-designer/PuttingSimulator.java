@@ -24,7 +24,7 @@ class PuttingSimulator {
     }
 
     public void take_shot(Vector2d initial_ball_velocity) {
-        //TO ADD
+        //TO ADD yo
     }
 
     public boolean saveCourse(String filePath) {
