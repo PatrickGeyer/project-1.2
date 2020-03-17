@@ -16,8 +16,33 @@ import java.awt.event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class UI{     
-    // Main Method 
+public class UI{    
+
+    double frictionCo; 
+    String formula;
+    String start;
+    String target;
+    double radius;
+    double maxVel;
+  
+
+     //getters
+     public String getFormula( ) {
+        return formula;
+     }
+     public double getFriction( ) {
+        return frictionCo;
+     }
+     public String getStart( ) {
+        return start;
+     }
+     public String getTarget( ) {
+        return target;
+     }
+     public double getRadius( ) {
+        return radius;
+     }
+
     public static void main(String[] args) 
     { 
   // Creating Object of "JFrame" class 
@@ -45,14 +70,13 @@ public class UI{
   JLabel label5 = new JLabel("RADIUS TARGET              : "); 
   JLabel label6 = new JLabel("MAXIMUM VELOCITY       : ");  
 
-  // Initialization of object  
-  // "label" of JLabel class. 
+
   JTextField textField1 = new JTextField(" z=sin(𝑥) + 𝑦^2", 20); 
-  JTextField textField2 = new JTextField(" e.g. 0.053", 20); 
+  JTextField textField2 = new JTextField(" 0.052", 20); 
   JTextField textField3 = new JTextField(" (x,y)", 20); 
   JTextField textField4 = new JTextField(" (x,y,z)", 20); 
-  JTextField textField5 = new JTextField(" radius", 20); 
-  JTextField textField6 = new JTextField(" max", 20); 
+  JTextField textField5 = new JTextField(" 2", 20); 
+  JTextField textField6 = new JTextField(" 5", 20); 
   JButton save = new JButton("SAVE COURSE");
   JButton load = new JButton("LOAD COURSE");
   JButton play = new JButton("PLAY");
@@ -234,29 +258,39 @@ public class UI{
     
   save.addActionListener(new ActionListener() { //action performed when 'save' button is clicked
     public void actionPerformed(ActionEvent e) {  //save course(uses input output module to save values etc.)
-        String FORMULA  = textField1.getText();
-        String Friction = textField2.getText();
-        String start    = textField3.getText();
-        String target   = textField4.getText();
-        String radius   = textField5.getText();
-       // Course c = new Course();
-       // c.height = radius;
-        String maxVel = textField6.getText();
+        String formula       = textField1.getText();
+        double friction      = Double.parseDouble(textField2.getText());
+        String startingpoint = textField3.getText();
+        String targetpoint   = textField4.getText();
+        double rad           = Double.parseDouble(textField5.getText());
+        double maxVel       = Double.parseDouble(textField6.getText());
+
+          UI Course = new UI();//Course object creation
+          Course.formula    = formula;
+          Course.frictionCo = friction;
+          Course.start      = startingpoint;
+          Course.target     = targetpoint;
+          Course.radius     = rad;
+          Course.maxVel     = maxVel;
+    
+          //just  to show it works 
+          System.out.println("radius :" + Course.getRadius() );
+       }
        
-  } );//TO DO: create course object with all given values
+  } );
 
 
     save.addActionListener(new ActionListener() { 
         public void actionPerformed(ActionEvent e) { 
-            
-    } 
-  } );
+            //saves course
+        } 
+    } );
   
-  play.addActionListener(new ActionListener() { 
-    public void actionPerformed(ActionEvent e) { 
-        
-} 
-} );
+    play.addActionListener(new ActionListener() { 
+        public void actionPerformed(ActionEvent e) { 
+            //let's user play course
+        } 
+    } );
 
 
     
