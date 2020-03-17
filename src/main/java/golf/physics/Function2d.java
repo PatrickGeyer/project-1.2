@@ -14,8 +14,8 @@ public class Function2d {
       return new ExpressionBuilder(this.function)
             .variables("x", "y")
             .build()
-            .setVariable("x", x)
-            .setVariable("y", y).evaluate();
+            .setVariable("x", p.get_x())
+            .setVariable("y", p.get_y()).evaluate();
    }
    public Vector2d gradient(Vector2d p) {
 
