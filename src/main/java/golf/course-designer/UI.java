@@ -16,7 +16,7 @@ import java.awt.event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CourseDesigner{     
+public class UI{     
     // Main Method 
     public static void main(String[] args) 
     { 
@@ -53,8 +53,9 @@ public class CourseDesigner{
   JTextField textField4 = new JTextField(" (x,y,z)", 20); 
   JTextField textField5 = new JTextField(" radius", 20); 
   JTextField textField6 = new JTextField(" max", 20); 
-  JButton create = new JButton("CREATE COURSE");
-  JButton preview = new JButton("SHOW COURSE PREVIEW");//when preview is shown, have a 'play game' button pop up
+  JButton create = new JButton("SAVE COURSE");
+  JButton load = new JButton("LOAD COURSE");
+  JButton preview = new JButton("PLAY");//when preview is shown, have a 'play game' button pop up
 
   // to add content pane of JLabel 
   contentPane.add(label1); 
@@ -65,6 +66,7 @@ public class CourseDesigner{
   contentPane.add(label6); 
   contentPane.add(create);
   contentPane.add(preview);
+  contentPane.add(load);
 
           
 
@@ -84,14 +86,14 @@ public class CourseDesigner{
   contentPane.setBackground(greenish);
   create.setBackground(water);
   preview.setBackground(water);
+  load.setBackground(water);
   textField1.setBackground(sandy);
   textField2.setBackground(sandy);
   textField3.setBackground(sandy);
   textField4.setBackground(sandy);
   textField5.setBackground(sandy);
   textField6.setBackground(sandy);
-  // It is used to put the layout 
-  // constraint in JFrame using springLayout class 
+  // It is used to put the layout constraint in JFrame using springLayout class 
                
     //label1 
     layout.putConstraint(SpringLayout.WEST, label1,  
@@ -205,13 +207,20 @@ public class CourseDesigner{
 
   //create BUTTON
   layout.putConstraint(SpringLayout.WEST, create,  
-                  227, SpringLayout.WEST, contentPane); 
+                227, SpringLayout.WEST, contentPane); 
                
   layout.putConstraint(SpringLayout.NORTH, create,  
-             200, SpringLayout.NORTH, contentPane); 
+            200, SpringLayout.NORTH, contentPane); 
+  //load BUTTON
+  layout.putConstraint(SpringLayout.WEST, load,  
+             430, SpringLayout.WEST, contentPane); 
+
+  layout.putConstraint(SpringLayout.NORTH, load,  
+             200, SpringLayout.NORTH, contentPane);
+
   //preview BUTTON
   layout.putConstraint(SpringLayout.WEST, preview,  
-                  370, SpringLayout.WEST, contentPane); 
+            356, SpringLayout.WEST, contentPane); 
                
   layout.putConstraint(SpringLayout.NORTH, preview,  
              200, SpringLayout.NORTH, contentPane); 
@@ -235,30 +244,14 @@ public class CourseDesigner{
         System.out.println(target);
         String radius = textField5.getText();
         System.out.println(radius);
-        Course c = new Course();
-        c.height = radius;//////////////////////
+       // Course c = new Course();
+       // c.height = radius;//////////////////////
         String maxVel = textField6.getText();
         System.out.println(maxVel); //all inputs are printed, to show it works
         //play button      save course(uses input output module to save values etc.) load course
     } //input output should
   } );//TO DO: create course object with all given values
 
-  /*  
-  public void get_ball_position(){
-    return this.position;
-}
-
-public void set_ball_position(Vector2d ball_position){
-    this.position = ball_position;
-}
-
-public PuttingSimulator(PuttingCourse, PhysicsEngine){
-    this.PuttingCourse = PuttingCourse;
-    this.PhysicsEngine = PhysicsEngine;
-}
-public void take_shot(Vector2d initial_ball_velocity){
-    this.shot = initial_ball_velocity;
-}*/
 
     preview.addActionListener(new ActionListener() { 
         public void actionPerformed(ActionEvent e) { 
