@@ -3,9 +3,14 @@ package golf.physics;
 import golf.course.*;
 import golf.course.object.Object;
 
-// public interface PhysicsEngine {
-// }
+public interface PhysicsEngine {
+    void setPositionVector(Vector2d v);
+    void setVelocityVector(Vector2d v);
+    void setAccelerationVector(Vector2d v);
+    void approximate();
+}
 
+/*
 public class PhysicsEngine {
 
     // Vector2d g = (−𝑚𝑔h,𝑥 (𝑥, 𝑦), −𝑚𝑔h,𝑦 (𝑥, 𝑦));

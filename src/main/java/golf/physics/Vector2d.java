@@ -18,4 +18,9 @@ public class Vector2d {
     public Vector2d add (Vector2d a) {
         return new Vector2d(this.get_x() + a.get_x(), this.get_y() + a.get_y());
     }
+    
+    public Vector2d copy() {
+        return new Vector2d(get_x(), get_y());
+    }
+
 }
