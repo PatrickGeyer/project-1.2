@@ -233,7 +233,7 @@ public class UI{
   frame.setVisible(true); 
     
   save.addActionListener(new ActionListener() { //action performed when 'save' button is clicked
-    public void actionPerformed(ActionEvent e) { 
+    public void actionPerformed(ActionEvent e) {  //save course(uses input output module to save values etc.)
         String FORMULA  = textField1.getText();
         String Friction = textField2.getText();
         String start    = textField3.getText();
@@ -242,9 +242,7 @@ public class UI{
        // Course c = new Course();
        // c.height = radius;
         String maxVel = textField6.getText();
-         //all inputs are printed, to show it works
-        //play button      save course(uses input output module to save values etc.) load course
-    } //input output should
+       
   } );//TO DO: create course object with all given values
 
 
