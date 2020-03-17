@@ -4,11 +4,11 @@ import java.util.Scanner;
 import java.io.*;
 import golf.course.*;
 
-public class InputOutput {
+public class InputOutput extends UI {
     // Aliases from saved file to Course object property names
     String[][] aliases = {{"m", "ballMass"}, {"mu", "frictionCoefficient"}, {"tol", "goalTolerance"}};
 
-    public void save(Course c) {
+    public void save(UI Course) {
         try {
             FileWriter writer = new FileWriter("MyFile.txt", true);
             writer.write("Hello World");
