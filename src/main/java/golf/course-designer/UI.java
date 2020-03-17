@@ -16,18 +16,27 @@ import java.awt.event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class UI{    
-
+public class UI{  
     double frictionCo; 
     String formula;
     String start;
     String target;
     double radius;
     double maxVel;
+    
+    public UI(double frictionCo, String formula, String start, String target, double radius, double maxVel){
+        this.frictionCo = frictionCo;
+        this.formula = formula;
+        this.start = start;
+        this.target = target;
+        this.radius = radius;
+        this.maxVel = maxVel;
+    }  
+
   
 
      //getters
-     public String getFormula( ) {
+     public String getFormula(){
         return formula;
      }
      public double getFriction( ) {
@@ -41,6 +50,9 @@ public class UI{
      }
      public double getRadius( ) {
         return radius;
+     }
+     public double getMaxVel(){
+         return maxVel;
      }
 
     public static void main(String[] args) 
@@ -265,14 +277,8 @@ public class UI{
         double rad           = Double.parseDouble(textField5.getText());
         double maxVel       = Double.parseDouble(textField6.getText());
 
-          UI Course = new UI();//Course object creation
-          Course.formula    = formula;
-          Course.frictionCo = friction;
-          Course.start      = startingpoint;
-          Course.target     = targetpoint;
-          Course.radius     = rad;
-          Course.maxVel     = maxVel;
-    
+        UI Course = new UI(friction, formula, startingpoint, targetpoint, rad, maxVel);
+        
           //just  to show it works 
           System.out.println("radius :" + Course.getRadius() );
        }

@@ -1,11 +1,15 @@
 package golf.inputOutput;
+import UI;
 
 import java.util.Scanner;
 import java.io.*;
 import golf.course.*;
 
-public class InputOutput extends UI {
-    // Aliases from saved file to Course object property names
+public class InputOutput{
+    public static void main(String[] args) {
+    System.out.println(UI.i);
+    }
+   /* // Aliases from saved file to Course object property names         UI.Course.getRadius()
     String[][] aliases = {{"m", "ballMass"}, {"mu", "frictionCoefficient"}, {"tol", "goalTolerance"}};
 
     public void save(UI Course) {
@@ -20,7 +24,7 @@ public class InputOutput extends UI {
         }
     }
 
-    public Course read(String f) throws Exception {
+    public UI read(String f) throws Exception {
 
         // pass the path to the file as a parameter 
         File file = new File(f); 
@@ -30,7 +34,7 @@ public class InputOutput extends UI {
             String line = sc.nextLine();
 
         } 
-        Course c = new Course();
-        return c;
-    }
+        UI Course = new UI();
+        return Course;
+    }*/
 }
