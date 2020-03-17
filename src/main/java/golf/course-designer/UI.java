@@ -53,9 +53,9 @@ public class UI{
   JTextField textField4 = new JTextField(" (x,y,z)", 20); 
   JTextField textField5 = new JTextField(" radius", 20); 
   JTextField textField6 = new JTextField(" max", 20); 
-  JButton create = new JButton("SAVE COURSE");
+  JButton save = new JButton("SAVE COURSE");
   JButton load = new JButton("LOAD COURSE");
-  JButton preview = new JButton("PLAY");//when preview is shown, have a 'play game' button pop up
+  JButton play = new JButton("PLAY");
 
   // to add content pane of JLabel 
   contentPane.add(label1); 
@@ -64,8 +64,8 @@ public class UI{
   contentPane.add(label4); 
   contentPane.add(label5); 
   contentPane.add(label6); 
-  contentPane.add(create);
-  contentPane.add(preview);
+  contentPane.add(save);
+  contentPane.add(play);
   contentPane.add(load);
 
           
@@ -84,8 +84,8 @@ public class UI{
   Color water = new Color(179, 236, 255);
 
   contentPane.setBackground(greenish);
-  create.setBackground(water);
-  preview.setBackground(water);
+  save.setBackground(water);
+  play.setBackground(water);
   load.setBackground(water);
   textField1.setBackground(sandy);
   textField2.setBackground(sandy);
@@ -205,24 +205,24 @@ public class UI{
     layout.putConstraint(SpringLayout.SOUTH, contentPane,  
                 200, SpringLayout.SOUTH, textField6);
 
-  //create BUTTON
-  layout.putConstraint(SpringLayout.WEST, create,  
-                227, SpringLayout.WEST, contentPane); 
+  //save BUTTON
+  layout.putConstraint(SpringLayout.WEST, save,  
+                200, SpringLayout.WEST, contentPane); 
                
-  layout.putConstraint(SpringLayout.NORTH, create,  
+  layout.putConstraint(SpringLayout.NORTH, save,  
             200, SpringLayout.NORTH, contentPane); 
   //load BUTTON
   layout.putConstraint(SpringLayout.WEST, load,  
-             430, SpringLayout.WEST, contentPane); 
+             345, SpringLayout.WEST, contentPane); 
 
   layout.putConstraint(SpringLayout.NORTH, load,  
              200, SpringLayout.NORTH, contentPane);
 
-  //preview BUTTON
-  layout.putConstraint(SpringLayout.WEST, preview,  
-            356, SpringLayout.WEST, contentPane); 
+  //play BUTTON
+  layout.putConstraint(SpringLayout.WEST, play,  
+            489, SpringLayout.WEST, contentPane); 
                
-  layout.putConstraint(SpringLayout.NORTH, preview,  
+  layout.putConstraint(SpringLayout.NORTH, play,  
              200, SpringLayout.NORTH, contentPane); 
 
   
@@ -232,32 +232,33 @@ public class UI{
   // Function to set visible status of JFrame. 
   frame.setVisible(true); 
     
-  create.addActionListener(new ActionListener() { //action performed when 'create' button is clicked
+  save.addActionListener(new ActionListener() { //action performed when 'save' button is clicked
     public void actionPerformed(ActionEvent e) { 
-        String FORMULA = textField1.getText();
-        System.out.println(FORMULA); //formula is retrieved from user
-        String FrictionCo = textField2.getText();
-        System.out.println(FrictionCo);
-        String start = textField3.getText();
-        System.out.println(start);
-        String target = textField4.getText();
-        System.out.println(target);
-        String radius = textField5.getText();
-        System.out.println(radius);
+        String FORMULA  = textField1.getText();
+        String Friction = textField2.getText();
+        String start    = textField3.getText();
+        String target   = textField4.getText();
+        String radius   = textField5.getText();
        // Course c = new Course();
-       // c.height = radius;//////////////////////
+       // c.height = radius;
         String maxVel = textField6.getText();
-        System.out.println(maxVel); //all inputs are printed, to show it works
+         //all inputs are printed, to show it works
         //play button      save course(uses input output module to save values etc.) load course
     } //input output should
   } );//TO DO: create course object with all given values
 
 
-    preview.addActionListener(new ActionListener() { 
+    save.addActionListener(new ActionListener() { 
         public void actionPerformed(ActionEvent e) { 
-            System.out.println("show preview of the course in the right corner");
+            
     } 
   } );
+  
+  play.addActionListener(new ActionListener() { 
+    public void actionPerformed(ActionEvent e) { 
+        
+} 
+} );
 
 
     
