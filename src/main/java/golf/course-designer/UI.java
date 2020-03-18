@@ -286,9 +286,9 @@ public class UI{
   } );
 
 
-    save.addActionListener(new ActionListener() { 
+    load.addActionListener(new ActionListener() { 
         public void actionPerformed(ActionEvent e) { 
-            //saves course
+            //loads course
         } 
     } );
   
