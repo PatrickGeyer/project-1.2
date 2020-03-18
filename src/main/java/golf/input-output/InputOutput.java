@@ -7,9 +7,8 @@ import golf.course.*;
 
 public class InputOutput{
     public static void main(String[] args) {
-    System.out.println(UI.i);
     }
-   /* // Aliases from saved file to Course object property names         UI.Course.getRadius()
+   /* // Aliases from saved file to Course object property names     
     String[][] aliases = {{"m", "ballMass"}, {"mu", "frictionCoefficient"}, {"tol", "goalTolerance"}};
 
     public void save(UI Course) {
