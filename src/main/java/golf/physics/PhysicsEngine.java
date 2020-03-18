@@ -37,3 +37,5 @@ public class PhysicsEngine {
 // The equations of motion are
 // 𝑝̈ = 𝑎 = 𝐹⁄𝑚
 // where 𝐹 = 𝐹(𝑝, 𝑝̇) = 𝐹(𝑝, 𝑣) = 𝐺 + 𝐻 is the total force applied.
+
+*/

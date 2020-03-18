@@ -1,5 +1,4 @@
 package golf.inputOutput;
-import UI;
 
 import java.util.Scanner;
 import java.io.*;
@@ -7,7 +6,7 @@ import golf.course.*;
 
 public class InputOutput{
     public static void main(String[] args) {
-    System.out.println(UI.i);
+        // System.out.println(UI.i);
     }
    /* // Aliases from saved file to Course object property names         UI.Course.getRadius()
     String[][] aliases = {{"m", "ballMass"}, {"mu", "frictionCoefficient"}, {"tol", "goalTolerance"}};

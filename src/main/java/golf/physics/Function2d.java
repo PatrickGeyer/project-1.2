@@ -1,9 +1,11 @@
 package golf.physics;
 
-interface Function2d {
-   public double evaluate(Vector2d p);
-   public Vector2d gradient(Vector2d p);
-}
+import net.objecthunter.exp4j.*;
+
+// interface Function2d {
+//    public double evaluate(Vector2d p);
+//    public Vector2d gradient(Vector2d p);
+// }
 
 public class Function2d {
    public String function;
@@ -18,6 +20,6 @@ public class Function2d {
             .setVariable("y", p.get_y()).evaluate();
    }
    public Vector2d gradient(Vector2d p) {
-
+      return new Vector2d(0,0);
    }
 }

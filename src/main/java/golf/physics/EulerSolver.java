@@ -4,6 +4,7 @@ import golf.course.object.Object;
 import golf.course.Course;
 
 public class EulerSolver implements PhysicsEngine {
+    protected double stepSize;
     protected Vector2d positionVector;
     protected Vector2d velocityVector;
     protected Vector2d accelerationVector;

@@ -52,9 +52,9 @@ class PuttingSimulator {
     }
 
     public static void main(String[] args) {
-        PuttingCourse course = new PuttingCourse(courseFunction, flag);
-        PhysicsEngine engine = new EulerSolver();
-        PuttingSimulator simulator = new PuttingSimulator(course, engine);
+        // PuttingCourse course = new PuttingCourse(courseFunction, flag);
+        // PhysicsEngine engine = new EulerSolver();
+        // PuttingSimulator simulator = new PuttingSimulator(course, engine);
         //TO ADD
 
     }
