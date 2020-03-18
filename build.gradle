@@ -61,8 +61,8 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         api "com.badlogicgames.ashley:ashley:$ashleyVersion"
         api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
-        api "net.objecthunter.exp4j:0.4.8"
-        api "junit.junit:4.12"
+        compile group: 'net.objecthunter', name: 'exp4j', version: '0.4.4'
+        testImplementation('junit:junit:4.13')
         implementation "org.junit.jupiter:junit-jupiter:5.6.0"
     }
 }
