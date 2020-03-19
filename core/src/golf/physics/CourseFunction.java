@@ -27,13 +27,4 @@ public class CourseFunction implements Function2d {
       double pdy = evaluate(new Vector2d(p.get_x(), p.get_y()+DELTA));
       return new Vector2d((pdx-z)/DELTA, (pdy-z)/DELTA);
    }
-
-   public double partialDerivativeX(double x, double y) {
-      return 0.0;
-   }
-   
-   public double partialDerivativeY(double x, double y) {
-      return 0.0;
-   }
-
 }
