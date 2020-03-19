@@ -78,7 +78,7 @@ public class InputOutput {
 
 
    //like this?
-   public Course reader(String f){
+   public Course read(String f){
       try {
          File file = new File(f);
          Scanner sc = new Scanner(file);

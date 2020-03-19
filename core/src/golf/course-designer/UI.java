@@ -281,6 +281,7 @@ public class UI{
         
           //just  to show it works 
           System.out.println("radius :" + Course.getRadius() );
+          InputOutput.save(Course);
        }
        
   } );
