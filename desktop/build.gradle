@@ -4,7 +4,7 @@ sourceCompatibility = 1.12
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceSets.main.resources.srcDirs = ["../core/assets"]
 
-project.ext.mainClassName = "ui.desktop.DesktopLauncher"
+project.ext.mainClassName = "golf.ui.DesktopLauncher"
 project.ext.assetsDir = new File("../core/assets")
 
 task run(dependsOn: classes, type: JavaExec) {
