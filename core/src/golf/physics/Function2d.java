@@ -23,7 +23,7 @@ public class Function2d {
       return evaluate(new Vector2d(x, y));
    }
    public Vector2d gradient(Vector2d p) {
-      return new Vector2d(0,0);
+      return new Vector2d(evaluate(p) - evaluate(p.addX(0.01)), evaluate(p) - evaluate(p.addY(0.01)));
    }
 
    public double partialDerivativeX(double x, double y) {
