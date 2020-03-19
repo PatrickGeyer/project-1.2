@@ -85,18 +85,34 @@ public class InputOutput {
       } 
   }
 
-   // read the file tryyyyyyyyyyyyyyyyyyyyyyy
+
+
+
+
+
+   //like this?
    public Course reader(String f){
       try {
          File file = new File(f);
          Scanner sc = new Scanner(file);
          while(sc.hasNextLine()||sc.hasNextDouble()){
-            String[] line = sc.nextLine().split("=")
+            String[] line = sc.nextLine().split("=");
+            String[] property = sc.nextLine().split(" ");
          }
- 
+                  sc.close();
+   }catch (FileNotFoundException e) {
+         System.out.println("An error occurred.");
+         e.printStackTrace();
+      }
+      Course c = new Course(gravitationalAcc, ballMass, friction, maxBallSpeed, distance, startPoint, targetPoint, formula);
+      return c;
 
-Then line[0] will be the property name, i.e. "mu" and property[1] will be its value
-   }
+      for(int i=0; i<8; i++){
+      Course[property[i]] = line[i]; //loops through the properties in the course object to replace them with the values from the file
+      }
+
+
+
    public Course read(String f) {
       try {
          File file = new File(f);
