@@ -84,7 +84,7 @@ public class InputOutput {
          Scanner sc = new Scanner(file);
          while(sc.hasNextLine()||sc.hasNextDouble()){
             String[] line = sc.nextLine().split("=");
-            String[] property = sc.nextLine().split(" ");
+            String[] property = split[0];
          }
                   sc.close();
    }catch (FileNotFoundException e) {
