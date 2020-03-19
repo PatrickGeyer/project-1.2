@@ -10,7 +10,7 @@ public class Course {
     public double frictionCoefficient = 0.131;            // Coefficient of friction (rolling ball) // Typical 0.065<=mu<=0.196
     public double vmax = 3.0;            // Maximum initial ball speed [m/s]
     public double goalTolerance = 0.02;  // Distance from hole for a successful putt [m]
-    public String height = "0";         // String of a function that returns height for each x, y coordinate
+    public Function2d height;         // String of a function that returns height for each x, y coordinate
 
     public double getHeight(double x, double y) {
         Expression e = new ExpressionBuilder(this.height)

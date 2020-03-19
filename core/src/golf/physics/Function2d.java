@@ -22,4 +22,12 @@ public class Function2d {
    public Vector2d gradient(Vector2d p) {
       return new Vector2d(0,0);
    }
+
+   public double partialDerivativeX(double x, double y) {
+      return 0.0;
+   }
+   public double partialDerivativeY(double x, double y) {
+      return 0.0;
+   }
+
 }

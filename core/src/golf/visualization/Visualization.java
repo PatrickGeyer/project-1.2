@@ -23,9 +23,9 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
+import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 
 
 public class Visualization implements ApplicationListener {
@@ -55,7 +55,7 @@ public class Visualization implements ApplicationListener {
 
 	@Override
     public void create () {
-        courseMesh = createCourseMesh();
+        courseMesh = createCourseMesh(10, 10);
         shader = Visualization.createMeshShader();
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
@@ -123,19 +123,34 @@ public class Visualization implements ApplicationListener {
 	public void resume() {
 	}
 
-    public Mesh createCourseMesh() {
+    public Mesh createCourseMesh(int gridCol, int gridRow) {
+        int colSize = 1;
+        MeshPartBuilder b = new MeshBuilder();
+        Vector3 pos1,pos2,pos3,pos4;
+        Vector3 nor1,nor2,nor3,nor4;
+        MeshPartBuilder.VertexInfo v1,v2,v3,v4;
+        for(int i=-colSize+(colSize*gridCol);i<=colSize+(colSize*gridCol);i++){
+            for(int k=-colSize+(colSize*gridRow);k<=colSize+(colSize*gridRow);k++){
+                pos1 = new Vector3 (i,(float)(c.height.evaluate(i, k)), k);
+                pos2 = new Vector3 (i,(float)(c.height.evaluate(i, k+1)),k+1);
+                pos3 = new Vector3 (i+1,(float)(c.height.evaluate(i+1, k+1)),k+1);
+                pos4 = new Vector3 (i+1,(float)(c.height.evaluate(i+1, k)),k);
 
-        MeshBuilder builder = new MeshBuilder();
-        builder.begin(Usage.Position | Usage.Normal, GL20.GL_TRIANGLES);
-        for(float y = 0; y < 10; y+= 0.1) {
-            for(float x = 0; x < 10; x+=0.1) {
-                builder.vertex(new Vector3(y, x, 0), new Vector3(0,0,0), new Color(255, 255, 255, 1), new Vector2(0,0));
+                nor1 = (new Vector3((float)-c.height.partialDerivativeX(i, k),1,0).add(new Vector3(0,1,(float)-c.height.partialDerivativeY(i, k))));
+                nor2 = (new Vector3((float)-c.height.partialDerivativeX(i, k),1,0).add(new Vector3(0,1,(float)-c.height.partialDerivativeY(i, k+1))));
+                nor3 = (new Vector3((float)-c.height.partialDerivativeX(i+1, k+1),1,0).add(new Vector3(0,1,(float)-c.height.partialDerivativeY(i+1, k+1))));
+                nor4 = (new Vector3((float)-c.height.partialDerivativeX(i+1, k),1,0).add(new Vector3(0,1,(float)-c.height.partialDerivativeY(i, k))));
+
+                v1 = new MeshPartBuilder.VertexInfo().setPos(pos1).setNor(nor1).setCol(null).setUV(0.0f, 0.0f);
+                v2 = new MeshPartBuilder.VertexInfo().setPos(pos2).setNor(nor2).setCol(null).setUV(0.0f, 0.5f);
+                v3 = new MeshPartBuilder.VertexInfo().setPos(pos3).setNor(nor3).setCol(null).setUV(0.5f, 0.0f);
+                v4 = new MeshPartBuilder.VertexInfo().setPos(pos4).setNor(nor4).setCol(null).setUV(0.5f, 0.5f);
+
+                b.rect(v1, v2, v3, v4);
             }
         }
-
-        return builder.end();
+        return b.end();
     }
-
     public static final String VERT_SHADER =  
 			"attribute vec2 a_position;\n" +
 			"attribute vec4 a_color;\n" +			
