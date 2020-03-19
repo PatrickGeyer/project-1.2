@@ -85,7 +85,18 @@ public class InputOutput {
       } 
   }
 
-   // read the file
+   // read the file tryyyyyyyyyyyyyyyyyyyyyyy
+   public Course reader(String f){
+      try {
+         File file = new File(f);
+         Scanner sc = new Scanner(file);
+         while(sc.hasNextLine()||sc.hasNextDouble()){
+            String[] line = sc.nextLine().split("=")
+         }
+ 
+
+Then line[0] will be the property name, i.e. "mu" and property[1] will be its value
+   }
    public Course read(String f) {
       try {
          File file = new File(f);
