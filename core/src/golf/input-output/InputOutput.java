@@ -1,12 +1,5 @@
-package golf.inputOutput;
 
-import java.util.Scanner;
-import java.io.*;
-import golf.course.*;
 
-public class InputOutput{
-    public static void main(String[] args) {
-    }
    /* // Aliases from saved file to Course object property names     
     String[][] aliases = {{"m", "ballMass"}, {"mu", "frictionCoefficient"}, {"tol", "goalTolerance"}};
 
@@ -35,19 +28,14 @@ public class InputOutput{
         UI Course = new UI();
         return Course;
     }*/
-}
 
-
-/*
-// package golf.inputOutput;
+//package golf.inputOutput;
 
 import java.util.Scanner;
 import java.io.*;
 // import golf.course.*;
 
 public class InputOutput {
-
-   // String[][] aliases = {{"m", "ballMass"}, {"mu", "frictionCoefficient"}, {"vmax", "maxBallSpeed"}, {"tol", "goalTolerance"}};
    
    double gravitationalAcc;
    double ballMass;
@@ -59,24 +47,23 @@ public class InputOutput {
    String formula;
 
    public void save(Course c) {
-
       try {
           FileWriter writer = new FileWriter("MyFile.txt", true);
-          writer.write("The gravitational acceleration is: " + gravitationalAcc);
+          writer.write("gravitational acceleration = " + Course.gravitationalAcc);
           writer.write("\r\n");   // write new line
-          writer.write("The mass of the ball is: " + ballMass);
+          writer.write("The mass of the ball = " + Course.ballMass);
           writer.write("\r\n");   // write new line
-          writer.write("The coefficient of friction is: " + friction);
+          writer.write("The coefficient of friction = " + Course.friction);
           writer.write("\r\n");   // write new line
-          writer.write("The maximum initial ball speed: " + maxBallSpeed);
+          writer.write("The maximum initial ball speed = " + Course.maxBallSpeed);
           writer.write("\r\n");   // write new line
-          writer.write("The distance from hole for a successful putt is: " + distance);
+          writer.write("The distance from hole for a successful putt = " + Course.distance);
           writer.write("\r\n");   // write new line
-          writer.write("The starting coordinate is: " + startPoint);
+          writer.write("The starting coordinate= " + Course.startPoint);
           writer.write("\r\n");   // write new line
-          writer.write("The goal coordinate is: " + targetPoint);
+          writer.write("The goal coordinate = " + Course.targetPoint);
           writer.write("\r\n");   // write new line
-          writer.write("The height function is: " + formula);
+          writer.write("The height function = " + Course.formula);
           writer.write("\r\n");   // write new line
           writer.close();
 
@@ -108,10 +95,11 @@ public class InputOutput {
       return c;
 
       for(int i=0; i<8; i++){
-      Course[property[i]] = line[i]; //loops through the properties in the course object to replace them with the values from the file
+      Course[property[i]] = line[i]; //loops through th e properties in the course object to replace them with the values from the file
       }
+   }
 
-
+/*
 
    public Course read(String f) {
       try {
@@ -168,6 +156,5 @@ public class InputOutput {
 
       Course c = new Course(gravitationalAcc, ballMass, friction, maxBallSpeed, distance, startPoint, targetPoint, formula);
       return c;
-   }
+   }*/
 }
-*/

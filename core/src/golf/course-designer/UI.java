@@ -90,7 +90,7 @@ public class UI{
   JTextField textField5 = new JTextField(" 2", 20); 
   JTextField textField6 = new JTextField(" 5", 20); 
   JButton save = new JButton("SAVE COURSE");
-  JButton load = new JButton("LOAD COURSE");
+  JButton load = new JButton("UPLOAD OTHER COURSE");
   JButton play = new JButton("PLAY");
 
   // to add content pane of JLabel 
@@ -243,20 +243,20 @@ public class UI{
 
   //save BUTTON
   layout.putConstraint(SpringLayout.WEST, save,  
-                200, SpringLayout.WEST, contentPane); 
+                195, SpringLayout.WEST, contentPane); 
                
   layout.putConstraint(SpringLayout.NORTH, save,  
             200, SpringLayout.NORTH, contentPane); 
   //load BUTTON
   layout.putConstraint(SpringLayout.WEST, load,  
-             345, SpringLayout.WEST, contentPane); 
+             315, SpringLayout.WEST, contentPane); 
 
   layout.putConstraint(SpringLayout.NORTH, load,  
              200, SpringLayout.NORTH, contentPane);
 
   //play BUTTON
   layout.putConstraint(SpringLayout.WEST, play,  
-            489, SpringLayout.WEST, contentPane); 
+            495, SpringLayout.WEST, contentPane); 
                
   layout.putConstraint(SpringLayout.NORTH, play,  
              200, SpringLayout.NORTH, contentPane); 
@@ -288,7 +288,7 @@ public class UI{
 
     load.addActionListener(new ActionListener() { 
         public void actionPerformed(ActionEvent e) { 
-            //loads course
+            //reads course from a textfile
         } 
     } );
   
