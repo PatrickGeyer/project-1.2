@@ -19,6 +19,9 @@ public class Function2d {
             .setVariable("x", p.get_x())
             .setVariable("y", p.get_y()).evaluate();
    }
+   public double evaluate(double x, double y) {
+      return evaluate(new Vector2d(x, y));
+   }
    public Vector2d gradient(Vector2d p) {
       return new Vector2d(0,0);
    }

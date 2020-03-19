@@ -125,7 +125,7 @@ public class Visualization implements ApplicationListener {
 
     public Mesh createCourseMesh(int gridCol, int gridRow) {
         int colSize = 1;
-        MeshPartBuilder b = new MeshBuilder();
+        MeshPartBuilder b = new MeshBuilder().part("terrain", 1);
         Vector3 pos1,pos2,pos3,pos4;
         Vector3 nor1,nor2,nor3,nor4;
         MeshPartBuilder.VertexInfo v1,v2,v3,v4;
