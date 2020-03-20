@@ -33,7 +33,7 @@ public class EulerSolver implements PhysicsEngine {
         double dX = this.stepSize * this.velocityVector.get_x();
         double dY = this.stepSize * this.velocityVector.get_y();
         positionVector.addX(dX);
-        positionVector.addY(dY);
+        positionVector.addY(dY); 
     }            
 
     private void approximateVelocity() {

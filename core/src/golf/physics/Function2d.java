@@ -12,6 +12,10 @@ public class Function2d {
    public Function2d(String function) {
       this.function = function;
    }
+   public double evaluate(double x, double y) {
+      return evaluate(new Vector2d(x, y));
+   }
+   
    public double evaluate(Vector2d p) {
       return new ExpressionBuilder(this.function)
             .variables("x", "y")
@@ -19,9 +23,7 @@ public class Function2d {
             .setVariable("x", p.get_x())
             .setVariable("y", p.get_y()).evaluate();
    }
-   public double evaluate(double x, double y) {
-      return evaluate(new Vector2d(x, y));
-   }
+   
    public Vector2d gradient(Vector2d p) {
       return new Vector2d(evaluate(p) - evaluate(p.addX(0.01)), evaluate(p) - evaluate(p.addY(0.01)));
    }

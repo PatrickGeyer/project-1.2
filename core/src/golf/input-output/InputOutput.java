@@ -7,7 +7,7 @@ import golf.course.*;
 public class InputOutput{
     public static void main(String[] args) {
     }
-   /* // Aliases from saved file to Course object property names     
+   // /* // Aliases from saved file to Course object property names     
     String[][] aliases = {{"m", "ballMass"}, {"mu", "frictionCoefficient"}, {"tol", "goalTolerance"}};
 
     public void save(UI Course) {
@@ -38,7 +38,7 @@ public class InputOutput{
 }
 
 
-/*
+// /*
 // package golf.inputOutput;
 
 import java.util.Scanner;
@@ -95,11 +95,12 @@ public class InputOutput {
       try {
          File file = new File(f);
          Scanner sc = new Scanner(file);
-         while(sc.hasNextLine()||sc.hasNextDouble()){
-            String[] line = sc.nextLine().split("=");
-            String[] property = sc.nextLine().split(" ");
+         while(sc.hasNextLine()){
+            String[] split = sc.nextLine().split("=");
+            String[] line = split[0];
+            String[] property = split[1];
          }
-                  sc.close();
+         sc.close();
    }catch (FileNotFoundException e) {
          System.out.println("An error occurred.");
          e.printStackTrace();
