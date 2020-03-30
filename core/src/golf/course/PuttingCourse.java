@@ -2,14 +2,20 @@ package golf.course;
 import golf.physics.*;
 import net.objecthunter.exp4j.*;
 
-public class PuttingCourse {
-    private Function2d height;
-    private Vector2d flag = new Vector2d(0, 10);
-    private Vector2d start = new Vector2d(0,0);
-    private double g = 9.81;              // Gravitational acceleration
-    private double frictionCoefficient = 0.131;            // Coefficient of friction (rolling ball) // Typical 0.065<=mu<=0.196
-    private double Vmax = 3.0;            // Maximum initial ball speed [m/s]
-    private double holeTolerance = 0.02;  // Distance from hole for a successful putt [m]
+import java.io.Serializable;
+
+public class PuttingCourse implements Serializable {
+    public Function2d height = new Function2d("-sin(x) + y");
+    public Vector2d flag = new Vector2d(0, 10);
+    public Vector2d start = new Vector2d(0,0);
+    public double g = 9.81;              // Gravitational acceleration
+    public double frictionCoefficient = 0.131;            // Coefficient of friction (rolling ball) // Typical 0.065<=mu<=0.196
+    public double Vmax = 3.0;            // Maximum initial ball speed [m/s]
+    public double holeTolerance = 0.02;  // Distance from hole for a successful putt [m]
+
+    public PuttingCourse () {
+        
+    }
 
     public PuttingCourse (Function2d height, Vector2d flag, Vector2d start) {
         this.height = height;

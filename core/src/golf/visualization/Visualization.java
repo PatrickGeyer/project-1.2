@@ -33,37 +33,31 @@ import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 public class Visualization implements ApplicationListener {
     public Environment environment;
     public PerspectiveCamera cam;
-    public Model model;
-    public ModelBatch modelBatch;
     public ModelInstance instance;
     public CameraInputController camController;
-    public Course c;
+    public PuttingCourse c;
     public PhysicsEngine p;
 
     public Mesh courseMesh;
     ShaderProgram shader;
     SpriteBatch batch;
 
-
-    public Visualization(Course c, PhysicsEngine p) {
+    public Visualization(PuttingCourse c, PhysicsEngine p) {
         this.c = c;
         this.p = p;
     }
 
     public static void main(String[] args) {
-        Visualization v = new Visualization(new Course(), new EulerSolver(0.01));
+        Visualization v = new Visualization(new PuttingCourse(), new EulerSolver(0.01));
     }
-
 
 	@Override
     public void create () {
-        courseMesh = createCourseMesh(0, 0);
+        courseMesh = createCourseMesh(10, 10, 0.2);
         shader = Visualization.createMeshShader();
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1.0f));
         environment.add(new PointLight().set(0.8f, 0.8f, 0.8f, 2f, 0f, 0f, 10f));
-
-		modelBatch = new ModelBatch();
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         cam.position.set(10f, 10f, 10f);
@@ -74,18 +68,10 @@ public class Visualization implements ApplicationListener {
 
         camController = new CameraInputController(cam);
         Gdx.input.setInputProcessor(camController);
-
-        ModelBuilder modelBuilder = new ModelBuilder();
-        model = modelBuilder.createBox(5f, 5f, 5f, 
-            new Material(ColorAttribute.createDiffuse(Color.GREEN)),
-            Usage.Position | Usage.Normal);
-        instance = new ModelInstance(model);
     }
 
 	@Override
     public void dispose () {
-        modelBatch.dispose();
-        model.dispose();    
     }
 
     public void take_shot(Vector2d v) {
@@ -94,8 +80,10 @@ public class Visualization implements ApplicationListener {
 
     @Override
     public void render () {
-        // Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //no need for depth...
+
+        Gdx.gl.glClearColor( 1, 0, 0, 1 );
+        Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+
         Gdx.gl.glDepthMask(false);
 
         //enable blending, for alpha
@@ -106,7 +94,7 @@ public class Visualization implements ApplicationListener {
         shader.setUniformMatrix("u_projTrans", cam.combined);
         shader.setUniformi("u_texture", 0);
 
-        courseMesh.render( shader, GL20.GL_TRIANGLES);
+        courseMesh.render(shader, GL20.GL_TRIANGLES);
         shader.end();
         
         //re-enable depth to reset states to their default
@@ -125,34 +113,57 @@ public class Visualization implements ApplicationListener {
 	public void resume() {
 	}
 
-    public Mesh createCourseMesh(int gridCol, int gridRow) {
-        int colSize = 1;
+    public Mesh createCourseMesh(double gridCol, double gridRow, double division) {
         ModelBuilder mb = new ModelBuilder();
         mb.begin();
-        MeshPartBuilder b = mb.part("terrain", GL20.GL_TRIANGLES, Usage.Position | Usage.Normal, new Material(ColorAttribute.createDiffuse(Color.WHITE)));
+        MeshPartBuilder b = mb.part("terrain", GL20.GL_TRIANGLES, Usage.Position | Usage.Normal | Usage.ColorPacked, new Material(ColorAttribute.createDiffuse(Color.WHITE)));
         Vector3 pos1,pos2,pos3,pos4;
         Vector3 nor1,nor2,nor3,nor4;
         MeshPartBuilder.VertexInfo v1,v2,v3,v4;
-        for(int i=-colSize+(colSize*gridCol);i<=colSize+(colSize*gridCol);i++){
-            for(int k=-colSize+(colSize*gridRow);k<=colSize+(colSize*gridRow);k++){
+        for(double x = 0; x <= gridCol; x += division) {
+            for(double y = 0; y <= gridRow; y += division) {
 
-System.out.println(c.height.evaluate(i, k));
-                pos1 = new Vector3 (i,(float)(c.height.evaluate(i, k)), k);
-                pos2 = new Vector3 (i,(float)(c.height.evaluate(i, k+1)),k+1);
-                pos3 = new Vector3 (i+1,(float)(c.height.evaluate(i+1, k+1)),k+1);
-                pos4 = new Vector3 (i+1,(float)(c.height.evaluate(i+1, k)),k);
+                double height = c.height.evaluate(x, y);
 
-                nor1 = (new Vector3((float)-c.height.partialDerivativeX(i, k),1,0).add(new Vector3(0,1,(float)-c.height.partialDerivativeY(i, k))));
-                nor2 = (new Vector3((float)-c.height.partialDerivativeX(i, k),1,0).add(new Vector3(0,1,(float)-c.height.partialDerivativeY(i, k+1))));
-                nor3 = (new Vector3((float)-c.height.partialDerivativeX(i+1, k+1),1,0).add(new Vector3(0,1,(float)-c.height.partialDerivativeY(i+1, k+1))));
-                nor4 = (new Vector3((float)-c.height.partialDerivativeX(i+1, k),1,0).add(new Vector3(0,1,(float)-c.height.partialDerivativeY(i, k))));
+                pos1 = new Vector3 ((float) x, (float) (c.height.evaluate(x, y)), (float) y);
+                pos2 = new Vector3 ((float) x, (float) (c.height.evaluate(x, y + division)), (float) (y + division));
+                pos3 = new Vector3 ((float) (x + division), (float) (c.height.evaluate(x + division, y + division)), (float) (y + division));
+                pos4 = new Vector3 ((float) (x + division), (float) (c.height.evaluate(x + division, y)), (float) y);
 
-                v1 = new MeshPartBuilder.VertexInfo().setPos(pos1).setNor(nor1).setCol(null).setUV(0.0f, 0.0f);
-                v2 = new MeshPartBuilder.VertexInfo().setPos(pos2).setNor(nor2).setCol(null).setUV(0.0f, 0.5f);
-                v3 = new MeshPartBuilder.VertexInfo().setPos(pos3).setNor(nor3).setCol(null).setUV(0.5f, 0.0f);
-                v4 = new MeshPartBuilder.VertexInfo().setPos(pos4).setNor(nor4).setCol(null).setUV(0.5f, 0.5f);
+                System.out.println("Grad: " + c.height.gradient(x, y).get_y());
+                nor1 = new Vector3((float) - c.height.gradient(x, y).get_x(), 1, 0).add(
+                    new Vector3(0, 1, (float) - c.height.gradient(x, y).get_y())
+                );
+                nor2 = new Vector3((float) - c.height.gradient(x, y).get_x(), 1, 0).add(
+                    new Vector3(0, 1, (float) - c.height.gradient(x, y + division).get_y())
+                );
+                nor3 = new Vector3((float) - c.height.gradient(x + division, y + division).get_x(), 1, 0).add(
+                    new Vector3(0, 1, (float) - c.height.gradient(x + division, y + division).get_y())
+                );
+                nor4 = new Vector3((float) - c.height.gradient(x + division, y).get_x(), 1, 0).add(
+                    new Vector3(0, 1, (float) - c.height.gradient(x, y).get_y())
+                );
+
+                Color c = new Color(0, 0, 0, 1);
+
+                if(height < 0) {
+                    // Water
+                    c = new Color(0, 0, 1, 1);
+                } else {
+                    // Grass
+                    float whiteness = Math.max( (float) height / 10, 0);
+                    c = new Color(whiteness, 1, whiteness, 1);
+                }
+
+                System.out.println(height);
+
+                v1 = new MeshPartBuilder.VertexInfo().setPos(pos1).setNor(nor1).setCol(c).setUV(0.0f, 0.0f);
+                v2 = new MeshPartBuilder.VertexInfo().setPos(pos2).setNor(nor2).setCol(c).setUV(0.0f, 0.5f);
+                v3 = new MeshPartBuilder.VertexInfo().setPos(pos3).setNor(nor3).setCol(c).setUV(0.5f, 0.0f);
+                v4 = new MeshPartBuilder.VertexInfo().setPos(pos4).setNor(nor4).setCol(c).setUV(0.5f, 0.5f);
 
                 b.rect(v1, v2, v3, v4);
+                // return mb.end().meshes.get(0);
             }
         }
         return mb.end().meshes.get(0);

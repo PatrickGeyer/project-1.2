@@ -1,7 +1,7 @@
 package golf.physics;
 
 import golf.course.object.Object;
-import golf.course.Course;
+import golf.course.PuttingCourse;
 
 public class EulerSolver implements PhysicsEngine {
     protected double stepSize;

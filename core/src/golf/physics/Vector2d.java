@@ -22,15 +22,21 @@ public class Vector2d {
         return new Vector2d(this.get_x() + a.get_x(), this.get_y() + a.get_y());
     }
 
-    public void addX(double val) {
+    public Vector2d addX(double val) {
         this.x += val;
+        return this;
     }
-    public void addY(double val) {
+    public Vector2d addY(double val) {
         this.y += val;
+        return this;
     }
     
     public Vector2d copy() {
         return new Vector2d(get_x(), get_y());
+    }
+
+    public double magnitude() {
+        return Math.sqrt(Math.pow(this.get_x(), 2) + Math.pow(this.get_y(), 2));
     }
 
 }
