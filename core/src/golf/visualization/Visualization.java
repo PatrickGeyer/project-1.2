@@ -53,7 +53,7 @@ public class Visualization implements ApplicationListener {
 
 	@Override
     public void create () {
-        courseMesh = createCourseMesh(10, 10, 0.2);
+        courseMesh = createCourseMesh(10, 10, 1);
         shader = Visualization.createMeshShader();
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1.0f));
@@ -130,19 +130,38 @@ public class Visualization implements ApplicationListener {
                 pos3 = new Vector3 ((float) (x + division), (float) (c.height.evaluate(x + division, y + division)), (float) (y + division));
                 pos4 = new Vector3 ((float) (x + division), (float) (c.height.evaluate(x + division, y)), (float) y);
 
-                System.out.println("Grad: " + c.height.gradient(x, y).get_y());
-                nor1 = new Vector3((float) - c.height.gradient(x, y).get_x(), 1, 0).add(
-                    new Vector3(0, 1, (float) - c.height.gradient(x, y).get_y())
+                // System.out.println(pos1);
+                // System.out.println(pos2);
+                // System.out.println(pos3);
+                // System.out.println(pos4);
+
+                // System.out.println("Grad: " + c.height.gradient(x, y).get_y());
+
+                nor1 = new Vector3(
+                    (float) - c.height.gradient(x, y).get_x(), 
+                    1, 
+                    (float) - c.height.gradient(x, y).get_y()
                 );
-                nor2 = new Vector3((float) - c.height.gradient(x, y).get_x(), 1, 0).add(
-                    new Vector3(0, 1, (float) - c.height.gradient(x, y + division).get_y())
+                nor2 = new Vector3(
+                    (float) - c.height.gradient(x, y).get_x(), 
+                    1, 
+                    (float) - c.height.gradient(x, y + division).get_y()
                 );
-                nor3 = new Vector3((float) - c.height.gradient(x + division, y + division).get_x(), 1, 0).add(
-                    new Vector3(0, 1, (float) - c.height.gradient(x + division, y + division).get_y())
+                nor3 = new Vector3(
+                    (float) - c.height.gradient(x + division, y + division).get_x(), 
+                    1, 
+                    (float) - c.height.gradient(x + division, y + division).get_y()
                 );
-                nor4 = new Vector3((float) - c.height.gradient(x + division, y).get_x(), 1, 0).add(
-                    new Vector3(0, 1, (float) - c.height.gradient(x, y).get_y())
+                nor4 = new Vector3(
+                    (float) - c.height.gradient(x + division, y).get_x(), 
+                    1, 
+                    (float) - c.height.gradient(x, y).get_y()
                 );
+
+                // System.out.println(nor1);
+                // System.out.println(nor2);
+                // System.out.println(nor3);
+                // System.out.println(nor4);
 
                 Color c = new Color(0, 0, 0, 1);
 
@@ -155,6 +174,8 @@ public class Visualization implements ApplicationListener {
                     c = new Color(whiteness, 1, whiteness, 1);
                 }
 
+                System.out.println("(" + x + ", " + y + ")");
+
                 System.out.println(height);
 
                 v1 = new MeshPartBuilder.VertexInfo().setPos(pos1).setNor(nor1).setCol(c).setUV(0.0f, 0.0f);
@@ -163,7 +184,6 @@ public class Visualization implements ApplicationListener {
                 v4 = new MeshPartBuilder.VertexInfo().setPos(pos4).setNor(nor4).setCol(c).setUV(0.5f, 0.5f);
 
                 b.rect(v1, v2, v3, v4);
-                // return mb.end().meshes.get(0);
             }
         }
         return mb.end().meshes.get(0);

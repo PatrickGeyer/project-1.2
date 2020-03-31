@@ -34,6 +34,5 @@ public class Function2d {
       return this.gradient(new Vector2d(x, y), 0.01);
    }
 
-
 }
 
