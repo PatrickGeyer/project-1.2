@@ -5,7 +5,7 @@ import net.objecthunter.exp4j.*;
 import java.io.Serializable;
 
 public class PuttingCourse implements Serializable {
-    public Function2d height = new Function2d("-sin(x) + y");
+    public Function2d height = new Function2d("-0.01*x + 0.003*x^2 + 0.04 * y + sin(x)");
     public Vector2d flag = new Vector2d(0, 10);
     public Vector2d start = new Vector2d(0,0);
     public double g = 9.81;              // Gravitational acceleration

@@ -33,7 +33,9 @@ import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 public class Visualization implements ApplicationListener {
     public Environment environment;
     public PerspectiveCamera cam;
-    public ModelInstance instance;
+    public ModelInstance ball;
+        public ModelBatch modelBatch;
+
     public CameraInputController camController;
     public PuttingCourse c;
     public PhysicsEngine p;
@@ -41,6 +43,7 @@ public class Visualization implements ApplicationListener {
     public Mesh courseMesh;
     ShaderProgram shader;
     SpriteBatch batch;
+    
 
     public Visualization(PuttingCourse c, PhysicsEngine p) {
         this.c = c;
@@ -53,14 +56,16 @@ public class Visualization implements ApplicationListener {
 
 	@Override
     public void create () {
-        courseMesh = createCourseMesh(10, 10, 1);
+        modelBatch = new ModelBatch();
+
+        courseMesh = createCourseMesh(20, 20, 0.25);
         shader = Visualization.createMeshShader();
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1.0f));
         environment.add(new PointLight().set(0.8f, 0.8f, 0.8f, 2f, 0f, 0f, 10f));
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set(10f, 10f, 10f);
+        cam.position.set(0f, 50f, 0f);
         cam.lookAt(0,0,0);
         cam.near = 1f;
         cam.far = 300f;
@@ -68,6 +73,13 @@ public class Visualization implements ApplicationListener {
 
         camController = new CameraInputController(cam);
         Gdx.input.setInputProcessor(camController);
+
+
+        ModelBuilder modelBuilder = new ModelBuilder();
+        Model model = modelBuilder.createSphere(.4f, .4f, .4f, 24, 24, 
+            new Material(ColorAttribute.createDiffuse(Color.WHITE)),
+            Usage.Position | Usage.Normal | Usage.TextureCoordinates);
+        ball = new ModelInstance(model);
     }
 
 	@Override
@@ -95,7 +107,12 @@ public class Visualization implements ApplicationListener {
         shader.setUniformi("u_texture", 0);
 
         courseMesh.render(shader, GL20.GL_TRIANGLES);
+
         shader.end();
+
+        modelBatch.begin(cam);
+        modelBatch.render(ball, environment);
+        modelBatch.end();
         
         //re-enable depth to reset states to their default
 	    Gdx.gl.glDepthMask(true);
@@ -125,17 +142,17 @@ public class Visualization implements ApplicationListener {
 
                 double height = c.height.evaluate(x, y);
 
-                pos1 = new Vector3 ((float) x, (float) (c.height.evaluate(x, y)), (float) y);
-                pos2 = new Vector3 ((float) x, (float) (c.height.evaluate(x, y + division)), (float) (y + division));
-                pos3 = new Vector3 ((float) (x + division), (float) (c.height.evaluate(x + division, y + division)), (float) (y + division));
-                pos4 = new Vector3 ((float) (x + division), (float) (c.height.evaluate(x + division, y)), (float) y);
+                pos1 = new Vector3 ((float) x, (float) y, (float) (c.height.evaluate(x, y)));
+                pos2 = new Vector3 ((float) x, (float) (y + division), (float) (c.height.evaluate(x, y + division)));
+                pos3 = new Vector3 ((float) (x + division), (float) (y + division), (float) (c.height.evaluate(x + division, y + division)));
+                pos4 = new Vector3 ((float) (x + division), (float) y, (float) (c.height.evaluate(x + division, y)));
 
-                // System.out.println(pos1);
-                // System.out.println(pos2);
-                // System.out.println(pos3);
-                // System.out.println(pos4);
+                System.out.println(pos1);
+                System.out.println(pos2);
+                System.out.println(pos3);
+                System.out.println(pos4);
 
-                // System.out.println("Grad: " + c.height.gradient(x, y).get_y());
+                System.out.println("Grad: " + c.height.gradient(x, y).get_y());
 
                 nor1 = new Vector3(
                     (float) - c.height.gradient(x, y).get_x(), 
@@ -189,13 +206,13 @@ public class Visualization implements ApplicationListener {
         return mb.end().meshes.get(0);
     }
     public static final String VERT_SHADER =  
-			"attribute vec2 a_position;\n" +
+			"attribute vec3 a_position;\n" +
 			"attribute vec4 a_color;\n" +			
 			"uniform mat4 u_projTrans;\n" + 
 			"varying vec4 vColor;\n" +			
 			"void main() {\n" +  
 			"	vColor = a_color;\n" +
-			"	gl_Position =  u_projTrans * vec4(a_position.xy, 0.0, 1.0);\n" +
+			"	gl_Position =  u_projTrans * vec4(a_position.xyz, 1.0);\n" +
 			"}";
 	
 	public static final String FRAG_SHADER = 
