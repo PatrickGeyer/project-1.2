@@ -28,13 +28,16 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
+import com.badlogic.gdx.input.GestureDetector.GestureListener;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputAdapter;
 
 
 public class Visualization implements ApplicationListener {
     public Environment environment;
     public PerspectiveCamera cam;
     public ModelInstance ball;
-        public ModelBatch modelBatch;
+    public ModelBatch modelBatch;
 
     public CameraInputController camController;
     public PuttingCourse c;
@@ -56,6 +59,8 @@ public class Visualization implements ApplicationListener {
 
 	@Override
     public void create () {
+
+        // take_shot();
         modelBatch = new ModelBatch();
 
         courseMesh = createCourseMesh(20, 20, 0.25);
@@ -71,9 +76,23 @@ public class Visualization implements ApplicationListener {
         cam.far = 300f;
         cam.update();
 
-        camController = new CameraInputController(cam);
-        Gdx.input.setInputProcessor(camController);
+        InputMultiplexer multiplexer = new InputMultiplexer();
 
+        camController = new CameraInputController(cam);
+        multiplexer.addProcessor(new InputAdapter() {
+            public boolean pan(float x, float y, float deltaX, float deltaY) {
+                // System.
+                return false;
+            }
+
+            public boolean panStop(float x, float y, int pointer, int button) {
+                System.out.println(x + ", " + y);
+                return false;
+            }
+        });
+        multiplexer.addProcessor(camController);
+
+        Gdx.input.setInputProcessor(multiplexer);
 
         ModelBuilder modelBuilder = new ModelBuilder();
         Model model = modelBuilder.createSphere(.4f, .4f, .4f, 24, 24, 
@@ -93,7 +112,7 @@ public class Visualization implements ApplicationListener {
     @Override
     public void render () {
 
-        Gdx.gl.glClearColor( 1, 0, 0, 1 );
+        Gdx.gl.glClearColor(135/255f, 206/255f, 235/255f, 1);
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 
         Gdx.gl.glDepthMask(false);
@@ -220,7 +239,7 @@ public class Visualization implements ApplicationListener {
             "precision mediump float;\n" +
             "#endif\n" +
 			"varying vec4 vColor;\n" + 			
-			"void main() {\n" +  
+			"void main() {\n" +
 			"	gl_FragColor = vColor;\n" + 
 			"}";
 	
@@ -234,5 +253,6 @@ public class Visualization implements ApplicationListener {
 			System.out.println("Shader Log: "+log);
 		return shader;
 	}
+
 
 }
