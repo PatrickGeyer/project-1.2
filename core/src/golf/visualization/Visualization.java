@@ -2,6 +2,7 @@ package golf.visualization;
 
 import golf.physics.*;
 import golf.course.*;
+import golf.course.object.*;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -37,7 +38,9 @@ public class Visualization implements ApplicationListener {
     public Environment environment;
     public PerspectiveCamera cam;
     public ModelInstance ball;
+    public ModelInstance arrow;
     public ModelBatch modelBatch;
+    public ModelBuilder modelBuilder;
 
     public CameraInputController camController;
     public PuttingCourse c;
@@ -62,6 +65,7 @@ public class Visualization implements ApplicationListener {
 
         // take_shot();
         modelBatch = new ModelBatch();
+        modelBuilder = new ModelBuilder();
 
         courseMesh = createCourseMesh(20, 20, 0.25);
         shader = Visualization.createMeshShader();
@@ -80,21 +84,41 @@ public class Visualization implements ApplicationListener {
 
         camController = new CameraInputController(cam);
         multiplexer.addProcessor(new InputAdapter() {
-            public boolean pan(float x, float y, float deltaX, float deltaY) {
-                // System.
-                return false;
+
+            public Vector2 startClick;
+            public Vector2 endClick;
+
+            public Ball getCurrentBall() {
+                return c.getBalls().get(0);
             }
 
-            public boolean panStop(float x, float y, int pointer, int button) {
-                System.out.println(x + ", " + y);
+            public Vector2 calculateVector(Vector2 start, Vector2 end) {
+                return new Vector2(end.x - start.x, end.y - start.y);
+            }
+            public boolean touchDragged(int screenX, int screenY, int pointer) {
+                Ball b = getCurrentBall();
+                Vector2 direction = calculateVector(startClick, new Vector2(screenX, screenY));
+                Model m = modelBuilder.createArrow(b.x, b.y, b.z, b.x + direction.x, b.y + direction.y, b.z, 0.1f, 0.1f, 5, 
+                GL20.GL_TRIANGLES, new Material(ColorAttribute.createDiffuse(Color.RED)),
+                Usage.Position | Usage.Normal);
+                arrow = new ModelInstance(m);
                 return false;
+            }
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                arrow = null;
+                endClick = new Vector2(screenX, screenY);
+                take_shot(calculateVector(startClick, endClick));
+                return true;
+            }
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                startClick = new Vector2(screenX, screenY);
+                return true;
             }
         });
         multiplexer.addProcessor(camController);
 
         Gdx.input.setInputProcessor(multiplexer);
 
-        ModelBuilder modelBuilder = new ModelBuilder();
         Model model = modelBuilder.createSphere(.4f, .4f, .4f, 24, 24, 
             new Material(ColorAttribute.createDiffuse(Color.WHITE)),
             Usage.Position | Usage.Normal | Usage.TextureCoordinates);
@@ -105,7 +129,8 @@ public class Visualization implements ApplicationListener {
     public void dispose () {
     }
 
-    public void take_shot(Vector2d v) {
+    public void take_shot(Vector2 v) {
+        System.out.println(v.x);
         // c.ball.acceleration.add(v);
     }  
 
@@ -131,10 +156,14 @@ public class Visualization implements ApplicationListener {
 
         modelBatch.begin(cam);
         modelBatch.render(ball, environment);
+        if(arrow != null) 
+            modelBatch.render(arrow, environment);
         modelBatch.end();
         
         //re-enable depth to reset states to their default
 	    Gdx.gl.glDepthMask(true);
+
+        ball.transform.setTranslation(c.getBalls().get(0).x, c.getBalls().get(0).y, c.getBalls().get(0).z);
     }
 
     @Override

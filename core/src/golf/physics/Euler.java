@@ -1,11 +1,11 @@
 package golf.physics;
 
-import golf.course.object.Object;
+import golf.course.object.GameObject;
 import golf.course.PuttingCourse;
 
 public class Euler {
 
-    public static Vector2d force(Object obj, PuttingCourse c, int h) {
+    public static Vector2d force(GameObject obj, PuttingCourse c, int h) {
 
         // Friction
         Vector2d friction = new Vector2d(
@@ -21,7 +21,7 @@ public class Euler {
         return friction.add(gravity);
     }
 
-    public static Vector2d[] solve(Object obj, PuttingCourse c, int h) {
+    public static Vector2d[] solve(GameObject obj, PuttingCourse c, int h) {
         Vector2d[] response = new Vector2d[2];
         // Position vector
         response[0] = new Vector2d(

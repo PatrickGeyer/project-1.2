@@ -1,7 +1,7 @@
 package golf.physics;
 
 import golf.course.*;
-import golf.course.object.Object;
+import golf.course.object.GameObject;
 
 public interface PhysicsEngine {
     void setPositionVector(Vector2d v);

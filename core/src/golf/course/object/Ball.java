@@ -1,6 +1,6 @@
 package golf.course.object;
-import golf.course.object.Object;
+import golf.course.object.GameObject;
 
-public class Ball extends Object {
+public class Ball extends GameObject {
 
 }

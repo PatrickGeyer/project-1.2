@@ -1,7 +1,10 @@
 package golf.course;
 import golf.physics.*;
+import golf.course.object.*;
 import net.objecthunter.exp4j.*;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.io.Serializable;
 
 public class PuttingCourse implements Serializable {
@@ -12,12 +15,17 @@ public class PuttingCourse implements Serializable {
     public double frictionCoefficient = 0.131;            // Coefficient of friction (rolling ball) // Typical 0.065<=mu<=0.196
     public double Vmax = 3.0;            // Maximum initial ball speed [m/s]
     public double holeTolerance = 0.02;  // Distance from hole for a successful putt [m]
-
+    public List<GameObject> objects = new ArrayList<GameObject>();
     public PuttingCourse () {
-        
+
+
+        if(this.objects.size() == 0) {
+            this.objects.add(new Ball());
+        }
     }
 
     public PuttingCourse (Function2d height, Vector2d flag, Vector2d start) {
+        this();
         this.height = height;
         this.flag = flag;
         this.start = start;
@@ -65,6 +73,13 @@ public class PuttingCourse implements Serializable {
 
     public void setGravitationalConstant(double g) {
         this.g = g;
+    }
+
+    public List<Ball> getBalls() {
+        return this.objects.stream()
+            .filter(p -> p instanceof Ball)
+            .map(p -> (Ball) p)
+            .collect(Collectors.toList());
     }
 
 }
