@@ -11,7 +11,7 @@ import golf.course.*;
 public class InputOutput {
 
     PuttingCourse object = new PuttingCourse();
-    String filename = "test.txt";
+    String filename = "ExampleCourse.txt";
 
     public PuttingCourse read(String filename) {
 
@@ -25,7 +25,6 @@ public class InputOutput {
             input.close();
             file.close();
         }
-
         catch (IOException io) {
             System.out.println("An error occurred.");
             io.printStackTrace();
@@ -35,6 +34,17 @@ public class InputOutput {
             e.printStackTrace();
         } 
         return object;
+
+        /*while(sc.hasNextLine()||sc.hasNextDouble()){
+            String[] split = sc.nextLine().split("=");
+            String line = split[0];
+            String property = split[1];
+        }
+        
+        for(int i = 0; i < 8; i++) {
+             c[property[i]] = line[i]; 
+        }
+        */
     }
 
     public void save(PuttingCourse c) {
@@ -64,5 +74,7 @@ public class InputOutput {
         ", holeTolerance = " + holeTolerance +
         "}";     
         }
+
+        
 
 }
