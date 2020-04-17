@@ -63,7 +63,6 @@ public class Visualization implements ApplicationListener {
 	@Override
     public void create () {
 
-        // take_shot();
         modelBatch = new ModelBatch();
         modelBuilder = new ModelBuilder();
 
@@ -74,7 +73,7 @@ public class Visualization implements ApplicationListener {
         environment.add(new PointLight().set(0.8f, 0.8f, 0.8f, 2f, 0f, 0f, 10f));
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set(0f, 50f, 0f);
+        cam.position.set(0f, -50f, 50f);
         cam.lookAt(0,0,0);
         cam.near = 1f;
         cam.far = 300f;
@@ -98,10 +97,12 @@ public class Visualization implements ApplicationListener {
             public boolean touchDragged(int screenX, int screenY, int pointer) {
                 Ball b = getCurrentBall();
                 Vector2 direction = calculateVector(startClick, new Vector2(screenX, screenY));
-                Model m = modelBuilder.createArrow(b.x, b.y, b.z, b.x + direction.x, b.y + direction.y, b.z, 0.1f, 0.1f, 5, 
-                GL20.GL_TRIANGLES, new Material(ColorAttribute.createDiffuse(Color.RED)),
-                Usage.Position | Usage.Normal);
-                arrow = new ModelInstance(m);
+                if(direction.len() > 0) {
+                    Model m = modelBuilder.createArrow(b.x, b.y, b.z, b.x + direction.x, b.y + direction.y, b.z, 0.1f, 0.1f, 5, 
+                    GL20.GL_TRIANGLES, new Material(ColorAttribute.createDiffuse(Color.RED)),
+                    Usage.Position | Usage.Normal);
+                    arrow = new ModelInstance(m);
+                }
                 return false;
             }
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
@@ -123,6 +124,10 @@ public class Visualization implements ApplicationListener {
             new Material(ColorAttribute.createDiffuse(Color.WHITE)),
             Usage.Position | Usage.Normal | Usage.TextureCoordinates);
         ball = new ModelInstance(model);
+
+
+                take_shot(new Vector2(10,10));
+
     }
 
 	@Override
@@ -130,7 +135,7 @@ public class Visualization implements ApplicationListener {
     }
 
     public void take_shot(Vector2 v) {
-        System.out.println(v.x);
+        System.out.println(v.toString());
         // c.ball.acceleration.add(v);
     }  
 

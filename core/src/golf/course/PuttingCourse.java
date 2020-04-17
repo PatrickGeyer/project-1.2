@@ -75,6 +75,23 @@ public class PuttingCourse implements Serializable {
         this.g = g;
     }
 
+    public boolean checkIfCompleted(Ball b) {
+
+        // If ball within tolerance of finish flag
+        // and ball is not moving return true
+        if(
+            Math.sqrt(
+                Math.pow(b.position.x - flag.x, 2) +
+                Math.pow(b.position.y - flag.y, 2)
+            ) <= this.holeTolerance
+            &&
+            b.velocity.magnitude() == 0
+            ) {
+                return true;
+            }
+            return false;
+    }
+
     public List<Ball> getBalls() {
         return this.objects.stream()
             .filter(p -> p instanceof Ball)

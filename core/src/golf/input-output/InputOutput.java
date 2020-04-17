@@ -18,7 +18,7 @@ public class InputOutput {
         try {
 
             FileInputStream file = new FileInputStream(filename);
-            ObjectInputStream inpunt = new ObjectInputStream(file);
+            ObjectInputStream input = new ObjectInputStream(file);
 
             object = (PuttingCourse)input.readObject();
     
@@ -64,16 +64,18 @@ public class InputOutput {
         }
     }
 
-    public String toString() {
-        return "Course {  height = " + height + 
-        ", flag = " + flag + 
-        ", start = " + start + 
-        ", g = " + g + 
-        ", frictionCoefficient = " + frictionCoefficient + 
-        ", Vmax = " + Vmax + 
-        ", holeTolerance = " + holeTolerance +
-        "}";     
-        }
+/**
+this should ideally be a method on the PuttingCourse class */
+    // public String toString() {
+    //     return "Course {  height = " + height + 
+    //     ", flag = " + flag + 
+    //     ", start = " + start + 
+    //     ", g = " + g + 
+    //     ", frictionCoefficient = " + frictionCoefficient + 
+    //     ", Vmax = " + Vmax + 
+    //     ", holeTolerance = " + holeTolerance +
+    //     "}";     
+    //     }
 
         
 
