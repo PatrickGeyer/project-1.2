@@ -35,16 +35,6 @@ public class InputOutput {
         } 
         return object;
 
-        /*while(sc.hasNextLine()||sc.hasNextDouble()){
-            String[] split = sc.nextLine().split("=");
-            String line = split[0];
-            String property = split[1];
-        }
-        
-        for(int i = 0; i < 8; i++) {
-             c[property[i]] = line[i]; 
-        }
-        */
     }
 
     public void save(PuttingCourse c) {

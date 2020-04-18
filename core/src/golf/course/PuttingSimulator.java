@@ -3,27 +3,28 @@ import golf.physics.*;
 import net.objecthunter.exp4j.*;
 
 import java.io.*;
+import golf.course.object.*;
+import com.badlogic.gdx.math.Vector3;
 
-class PuttingSimulator {
-    private PuttingCourse course;
-    private PhysicsEngine engine;
-    private Vector2d ballPosition;
+
+public class PuttingSimulator {
+    public PuttingCourse course;
+    public PhysicsEngine engine;
 
     public PuttingSimulator(PuttingCourse course, PhysicsEngine engine) {
         this.course = course;
         this.engine = engine;
-        this.ballPosition = course.get_start_position();
+    }
+    
+    public void step(double h) {
+        for(int i = 0; i < this.course.objects.size(); i++) {
+            Vector3[] vs = this.engine.solve(this.course.objects.get(i), this.course, h);
+            this.course.objects.get(i).position = vs[0];
+            this.course.objects.get(i).velocity = vs[1];
+        }
     }
 
-    public void set_ball_position(Vector2d pos) {
-        this.ballPosition = pos;
-    }
-
-    public Vector2d get_ball_position() {
-        return this.ballPosition;
-    }
-
-    public void take_shot(Vector2d initial_ball_velocity) {
+    public void take_shot(Ball b, Vector2d initial_ball_velocity) {
         //TO ADD
     }
 
@@ -49,13 +50,5 @@ class PuttingSimulator {
             return false;
         }
         return true;
-    }
-
-    public static void main(String[] args) {
-        // PuttingCourse course = new PuttingCourse(courseFunction, flag);
-        // PhysicsEngine engine = new EulerSolver();
-        // PuttingSimulator simulator = new PuttingSimulator(course, engine);
-        //TO ADD
-
     }
 } 

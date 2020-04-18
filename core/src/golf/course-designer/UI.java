@@ -3,7 +3,7 @@ import java.awt.Container;
 import javax.swing.JFrame; 
 import javax.swing.JLabel; 
 import javax.swing.JButton; 
-
+import javax.swing.JFileChooser;
 import javax.swing.JTextField; 
 import javax.swing.SpringLayout;
 
@@ -16,6 +16,8 @@ import java.awt.event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import golf.course.*;
+
 public class UI{  
     double frictionCo; 
     String formula;
@@ -23,7 +25,10 @@ public class UI{
     String target;
     double radius;
     double maxVel;
-    
+    JFileChooser fc = new JFileChooser();
+    PuttingCourse course;
+
+
     public UI(double frictionCo, String formula, String start, String target, double radius, double maxVel){
         this.frictionCo = frictionCo;
         this.formula = formula;
@@ -288,14 +293,27 @@ public class UI{
 
 
     load.addActionListener(new ActionListener() { 
-        public void actionPerformed(ActionEvent e) { 
+        public void actionPerformed(ActionEvent e) {
+
+            // Open file chooser dialog
+            // fc.open() or similar
+
             //reads course from a textfile
+            // f.addActionListener( {
+            //     filename = "C:/sdadas";
+            //     InputOutput io = new InputOutput();
+            //     this.course = io.read(filename);
+                
+            // })
         } 
     } );
   
     play.addActionListener(new ActionListener() { 
         public void actionPerformed(ActionEvent e) { 
             //let's user play course
+
+            // LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		    // new LwjglApplication(new Visualization(new PuttingSimulator(this.course, new EulerSolver(0.01))), config);
         } 
     } );
 

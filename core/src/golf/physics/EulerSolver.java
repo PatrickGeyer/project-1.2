@@ -2,6 +2,9 @@ package golf.physics;
 
 import golf.course.object.GameObject;
 import golf.course.PuttingCourse;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.Vector2;
+
 
 public class EulerSolver implements PhysicsEngine {
     protected double stepSize;
@@ -46,5 +49,9 @@ public class EulerSolver implements PhysicsEngine {
     public void approximate() {
         approximatePosition();
         approximateVelocity();
+    }
+
+    public Vector3[] solve(GameObject obj, PuttingCourse c, double h) {
+        return new Vector3[1];
     }
 }
