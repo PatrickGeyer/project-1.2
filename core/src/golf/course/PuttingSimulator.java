@@ -5,6 +5,7 @@ import net.objecthunter.exp4j.*;
 import java.io.*;
 import golf.course.object.*;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.Vector2;
 
 
 public class PuttingSimulator {
@@ -24,8 +25,18 @@ public class PuttingSimulator {
         }
     }
 
-    public void take_shot(Ball b, Vector2d initial_ball_velocity) {
-        //TO ADD
+    public void take_shot(Vector2d v) {
+        this.take_shot(this.course.getBalls().get(0), new Vector2((float) v.x, (float) v.y));
+    }
+    public void take_shot(Ball b, Vector2 v) {
+        b.velocity.add(new Vector3(v, 0));
+    }
+
+    public void set_ball_position(Vector2d p) {
+
+    }
+    public void get_ball_position() {
+        
     }
 
     public boolean saveCourse(String filePath) {

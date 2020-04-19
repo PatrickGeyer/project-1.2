@@ -98,7 +98,7 @@ public class Visualization implements ApplicationListener {
                 Ball b = getCurrentBall();
                 Vector2 direction = calculateVector(startClick, new Vector2(screenX, screenY));
                 if(direction.len() > 0) {
-                    Model m = modelBuilder.createArrow(b.x, b.y, b.z, b.x + direction.x, b.y + direction.y, b.z, 0.1f, 0.1f, 5, 
+                    Model m = modelBuilder.createArrow(b.position.x, b.position.y, b.position.z, b.position.x + direction.x, b.position.y + direction.y, b.position.z, 0.1f, 0.1f, 5, 
                     GL20.GL_TRIANGLES, new Material(ColorAttribute.createDiffuse(Color.RED)),
                     Usage.Position | Usage.Normal);
                     arrow = new ModelInstance(m);
@@ -108,7 +108,7 @@ public class Visualization implements ApplicationListener {
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 arrow = null;
                 endClick = new Vector2(screenX, screenY);
-                take_shot(calculateVector(startClick, endClick));
+                simulation.take_shot(getCurrentBall(), calculateVector(startClick, endClick));
                 return true;
             }
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -127,18 +127,11 @@ public class Visualization implements ApplicationListener {
             this.balls.add(new ModelInstance(model));
         }
 
-        take_shot(new Vector2(10,10));
-
     }
 
 	@Override
     public void dispose () {
     }
-
-    public void take_shot(Vector2 v) {
-        System.out.println(v.toString());
-        this.simulation.course.getBalls().get(0).velocity.add(new Vector3(v, 0));
-    }  
 
     @Override
     public void render () {
@@ -173,9 +166,7 @@ public class Visualization implements ApplicationListener {
 
         for(int i = 0; i < this.simulation.course.getBalls().size(); i++) {
             this.balls.get(i).transform.setTranslation(
-                this.simulation.course.getBalls().get(i).x, 
-                this.simulation.course.getBalls().get(i).y, 
-                this.simulation.course.getBalls().get(i).z
+                this.simulation.course.getBalls().get(i).position
             );
             modelBatch.render(this.balls.get(i), environment);
         }
