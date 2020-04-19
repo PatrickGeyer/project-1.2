@@ -2,6 +2,7 @@ package golf.physics;
 import golf.physics.*;
 
 import net.objecthunter.exp4j.*;
+import com.badlogic.gdx.math.Vector2;
 
 // interface Function2d {
 //    public double evaluate(Vector2d p);
@@ -15,6 +16,9 @@ public class Function2d {
    }
    public double evaluate(double x, double y) {
       return evaluate(new Vector2d(x, y));
+   }
+   public double evaluate(Vector2 v) {
+      return evaluate(new Vector2d(v.x, v.y));
    }
    
    public double evaluate(Vector2d p) {

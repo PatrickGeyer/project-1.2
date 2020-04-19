@@ -42,6 +42,7 @@ public class Visualization implements ApplicationListener {
     public PerspectiveCamera cam;
     public List<ModelInstance> balls = new ArrayList();
     public ModelInstance arrow;
+    public ModelInstance flag;
     public ModelBatch modelBatch;
     public ModelBuilder modelBuilder;
 
@@ -127,6 +128,18 @@ public class Visualization implements ApplicationListener {
             this.balls.add(new ModelInstance(model));
         }
 
+        Model flagM = modelBuilder.createArrow(
+            simulation.course.flag.x, 
+            simulation.course.flag.y, 
+            (float) simulation.course.height.evaluate(simulation.course.flag), 
+            simulation.course.flag.x, 
+            simulation.course.flag.y, 
+            (float) simulation.course.height.evaluate(simulation.course.flag) + 5, 
+            0.1f, .5f, 5, 
+                    GL20.GL_TRIANGLES, new Material(ColorAttribute.createDiffuse(Color.WHITE)),
+                    Usage.Position | Usage.Normal);
+        flag = new ModelInstance(flagM);
+
     }
 
 	@Override
@@ -159,6 +172,7 @@ public class Visualization implements ApplicationListener {
         modelBatch.begin(cam);
         if(arrow != null) 
             modelBatch.render(arrow, environment);
+        modelBatch.render(flag, environment);
         modelBatch.end();
         
         //re-enable depth to reset states to their default
@@ -211,13 +225,6 @@ public class Visualization implements ApplicationListener {
                 pos3 = new Vector3 ((float) (x + division), (float) (y + division), (float) (this.simulation.course.height.evaluate(x + division, y + division)));
                 pos4 = new Vector3 ((float) (x + division), (float) y, (float) (this.simulation.course.height.evaluate(x + division, y)));
 
-                // System.out.println(pos1);
-                // System.out.println(pos2);
-                // System.out.println(pos3);
-                // System.out.println(pos4);
-
-                // System.out.println("Grad: " + this.simulation.course.height.gradient(x, y).get_y());
-
                 nor1 = new Vector3(
                     (float) - this.simulation.course.height.gradient(x, y).get_x(), 
                     1, 
@@ -239,11 +246,6 @@ public class Visualization implements ApplicationListener {
                     (float) - this.simulation.course.height.gradient(x, y).get_y()
                 );
 
-                // System.out.println(nor1);
-                // System.out.println(nor2);
-                // System.out.println(nor3);
-                // System.out.println(nor4);
-
                 Color c = new Color(0, 0, 0, 1);
 
                 if(height < 0) {
@@ -254,10 +256,6 @@ public class Visualization implements ApplicationListener {
                     float whiteness = Math.max( (float) height / 10, 0);
                     c = new Color(whiteness, 1, whiteness, 1);
                 }
-
-                // System.out.println("(" + x + ", " + y + ")");
-
-                // System.out.println(height);
 
                 v1 = new MeshPartBuilder.VertexInfo().setPos(pos1).setNor(nor1).setCol(c).setUV(0.0f, 0.0f);
                 v2 = new MeshPartBuilder.VertexInfo().setPos(pos2).setNor(nor2).setCol(c).setUV(0.0f, 0.5f);

@@ -1,7 +1,7 @@
 package golf.physics;
 import com.badlogic.gdx.math.Vector2;
 
-public class Vector2d {
+public class Vector2d extends Vector2 {
 
     public double x;
     public double y;
@@ -42,10 +42,6 @@ public class Vector2d {
 
     public double magnitude() {
         return Math.sqrt(Math.pow(this.get_x(), 2) + Math.pow(this.get_y(), 2));
-    }
-
-    public double len() {
-        return this.magnitude();
     }
 
 }
