@@ -23,7 +23,7 @@ public class Euler implements PhysicsEngine {
             0
         );
 
-        System.out.println(c.height.gradient(obj.position.x, obj.position.y).x + "," + c.height.gradient(obj.position.x, obj.position.y).y);
+        // System.out.println(c.height.gradient(obj.position.x, obj.position.y).x + "," + c.height.gradient(obj.position.x, obj.position.y).y);
 
         return friction.add(gravity);
     }
@@ -37,7 +37,7 @@ public class Euler implements PhysicsEngine {
             (float) (obj.position.y + h * obj.velocity.y),
             (float) (obj.position.z + h * obj.velocity.z)
         );
-        System.out.println("Position: " + response[0]);
+        // System.out.println("Position: " + response[0]);
         // Velocity vector
         Vector3 f = this.force(obj, c, h);
 
