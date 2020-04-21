@@ -6,11 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.io.Serializable;
+import com.badlogic.gdx.math.Vector2;
 
 public class PuttingCourse implements Serializable {
     public Function2d height = new Function2d("-0.01*x + 0.003*x^2 + 0.04 * y + sin(x)");
-    public Vector2d flag = new Vector2d(0, 10);
-    public Vector2d start = new Vector2d(0,0);
+    public Vector2 flag = new Vector2(10, 10);
+    public Vector2 start = new Vector2(0, 0);
     public double g = 9.81;              // Gravitational acceleration
     public double frictionCoefficient = 0.131;            // Coefficient of friction (rolling ball) // Typical 0.065<=mu<=0.196
     public double Vmax = 3.0;            // Maximum initial ball speed [m/s]
@@ -27,8 +28,8 @@ public class PuttingCourse implements Serializable {
     public PuttingCourse (Function2d height, Vector2d flag, Vector2d start) {
         this();
         this.height = height;
-        this.flag = flag;
-        this.start = start;
+        this.flag = new Vector2((float) flag.get_x(), (float) flag.get_y());
+        this.start = new Vector2((float) start.get_x(), (float) start.get_y());
     }
 
     public Function2d get_height() {
@@ -36,11 +37,11 @@ public class PuttingCourse implements Serializable {
     }
 
     public Vector2d get_flag_position() {
-        return this.flag;
+        return new Vector2d(this.flag);
     }
 
     public Vector2d get_start_position() {
-        return this.start;
+        return new Vector2d(this.start);
     }
 
     public double get_friction_coefficient() {
@@ -73,6 +74,20 @@ public class PuttingCourse implements Serializable {
 
     public void setGravitationalConstant(double g) {
         this.g = g;
+    }
+
+    public boolean checkIfCompleted(Ball b) {
+
+        // If ball within tolerance of finish flag
+        // and ball is not moving return true
+        if(
+            this.flag.dst(new Vector2(b.position.x, b.position.y)) <= this.holeTolerance
+            &&
+            b.velocity.len() == 0
+            ) {
+                return true;
+            }
+            return false;
     }
 
     public List<Ball> getBalls() {

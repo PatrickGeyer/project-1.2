@@ -2,38 +2,51 @@ package golf.physics;
 
 import golf.course.object.GameObject;
 import golf.course.PuttingCourse;
+import golf.course.*;
+import com.badlogic.gdx.math.Vector3;
 
-public class Euler {
+public class Euler implements PhysicsEngine {
 
-    public static Vector2d force(GameObject obj, PuttingCourse c, int h) {
+    public Vector3 force(GameObject obj, PuttingCourse c, double h) {
 
         // Friction
-        Vector2d friction = new Vector2d(
-            -c.frictionCoefficient * obj.mass * c.g * obj.velocity.get_x() / obj.velocity.magnitude(),
-            -c.frictionCoefficient * obj.mass * c.g * obj.velocity.get_y() / obj.velocity.magnitude()
+        Vector3 friction = new Vector3(
+            obj.velocity.len() == 0 ? 0 : (float) (-c.frictionCoefficient * obj.mass * c.g * obj.velocity.x / (double) obj.velocity.len()),
+            obj.velocity.len() == 0 ? 0 : (float) (-c.frictionCoefficient * obj.mass * c.g * obj.velocity.y / (double) obj.velocity.len()),
+            0
         );
+        
         // Gravity
-        Vector2d gravity = new Vector2d(
-            -obj.mass * c.g * c.height.gradient(obj.x, obj.y).get_x(),
-            -obj.mass * c.g * c.height.gradient(obj.x, obj.y).get_y()
+        Vector3 gravity = new Vector3(
+            (float) (-obj.mass * c.g * c.height.gradient(obj.position.x, obj.position.y).x),
+            (float) (-obj.mass * c.g * c.height.gradient(obj.position.x, obj.position.y).y),
+            0
         );
+
+        // System.out.println(c.height.gradient(obj.position.x, obj.position.y).x + "," + c.height.gradient(obj.position.x, obj.position.y).y);
 
         return friction.add(gravity);
     }
 
-    public static Vector2d[] solve(GameObject obj, PuttingCourse c, int h) {
-        Vector2d[] response = new Vector2d[2];
+    public Vector3[] solve(GameObject obj, PuttingCourse c, double h) {
+        Vector3[] response = new Vector3[3];
+
         // Position vector
-        response[0] = new Vector2d(
-            obj.position.get_x() + h * obj.velocity.get_x(), 
-            obj.position.get_y() + h * obj.velocity.get_y()
+        response[0] = new Vector3(
+            (float) (obj.position.x + h * obj.velocity.x), 
+            (float) (obj.position.y + h * obj.velocity.y),
+            (float) (obj.position.z + h * obj.velocity.z)
         );
+        // System.out.println("Position: " + response[0]);
         // Velocity vector
-        Vector2d f = Euler.force(obj, c, h);
-        response[1] = new Vector2d(
-            obj.velocity.get_x() + (h * f.get_x()) / obj.mass, 
-            obj.velocity.get_y() + (h * f.get_y()) / obj.mass
+        Vector3 f = this.force(obj, c, h);
+
+        response[1] = new Vector3(
+            (float) (obj.velocity.x + (h * f.x) / obj.mass), 
+            (float) (obj.velocity.y + (h * f.y) / obj.mass),
+            (float) (obj.velocity.z + (h * f.z) / obj.mass)
         );
+        response[2] = f;
         return response;
     }
 }

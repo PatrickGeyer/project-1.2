@@ -9,6 +9,6 @@ import golf.physics.*;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new Visualization(new PuttingCourse(), new EulerSolver(0.01)), config);
+		new LwjglApplication(new Visualization(new PuttingSimulator(new PuttingCourse(), new Euler())), config);
 	}
 }

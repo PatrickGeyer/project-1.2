@@ -1,5 +1,8 @@
 package golf.visualization;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import golf.physics.*;
 import golf.course.*;
 import golf.course.object.*;
@@ -32,38 +35,35 @@ import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputAdapter;
-
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class Visualization implements ApplicationListener {
     public Environment environment;
     public PerspectiveCamera cam;
-    public ModelInstance ball;
+    public List<ModelInstance> balls = new ArrayList();
     public ModelInstance arrow;
+    public ModelInstance flag;
     public ModelBatch modelBatch;
     public ModelBuilder modelBuilder;
 
     public CameraInputController camController;
-    public PuttingCourse c;
-    public PhysicsEngine p;
+    public PuttingSimulator simulation;
 
     public Mesh courseMesh;
     ShaderProgram shader;
     SpriteBatch batch;
+
+    private double currentTime;
+    private float step = 1.0f / 60.0f;
     
 
-    public Visualization(PuttingCourse c, PhysicsEngine p) {
-        this.c = c;
-        this.p = p;
-    }
-
-    public static void main(String[] args) {
-        Visualization v = new Visualization(new PuttingCourse(), new EulerSolver(0.01));
+    public Visualization(PuttingSimulator simulation) {
+        this.simulation = simulation;
     }
 
 	@Override
     public void create () {
 
-        // take_shot();
         modelBatch = new ModelBatch();
         modelBuilder = new ModelBuilder();
 
@@ -74,7 +74,7 @@ public class Visualization implements ApplicationListener {
         environment.add(new PointLight().set(0.8f, 0.8f, 0.8f, 2f, 0f, 0f, 10f));
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set(0f, 50f, 0f);
+        cam.position.set(0f, -50f, 50f);
         cam.lookAt(0,0,0);
         cam.near = 1f;
         cam.far = 300f;
@@ -89,7 +89,7 @@ public class Visualization implements ApplicationListener {
             public Vector2 endClick;
 
             public Ball getCurrentBall() {
-                return c.getBalls().get(0);
+                return simulation.course.getBalls().get(0);
             }
 
             public Vector2 calculateVector(Vector2 start, Vector2 end) {
@@ -98,16 +98,18 @@ public class Visualization implements ApplicationListener {
             public boolean touchDragged(int screenX, int screenY, int pointer) {
                 Ball b = getCurrentBall();
                 Vector2 direction = calculateVector(startClick, new Vector2(screenX, screenY));
-                Model m = modelBuilder.createArrow(b.x, b.y, b.z, b.x + direction.x, b.y + direction.y, b.z, 0.1f, 0.1f, 5, 
-                GL20.GL_TRIANGLES, new Material(ColorAttribute.createDiffuse(Color.RED)),
-                Usage.Position | Usage.Normal);
-                arrow = new ModelInstance(m);
+                if(direction.len() > 0) {
+                    Model m = modelBuilder.createArrow(b.position.x, b.position.y, b.position.z, b.position.x + direction.x, b.position.y + direction.y, b.position.z, 0.1f, 0.1f, 5, 
+                    GL20.GL_TRIANGLES, new Material(ColorAttribute.createDiffuse(Color.RED)),
+                    Usage.Position | Usage.Normal);
+                    arrow = new ModelInstance(m);
+                }
                 return false;
             }
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 arrow = null;
                 endClick = new Vector2(screenX, screenY);
-                take_shot(calculateVector(startClick, endClick));
+                simulation.take_shot(getCurrentBall(), calculateVector(startClick, endClick));
                 return true;
             }
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -119,23 +121,35 @@ public class Visualization implements ApplicationListener {
 
         Gdx.input.setInputProcessor(multiplexer);
 
-        Model model = modelBuilder.createSphere(.4f, .4f, .4f, 24, 24, 
-            new Material(ColorAttribute.createDiffuse(Color.WHITE)),
-            Usage.Position | Usage.Normal | Usage.TextureCoordinates);
-        ball = new ModelInstance(model);
+        for(int i = 0; i < this.simulation.course.getBalls().size(); i++) {
+            Model model = modelBuilder.createSphere(.4f, .4f, .4f, 24, 24, 
+                new Material(ColorAttribute.createDiffuse(Color.WHITE)),
+                Usage.Position | Usage.Normal | Usage.TextureCoordinates);
+            this.balls.add(new ModelInstance(model));
+        }
+
+        Model flagM = modelBuilder.createArrow(
+            simulation.course.flag.x, 
+            simulation.course.flag.y, 
+            (float) simulation.course.height.evaluate(simulation.course.flag), 
+            simulation.course.flag.x, 
+            simulation.course.flag.y, 
+            (float) simulation.course.height.evaluate(simulation.course.flag) + 5, 
+            0.1f, .5f, 5, 
+                    GL20.GL_TRIANGLES, new Material(ColorAttribute.createDiffuse(Color.WHITE)),
+                    Usage.Position | Usage.Normal);
+        flag = new ModelInstance(flagM);
+
     }
 
 	@Override
     public void dispose () {
     }
 
-    public void take_shot(Vector2 v) {
-        System.out.println(v.x);
-        // c.ball.acceleration.add(v);
-    }  
-
     @Override
     public void render () {
+
+        this.updatePhysics();
 
         Gdx.gl.glClearColor(135/255f, 206/255f, 235/255f, 1);
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
@@ -154,16 +168,32 @@ public class Visualization implements ApplicationListener {
 
         shader.end();
 
+
         modelBatch.begin(cam);
-        modelBatch.render(ball, environment);
         if(arrow != null) 
             modelBatch.render(arrow, environment);
+        modelBatch.render(flag, environment);
         modelBatch.end();
         
         //re-enable depth to reset states to their default
 	    Gdx.gl.glDepthMask(true);
 
-        ball.transform.setTranslation(c.getBalls().get(0).x, c.getBalls().get(0).y, c.getBalls().get(0).z);
+        for(int i = 0; i < this.simulation.course.getBalls().size(); i++) {
+            this.balls.get(i).transform.setTranslation(
+                this.simulation.course.getBalls().get(i).position
+            );
+            modelBatch.render(this.balls.get(i), environment);
+        }
+    }
+
+    public void updatePhysics() {
+        double newTime = TimeUtils.millis() / 1000.0;
+        double frameTime = Math.min(newTime - currentTime, 0.25);
+        float deltaTime = (float)frameTime;
+
+        currentTime = newTime;
+
+        this.simulation.step(deltaTime);
     }
 
     @Override
@@ -188,45 +218,33 @@ public class Visualization implements ApplicationListener {
         for(double x = 0; x <= gridCol; x += division) {
             for(double y = 0; y <= gridRow; y += division) {
 
-                double height = c.height.evaluate(x, y);
+                double height = this.simulation.course.height.evaluate(x, y);
 
-                pos1 = new Vector3 ((float) x, (float) y, (float) (c.height.evaluate(x, y)));
-                pos2 = new Vector3 ((float) x, (float) (y + division), (float) (c.height.evaluate(x, y + division)));
-                pos3 = new Vector3 ((float) (x + division), (float) (y + division), (float) (c.height.evaluate(x + division, y + division)));
-                pos4 = new Vector3 ((float) (x + division), (float) y, (float) (c.height.evaluate(x + division, y)));
-
-                System.out.println(pos1);
-                System.out.println(pos2);
-                System.out.println(pos3);
-                System.out.println(pos4);
-
-                System.out.println("Grad: " + c.height.gradient(x, y).get_y());
+                pos1 = new Vector3 ((float) x, (float) y, (float) (this.simulation.course.height.evaluate(x, y)));
+                pos2 = new Vector3 ((float) x, (float) (y + division), (float) (this.simulation.course.height.evaluate(x, y + division)));
+                pos3 = new Vector3 ((float) (x + division), (float) (y + division), (float) (this.simulation.course.height.evaluate(x + division, y + division)));
+                pos4 = new Vector3 ((float) (x + division), (float) y, (float) (this.simulation.course.height.evaluate(x + division, y)));
 
                 nor1 = new Vector3(
-                    (float) - c.height.gradient(x, y).get_x(), 
+                    (float) - this.simulation.course.height.gradient(x, y).get_x(), 
                     1, 
-                    (float) - c.height.gradient(x, y).get_y()
+                    (float) - this.simulation.course.height.gradient(x, y).get_y()
                 );
                 nor2 = new Vector3(
-                    (float) - c.height.gradient(x, y).get_x(), 
+                    (float) - this.simulation.course.height.gradient(x, y).get_x(), 
                     1, 
-                    (float) - c.height.gradient(x, y + division).get_y()
+                    (float) - this.simulation.course.height.gradient(x, y + division).get_y()
                 );
                 nor3 = new Vector3(
-                    (float) - c.height.gradient(x + division, y + division).get_x(), 
+                    (float) - this.simulation.course.height.gradient(x + division, y + division).get_x(), 
                     1, 
-                    (float) - c.height.gradient(x + division, y + division).get_y()
+                    (float) - this.simulation.course.height.gradient(x + division, y + division).get_y()
                 );
                 nor4 = new Vector3(
-                    (float) - c.height.gradient(x + division, y).get_x(), 
+                    (float) - this.simulation.course.height.gradient(x + division, y).get_x(), 
                     1, 
-                    (float) - c.height.gradient(x, y).get_y()
+                    (float) - this.simulation.course.height.gradient(x, y).get_y()
                 );
-
-                // System.out.println(nor1);
-                // System.out.println(nor2);
-                // System.out.println(nor3);
-                // System.out.println(nor4);
 
                 Color c = new Color(0, 0, 0, 1);
 
@@ -238,10 +256,6 @@ public class Visualization implements ApplicationListener {
                     float whiteness = Math.max( (float) height / 10, 0);
                     c = new Color(whiteness, 1, whiteness, 1);
                 }
-
-                System.out.println("(" + x + ", " + y + ")");
-
-                System.out.println(height);
 
                 v1 = new MeshPartBuilder.VertexInfo().setPos(pos1).setNor(nor1).setCol(c).setUV(0.0f, 0.0f);
                 v2 = new MeshPartBuilder.VertexInfo().setPos(pos2).setNor(nor2).setCol(c).setUV(0.0f, 0.5f);

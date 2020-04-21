@@ -1,6 +1,7 @@
 package golf.physics;
+import com.badlogic.gdx.math.Vector2;
 
-public class Vector2d {
+public class Vector2d extends Vector2 {
 
     public double x;
     public double y;
@@ -8,6 +9,10 @@ public class Vector2d {
     public Vector2d(double x, double y) {
         this.x = x;
         this.y = y;
+    }
+    public Vector2d(Vector2 v) {
+        this.x = v.x;
+        this.y = v.y;
     }
 
     public double get_x() {
