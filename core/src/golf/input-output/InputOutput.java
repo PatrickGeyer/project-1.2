@@ -4,13 +4,13 @@ import java.io.*;
 import java.util.Scanner;
 import golf.course.*;
 
-/**
+*
  * input-output module to read or write courses from or to a file
  */
 
 public class InputOutput {
 
-    PuttingCourse object = new PuttingCourse();
+    /*PuttingCourse object = new PuttingCourse();
     String filename = "ExampleCourse.txt";
 
     public PuttingCourse read(String filename) {
