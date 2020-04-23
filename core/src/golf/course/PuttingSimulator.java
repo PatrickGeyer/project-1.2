@@ -25,8 +25,16 @@ public class PuttingSimulator {
         }
     }
 
+    public void step() {
+        this.step(0.01);
+    }
+
     public void take_shot(Vector2d v) {
-        this.take_shot(this.course.getBalls().get(0), new Vector2((float) v.x, (float) v.y));
+        this.take_shot(
+            this.course.getBalls().get(0), 
+            new Vector2((float) v.x, (float) v.y)
+                .scl((float) (v.len() / (v.len() > course.Vmax ? course.Vmax : v.len())))
+        );
     }
     public void take_shot(Ball b, Vector2 v) {
         b.velocity.add(new Vector3(v, 0));

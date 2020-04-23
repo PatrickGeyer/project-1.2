@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.Scanner;
 import golf.course.*;
 
-*
+/**
  * input-output module to read or write courses from or to a file
  */
 

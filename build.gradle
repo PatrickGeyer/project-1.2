@@ -65,4 +65,5 @@ project(":core") {
         compile('junit:junit:4.13')
         implementation "org.junit.jupiter:junit-jupiter:5.6.0"
     }
+
 }
