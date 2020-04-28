@@ -32,6 +32,7 @@ public class PhysicsTest {
     this.simulation.take_shot(this.course.getBalls().get(0), new Vector2(0, 1));
     this.simulation.step();
     assertEquals(0.01, this.course.getBalls().get(0).position.y, 0.001);
+    assertEquals(0, this.course.getBalls().get(0).position.x, 0.001);
   }
 
 }
