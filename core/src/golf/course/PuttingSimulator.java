@@ -9,24 +9,33 @@ import com.badlogic.gdx.math.Vector2;
 
 
 public class PuttingSimulator {
-    public PuttingCourse course;
-    public PhysicsEngine engine;
+    private PuttingCourse course;
+    private PhysicsEngine engine;
+    private Vector2d ballPosition;
 
     public PuttingSimulator(PuttingCourse course, PhysicsEngine engine) {
         this.course = course;
         this.engine = engine;
+        this.ballPosition = course.get_start_position();
     }
     
+    public void set_ball_position(Vector2d p) {
+        this.ballPosition = p;
+    }
+
+    public void get_ball_position() {
+        return this.ballPosition;
+    }
+
+    public void step() {
+        this.step(0.01);
+    }
     public void step(double h) {
         for(int i = 0; i < this.course.objects.size(); i++) {
             Vector3[] vs = this.engine.solve(this.course.objects.get(i), this.course, h);
             this.course.objects.get(i).position = vs[0];
             this.course.objects.get(i).velocity = vs[1];
         }
-    }
-
-    public void step() {
-        this.step(0.01);
     }
 
     public void take_shot(Vector2d v) {
@@ -36,15 +45,9 @@ public class PuttingSimulator {
                 .scl((float) (v.len() / (v.len() > course.Vmax ? course.Vmax : v.len())))
         );
     }
+
     public void take_shot(Ball b, Vector2 v) {
         b.velocity.add(new Vector3(v, 0));
-    }
-
-    public void set_ball_position(Vector2d p) {
-
-    }
-    public void get_ball_position() {
-        
     }
 
     public boolean saveCourse(String filePath) {
