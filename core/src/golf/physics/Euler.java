@@ -14,14 +14,14 @@ public class Euler implements PhysicsEngine {
             obj.velocity.len() == 0 ? 0 : (float) (-c.frictionCoefficient * obj.mass * c.g * obj.velocity.x / (double) obj.velocity.len()),
             obj.velocity.len() == 0 ? 0 : (float) (-c.frictionCoefficient * obj.mass * c.g * obj.velocity.y / (double) obj.velocity.len()),
             0
-        );
-        
+        ); //friction = −𝜇𝑚𝑔𝑣 /‖𝑣‖    where  ‖𝑣‖ = √𝑣𝑥 2 + 𝑣𝑦 2 and 𝜇 is the coefficient of friction
+        System.out.println(obj.velocity.len());
         // Gravity
         Vector3 gravity = new Vector3(
             (float) (-obj.mass * c.g * c.height.gradient(obj.position.x, obj.position.y).x),
             (float) (-obj.mass * c.g * c.height.gradient(obj.position.x, obj.position.y).y),
             0
-        );
+        );// 𝐺 = (−𝑚𝑔ℎ,𝑥(𝑥,𝑦),−𝑚𝑔ℎ,𝑦(𝑥,𝑦))
 
         // System.out.println(c.height.gradient(obj.position.x, obj.position.y).x + "," + c.height.gradient(obj.position.x, obj.position.y).y);
 
