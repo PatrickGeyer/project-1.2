@@ -9,7 +9,7 @@ import java.io.Serializable;
 import com.badlogic.gdx.math.Vector2;
 
 public class PuttingCourse implements Serializable {
-    public Function2d height = new Function2d("0.01");//"-0.01*x + 0.003*x^2 + 0.04 * y + sin(x)" //-x+y
+    public Function2d height = new Function2d("-0.01*x + 0.003*x^2 + 0.04 * y + sin(x)");
     public Vector2 flag = new Vector2(10, 10);
     public Vector2 start = new Vector2(0, 0);
     public double g = 9.81;              // Gravitational acceleration
