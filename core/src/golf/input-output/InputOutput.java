@@ -8,9 +8,9 @@ import golf.course.*;
  * input-output module to read or write courses from or to a file
  */
 
-public class InputOutput {/*
+public class InputOutput {
 
-    PuttingCourse object = new PuttingCourse();
+    /*PuttingCourse object = new PuttingCourse();
     String filename = "ExampleCourse.txt";
     public PuttingCourse read(String filename) {
         try {
@@ -44,7 +44,7 @@ public class InputOutput {/*
             io.printStackTrace();
             System.out.println("An error occurred.");
         }
-    }*/
+    }
 /**
 this should ideally be a method on the PuttingCourse class */
     // public String toString() {
