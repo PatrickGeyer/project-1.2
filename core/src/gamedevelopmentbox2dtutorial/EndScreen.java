@@ -1,6 +1,6 @@
-package blog.gamedevelopmentbox2dtutorial;
+package gamedevelopmentbox2dtutorial;
+
 import com.badlogic.gdx.Screen;
-import blog.gamedevelopment.box2dtutorial.Box2DTutorial;
 
 public class EndScreen implements Screen {
     private Box2DTutorial parent; // a field to store our orchestrator

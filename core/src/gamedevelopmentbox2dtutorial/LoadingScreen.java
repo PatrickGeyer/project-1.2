@@ -1,5 +1,5 @@
-package blog.gamedevelopment.box2dtutorial.views;
-import blog.gamedevelopment.box2dtutorial.Box2DTutorial;
+package gamedevelopmentbox2dtutorial;
+
 import com.badlogic.gdx.Screen;
 
 public class LoadingScreen implements Screen {

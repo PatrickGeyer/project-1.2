@@ -1,9 +1,9 @@
-package blog.gamedevelopment.box2dtutorial;
+package gamedevelopmentbox2dtutorial;
 
+import blog.gamedevelopment.box2dtutorial.views.LoadingScreen;
 import blog.gamedevelopmentbox2dtutorial.*;
 import com.badlogic.gdx.Game;
-import blog.gamedevelopment.box2dtutorial.views.MenuScreen;
-import blog.gamedevelopment.box2dtutorial.views.LoadingScreen;
+
 public class Box2DTutorial extends Game {
 
 	private blog.gamedevelopment.box2dtutorial.views.LoadingScreen loadingScreen;
@@ -28,8 +28,8 @@ public class Box2DTutorial extends Game {
 				this.setScreen(CreateCourseScreen);
 				break;
 		/*	case APPLICATION:
-				if(mainScreen == null) mainScreen = new MainScreen(this); //added (this)
-				this.setScreen(mainScreen);
+				if(Option1Screen == null) Option1Screen = new Option1Screen(this); //added (this)
+				this.setScreen(Option1Screen);
 				break;
 			case ENDGAME:
 				if(endScreen == null) endScreen = new EndScreen(this);  // added (this)
