@@ -23,7 +23,7 @@ public class PuttingSimulator {
         this.ballPosition = p;
     }
 
-    public void get_ball_position() {
+    public Vector2d get_ball_position() {
         return this.ballPosition;
     }
 
