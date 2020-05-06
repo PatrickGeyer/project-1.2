@@ -13,20 +13,20 @@ public class PuttingCourse implements Serializable {
     public Vector2 flag = new Vector2(10, 10);
     public Vector2 start = new Vector2(0, 0);
     public double g = 9.81;              // Gravitational acceleration
+    private double m = 45.93;
     public double frictionCoefficient = 0.131;            // Coefficient of friction (rolling ball) // Typical 0.065<=mu<=0.196
     public double Vmax = 10.0;            // Maximum initial ball speed [m/s]
     public double holeTolerance = 0.02;  // Distance from hole for a successful putt [m]
+
     public List<GameObject> objects = new ArrayList<GameObject>();
+    
     public PuttingCourse () {
-
-
         if(this.objects.size() == 0) {
             this.objects.add(new Ball());
         }
     }
 
     public PuttingCourse (Function2d height, Vector2d flag, Vector2d start) {
-        this();
         this.height = height;
         this.flag = new Vector2((float) flag.get_x(), (float) flag.get_y());
         this.start = new Vector2((float) start.get_x(), (float) start.get_y());
@@ -76,6 +76,14 @@ public class PuttingCourse implements Serializable {
         this.g = g;
     }
 
+    public double get_ball_mass() {
+        return m;
+    }
+
+    public void setBallMass(double m) {
+        this.m = m;
+    }
+
     public boolean checkIfCompleted(Ball b) {
 
         // If ball within tolerance of finish flag
@@ -95,6 +103,18 @@ public class PuttingCourse implements Serializable {
             .filter(p -> p instanceof Ball)
             .map(p -> (Ball) p)
             .collect(Collectors.toList());
+    }
+
+    public String toString() {
+        return "PuttingCourse{" +
+        "height=" + height +
+        ", flag=" + flag +
+        ", holeTolerance=" + holeTolerance +
+        ", start=" + start +
+        ", frictionCoefficient=" + frictionCoefficient +
+        ", maximumVelocity=" + Vmax +
+        ", gravitationalConstant=" + g +
+        '}';
     }
 
 }
