@@ -9,12 +9,12 @@ import java.io.Serializable;
 import com.badlogic.gdx.math.Vector2;
 
 public class PuttingCourse implements Serializable {
-    public Function2d height = new Function2d("-0.01*x + 0.003*x^2 + 0.04 * y + sin(x)");
+    public Function2d height = new Function2d("sin(x/2)");
     public Vector2 flag = new Vector2(10, 10);
     public Vector2 start = new Vector2(0, 0);
     public double g = 9.81;              // Gravitational acceleration
     public double frictionCoefficient = 0.131;            // Coefficient of friction (rolling ball) // Typical 0.065<=mu<=0.196
-    public double Vmax = 3.0;            // Maximum initial ball speed [m/s]
+    public double Vmax = 10.0;            // Maximum initial ball speed [m/s]
     public double holeTolerance = 0.02;  // Distance from hole for a successful putt [m]
     public List<GameObject> objects = new ArrayList<GameObject>();
     public PuttingCourse () {

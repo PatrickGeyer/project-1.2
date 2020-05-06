@@ -10,6 +10,10 @@ public class Vector2d extends Vector2 {
         this.x = x;
         this.y = y;
     }
+    public Vector2d(Vector2d v) {
+        this.x = v.x;
+        this.y = v.y;
+    }
     public Vector2d(Vector2 v) {
         this.x = v.x;
         this.y = v.y;

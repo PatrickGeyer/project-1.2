@@ -21,6 +21,7 @@ public class PuttingSimulator {
         for(int i = 0; i < this.course.objects.size(); i++) {
             Vector3[] vs = this.engine.solve(this.course.objects.get(i), this.course, h);
             this.course.objects.get(i).position = vs[0];
+            this.course.objects.get(i).position.z = (float) this.course.height.evaluate((float) this.course.objects.get(i).position.x,(float) this.course.objects.get(i).position.y);
             this.course.objects.get(i).velocity = vs[1];
         }
     }
@@ -30,13 +31,11 @@ public class PuttingSimulator {
     }
 
     public void take_shot(Vector2d v) {
-        this.take_shot(
-            this.course.getBalls().get(0), 
-            new Vector2((float) v.x, (float) v.y)
-                .scl((float) (v.len() / (v.len() > course.Vmax ? course.Vmax : v.len())))
-        );
+        this.take_shot(this.course.getBalls().get(0), v);
     }
     public void take_shot(Ball b, Vector2 v) {
+        b.shotCount++;
+        v.clamp(0, (float) course.Vmax);
         b.velocity.add(new Vector3(v, 0));
     }
 

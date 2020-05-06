@@ -31,7 +31,10 @@ public class Function2d {
    
    public Vector2d gradient(Vector2d p, double delta) {
       double z = evaluate(p);
-      return new Vector2d((z - evaluate(p.addX(delta))) * delta, (z - evaluate(p.addY(delta)) * delta));
+      return new Vector2d(
+         (evaluate(new Vector2d(p).addX(delta)) - z) / delta, 
+         (evaluate(new Vector2d(p).addY(delta)) - z) / delta
+      );
    }
 
    public Vector2d gradient(double x, double y) {

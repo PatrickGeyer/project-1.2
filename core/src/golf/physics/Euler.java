@@ -9,6 +9,7 @@ public class Euler implements PhysicsEngine {
 
     public Vector3 force(GameObject obj, PuttingCourse c, double h) {
 
+        Vector2d gradient = c.height.gradient(obj.position.x, obj.position.y);
         // Friction
         Vector3 friction = new Vector3(
             obj.velocity.len() == 0 ? 0 : (float) (-c.frictionCoefficient * obj.mass * c.g * obj.velocity.x / (double) obj.velocity.len()),
@@ -18,13 +19,16 @@ public class Euler implements PhysicsEngine {
         
         // Gravity
         Vector3 gravity = new Vector3(
-            (float) (-obj.mass * c.g * c.height.gradient(obj.position.x, obj.position.y).x),
-            (float) (-obj.mass * c.g * c.height.gradient(obj.position.x, obj.position.y).y),
+            (float) (-obj.mass * c.g * gradient.x),
+            (float) (-obj.mass * c.g * gradient.y),
             0
         );
 
-        // System.out.println(c.height.gradient(obj.position.x, obj.position.y).x + "," + c.height.gradient(obj.position.x, obj.position.y).y);
-
+        // System.out.println(gradient.x + "," + gradient.y);
+        // System.out.println("here: ");
+        // System.out.println(obj.velocity);
+        // System.out.println(gravity);
+        // System.out.println(friction);
         return friction.add(gravity);
     }
 

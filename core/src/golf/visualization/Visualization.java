@@ -2,12 +2,14 @@ package golf.visualization;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 
 import golf.physics.*;
 import golf.course.*;
 import golf.course.object.*;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -37,7 +39,9 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class Visualization implements ApplicationListener {
+import golf.visualization.BallInfoPanel;
+
+public class Visualization extends Game {
     public Environment environment;
     public PerspectiveCamera cam;
     public List<ModelInstance> balls = new ArrayList();
@@ -140,6 +144,11 @@ public class Visualization implements ApplicationListener {
                     Usage.Position | Usage.Normal);
         flag = new ModelInstance(flagM);
 
+
+        this.setScreen(new BallInfoPanel(this.simulation.course.getBalls().get(0)));
+
+        //  simulation.take_shot(this.simulation.course.getBalls().get(0), new Vector2(7, 0));
+
     }
 
 	@Override
@@ -148,11 +157,11 @@ public class Visualization implements ApplicationListener {
 
     @Override
     public void render () {
-
-        this.updatePhysics();
-
+        
+        super.render();
         Gdx.gl.glClearColor(135/255f, 206/255f, 235/255f, 1);
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+        this.updatePhysics();
 
         Gdx.gl.glDepthMask(false);
 
@@ -167,7 +176,6 @@ public class Visualization implements ApplicationListener {
         courseMesh.render(shader, GL20.GL_TRIANGLES);
 
         shader.end();
-
 
         modelBatch.begin(cam);
         if(arrow != null) 
