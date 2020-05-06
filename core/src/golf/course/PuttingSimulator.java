@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 
 
 public class PuttingSimulator {
-    private PuttingCourse course;
+    public PuttingCourse course;
     private PhysicsEngine engine;
     private Vector2d ballPosition;
 

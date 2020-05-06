@@ -1,4 +1,4 @@
-package gamedevelopmentbox2dtutorial;
+package golf.visualization.screen;
 
 import com.badlogic.gdx.Screen;
 

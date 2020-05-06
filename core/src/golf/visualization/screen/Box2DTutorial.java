@@ -1,12 +1,12 @@
-package gamedevelopmentbox2dtutorial;
+package golf.visualization.screen;
 
-import blog.gamedevelopment.box2dtutorial.views.LoadingScreen;
-import blog.gamedevelopmentbox2dtutorial.*;
+import golf.visualization.screen.LoadingScreen;
+import golf.visualization.screen.*;
 import com.badlogic.gdx.Game;
 
 public class Box2DTutorial extends Game {
 
-	private blog.gamedevelopment.box2dtutorial.views.LoadingScreen loadingScreen;
+	private LoadingScreen loadingScreen;
 	private CreateCourseScreen CreateCourseScreen;
 	private MenuScreen menuScreen;
 	/*private MainScreen mainScreen;
