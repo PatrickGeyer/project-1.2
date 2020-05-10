@@ -1,12 +1,13 @@
 package golf.visualization.screen;
+import golf.visualization.Golf;
 
 import com.badlogic.gdx.Screen;
 
 public class EndScreen implements Screen {
-    private Box2DTutorial parent; // a field to store our orchestrator
+    private Golf parent; // a field to store our orchestrator
 
-    // our constructor with a Box2DTutorial argument
-    public EndScreen(Box2DTutorial box2dTutorial){
+    // our constructor with a Golf argument
+    public EndScreen(Golf box2dTutorial){
 
         parent = box2dTutorial;     // setting the argument to our field.
     }

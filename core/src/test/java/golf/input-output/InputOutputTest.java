@@ -6,19 +6,11 @@ import org.junit.Test;
 import golf.InputOutput.*;
 import golf.course.*;
 
-public class InputOutputTest {
+import java.lang.Thread;
+import java.io.File;
+import java.net.URL;
 
-  /* @Test
-  public void canSaveCourseTest() {       // write 
-    assertThat("Hello", containsString("Hello"));
-  }
-  @Test
-  public void canLoadCourseTest() {       // read
-    // InputOutput io = new InputOutput();
-    // PuttingCourse c = io.load("ExampleCourse.txt");
-    // assertThat(c.gravity, equals(9.81));
-  }
-  */
+public class InputOutputTest {
 
   /**
    * Should read from a given file and return a PuttingCourse object
@@ -26,7 +18,7 @@ public class InputOutputTest {
   @Test
   public void readTest() {    
     // InputOutput io = new InputOutput();
-    // PuttingCourse course = io.read("ExampleCourse.txt");
+    // PuttingCourse course = io.read(System.getProperty("user.dir") + "/src/test/java/golf/input-output/ExampleCourse.txt");
     // assertEquals(course.g, equals(9.81));
   }
 
@@ -36,9 +28,14 @@ public class InputOutputTest {
    */
   @Test
   public void saveTest() {
-    // PuttingCourse c = new PuttingCourse(height, flag, start, g, frictionCoefficient, Vmax, holeTolerance);
-    // InputOutput oi = c.save();
-    // assertEquals("ExampleCourse.txt", equals(save(c)));
+    PuttingCourse c = new PuttingCourse();
+    c.g = 0.1;
+    c.getBalls().get(0).position.x = 2;
+    InputOutput io = new InputOutput();
+    String path = io.save(System.getProperty("user.dir") + "/src/test/java/golf/input-output/ExampleCourseSave.txt", c);
+    PuttingCourse recovered = io.read(path);
+    assertEquals(0.1, recovered.g, 0);
+    assertEquals(2, recovered.getBalls().get(0).position.x, 0);
   }
 
 }

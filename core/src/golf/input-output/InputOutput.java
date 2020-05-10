@@ -3,16 +3,18 @@ package golf.InputOutput;
 import java.io.*;
 import java.util.Scanner;
 import golf.course.*;
-
+import java.util.Date;
+import java.text.SimpleDateFormat;
 /**
  * input-output module to read or write courses from or to a file
  */
 
 public class InputOutput {
 
-    /*PuttingCourse object = new PuttingCourse();
-    String filename = "ExampleCourse.txt";
+
     public PuttingCourse read(String filename) {
+        PuttingCourse object = new PuttingCourse();
+
         try {
             FileInputStream file = new FileInputStream(filename);
             ObjectInputStream input = new ObjectInputStream(file);
@@ -28,36 +30,28 @@ public class InputOutput {
         catch (ClassNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
-        } 
+        }
+
         return object;
     }
-    public void save(PuttingCourse c) {
-        
+
+    public String save(String path, PuttingCourse c) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyy-hhmmss");
+        // FileOutputStream file = new FileOutputStream("Game-" + sdf.format(new Date()) + ".txt");
         try {
-            FileOutputStream file = new FileOutputStream(filename);
+            FileOutputStream file = new FileOutputStream(new File(path));
             ObjectOutputStream output = new ObjectOutputStream(file);
-            output.writeObject(object);
+            output.writeObject(c);
             output.close();
             file.close();
         }
         catch (IOException io) {
+
             io.printStackTrace();
             System.out.println("An error occurred.");
         }
+        return path;
     }
-/**
-this should ideally be a method on the PuttingCourse class */
-    // public String toString() {
-    //     return "Course {  height = " + height + 
-    //     ", flag = " + flag + 
-    //     ", start = " + start + 
-    //     ", g = " + g + 
-    //     ", frictionCoefficient = " + frictionCoefficient + 
-    //     ", Vmax = " + Vmax + 
-    //     ", holeTolerance = " + holeTolerance +
-    //     "}";     
-    //     }
-
-        
 
 }

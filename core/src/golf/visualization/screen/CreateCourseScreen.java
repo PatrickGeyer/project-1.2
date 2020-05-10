@@ -1,6 +1,8 @@
 
 package golf.visualization.screen;
 
+import golf.visualization.Golf;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,58 +13,63 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.math.Vector2;
 
+import golf.physics.*;
+import golf.course.*;
 
 public class CreateCourseScreen implements Screen {
     public Stage stage;
-    private Box2DTutorial parent;
+    private Golf parent;
 
-    public CreateCourseScreen(Box2DTutorial box2dTutorial) {
+    public CreateCourseScreen(Golf box2dTutorial) {
         parent = box2dTutorial;
         stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
-/*
 
-     */
         Label function = new Label("height function", skin);
         Label friction = new Label("friction coefficient:", skin);
         Label start = new Label("starting point:", skin);
         Label target = new Label("target point", skin);
         Label radius = new Label("radius target", skin);
         Label velocity = new Label("maximum velocity:", skin);
-        final TextField functiont= new TextField("z=sin(\uD835\uDC65) + \uD835\uDC66^2", skin);
-        final TextField frictiont= new TextField("...", skin);
+        final TextField functiont= new TextField("sin(x)", skin);
+        final TextField frictiont= new TextField("0.13", skin);
         final TextField startt= new TextField("(x,y)", skin);
         final TextField targett= new TextField("(x,y,x)", skin);
-        final TextField radiust= new TextField("(m)", skin);
-        final TextField velocityt = new TextField("(m/s)", skin);
+        final TextField radiust= new TextField("0.2", skin);
+        final TextField velocityt = new TextField("3", skin);
         TextButton create = new TextButton("start", skin);
         create.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //should create course as file
-               /* table.add(create);
-                String formula       = funtiont.getText();
+                //should launch in visualization
+                String formula       = functiont.getText();
                 double friction      = Double.parseDouble(frictiont.getText());
                 String startingpoint = startt.getText();
                 String targetpoint   = targett.getText();
                 double rad           = Double.parseDouble(radiust.getText());
                 double maxVel       = Double.parseDouble(velocityt.getText());
 
-                UI Course = new UI(friction, formula, startingpoint, targetpoint, rad, maxVel);
-
-                //just  to show it works
-                System.out.println("radius :" + Course.getRadius() );
-                //   InputOutput.save(Course);*/
-                parent.changeScreen(Box2DTutorial.MENU);//back to menu for the option of playing the course or creating another one
+                PuttingCourse c = new PuttingCourse();
+                c.height = new Function2d(formula);
+                c.frictionCoefficient = friction;
+                c.flag = new Vector2(10,10);
+                c.start = new Vector2(0,0);
+                c.g = 9.81;
+                c.m = 45;
+                c.Vmax = maxVel;
+                c.holeTolerance = rad;
+            
+                parent.setScreen(new Visualization(new PuttingSimulator(c, new Euler())));
             }
         });
 
@@ -85,14 +92,6 @@ public class CreateCourseScreen implements Screen {
         table.add(velocityt);
         table.row().padTop(20);
         table.add(create);
-
-        create.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(Box2DTutorial.MENU);
-            }
-        });
-
 
         functiont.addListener(new ClickListener() {
             @Override

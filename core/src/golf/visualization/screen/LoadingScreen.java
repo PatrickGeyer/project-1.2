@@ -1,13 +1,14 @@
 package golf.visualization.screen;
+import golf.visualization.Golf;
 
 import com.badlogic.gdx.Screen;
 
 public class LoadingScreen implements Screen {
 
-    private Box2DTutorial parent; // a field to store our orchestrator
+    private Golf parent; // a field to store our orchestrator
 
-    // our constructor with a Box2DTutorial argument
-    public LoadingScreen(Box2DTutorial box2dTutorial){
+    // our constructor with a Golf argument
+    public LoadingScreen(Golf box2dTutorial){
         parent = box2dTutorial;     // setting the argument to our field.
     }
 
@@ -19,7 +20,7 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        parent.changeScreen(Box2DTutorial.MENU);
+        parent.changeScreen(Golf.MENU);
     }
 
     @Override

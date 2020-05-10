@@ -3,13 +3,14 @@ import golf.physics.*;
 
 import net.objecthunter.exp4j.*;
 import com.badlogic.gdx.math.Vector2;
+import java.io.Serializable;
 
 // interface Function2d {
 //    public double evaluate(Vector2d p);
 //    public Vector2d gradient(Vector2d p);
 // }
 
-public class Function2d {
+public class Function2d implements Serializable {
    public String function;
    public Function2d(String function) {
       this.function = function;

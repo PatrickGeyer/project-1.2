@@ -1,4 +1,4 @@
-package golf.visualization;
+package golf.visualization.screen;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import golf.course.*;
 import golf.course.object.*;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -39,9 +40,9 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.utils.TimeUtils;
 
-import golf.visualization.BallInfoPanel;
+import golf.visualization.screen.BallInfoPanel;
 
-public class Visualization extends Game {
+public class Visualization implements Screen {
     public Environment environment;
     public PerspectiveCamera cam;
     public List<ModelInstance> balls = new ArrayList();
@@ -65,8 +66,13 @@ public class Visualization extends Game {
         this.simulation = simulation;
     }
 
-	@Override
-    public void create () {
+    public void hide() {
+
+    }
+
+    public void show() {
+
+        System.out.println("Hids");
 
         modelBatch = new ModelBatch();
         modelBuilder = new ModelBuilder();
@@ -145,20 +151,18 @@ public class Visualization extends Game {
         flag = new ModelInstance(flagM);
 
 
-        this.setScreen(new BallInfoPanel(this.simulation.course.getBalls().get(0)));
+        // this.setScreen(new BallInfoPanel(this.simulation.course.getBalls().get(0)));
 
         //  simulation.take_shot(this.simulation.course.getBalls().get(0), new Vector2(7, 0));
 
     }
 
-	@Override
     public void dispose () {
     }
 
-    @Override
-    public void render () {
+    public void render (float f) {
         
-        super.render();
+        // super.render();
         Gdx.gl.glClearColor(135/255f, 206/255f, 235/255f, 1);
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
         this.updatePhysics();
@@ -204,15 +208,12 @@ public class Visualization extends Game {
         this.simulation.step(deltaTime);
     }
 
-    @Override
 	public void resize(int width, int height) {
 	}
 
-	@Override
 	public void pause() {
 	}
 
-	@Override
 	public void resume() {
 	}
 

@@ -13,7 +13,7 @@ public class PuttingCourse implements Serializable {
     public Vector2 flag = new Vector2(10, 10);
     public Vector2 start = new Vector2(0, 0);
     public double g = 9.81;              // Gravitational acceleration
-    private double m = 45.93;
+    public double m = 45.93;
     public double frictionCoefficient = 0.131;            // Coefficient of friction (rolling ball) // Typical 0.065<=mu<=0.196
     public double Vmax = 10.0;            // Maximum initial ball speed [m/s]
     public double holeTolerance = 0.02;  // Distance from hole for a successful putt [m]
@@ -105,16 +105,16 @@ public class PuttingCourse implements Serializable {
             .collect(Collectors.toList());
     }
 
-    public String toString() {
-        return "PuttingCourse{" +
-        "height=" + height +
-        ", flag=" + flag +
-        ", holeTolerance=" + holeTolerance +
-        ", start=" + start +
-        ", frictionCoefficient=" + frictionCoefficient +
-        ", maximumVelocity=" + Vmax +
-        ", gravitationalConstant=" + g +
-        '}';
-    }
+    // public String toString() {
+    //     return "PuttingCourse{" +
+    //     "height=" + height +
+    //     ", flag=" + flag +
+    //     ", holeTolerance=" + holeTolerance +
+    //     ", start=" + start +
+    //     ", frictionCoefficient=" + frictionCoefficient +
+    //     ", maximumVelocity=" + Vmax +
+    //     ", gravitationalConstant=" + g +
+    //     '}';
+    // }
 
 }

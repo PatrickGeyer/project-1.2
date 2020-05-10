@@ -1,4 +1,4 @@
-package golf.visualization;
+package golf.visualization.screen;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;

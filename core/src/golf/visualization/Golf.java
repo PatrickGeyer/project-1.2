@@ -1,10 +1,10 @@
-package golf.visualization.screen;
+package golf.visualization;
 
 import golf.visualization.screen.LoadingScreen;
 import golf.visualization.screen.*;
 import com.badlogic.gdx.Game;
 
-public class Box2DTutorial extends Game {
+public class Golf extends Game {
 
 	private LoadingScreen loadingScreen;
 	private CreateCourseScreen CreateCourseScreen;
@@ -20,7 +20,7 @@ public class Box2DTutorial extends Game {
 	public void changeScreen(int screen){
 		switch(screen){
 			case MENU:
-				if(menuScreen == null) menuScreen = new MenuScreen(this); // added (this)
+				if(menuScreen == null) menuScreen = new MenuScreen(this); // added (this)				
 				this.setScreen(menuScreen);
 				break;
 			case CREATECOURSE:

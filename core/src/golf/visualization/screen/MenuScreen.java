@@ -1,4 +1,5 @@
 package golf.visualization.screen;
+import golf.visualization.Golf;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -13,19 +14,19 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class MenuScreen implements Screen{
 
-    private Box2DTutorial parent;
+    private Golf parent;
     private Stage stage;
 
-    public MenuScreen(Box2DTutorial box2dTutorial){
+    public MenuScreen(Golf box2dTutorial){
         parent = box2dTutorial;
 
         /// create stage and set it as input processor
         stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
         // Create a table that fills the screen. Everything else will go inside this table.
         Table table = new Table();
         table.setFillParent(true);
@@ -50,8 +51,8 @@ public class MenuScreen implements Screen{
         createCourse.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //parent.changeScreen(Box2DTutorial.APPLICATION);
-                parent.changeScreen(Box2DTutorial.CREATECOURSE);
+                //parent.changeScreen(Golf.APPLICATION);
+                parent.changeScreen(Golf.CREATECOURSE);
             }
         });
 

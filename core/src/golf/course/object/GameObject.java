@@ -2,8 +2,9 @@ package golf.course.object;
 
 import golf.physics.*;
 import com.badlogic.gdx.math.Vector3;
+import java.io.Serializable;
 
-public class GameObject {
+public class GameObject implements Serializable {
     public double friction = 0;        // coefficient of friction
     public double bounciness = 0;      // coefficient of restitution
     public Vector3 velocity = new Vector3(0, 0, 0);
