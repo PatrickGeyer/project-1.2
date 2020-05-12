@@ -7,16 +7,13 @@ public class Vector2d extends Vector2 {
     public double y;
 
     public Vector2d(double x, double y) {
+        super((float) x, (float) y);
         this.x = x;
         this.y = y;
     }
-    public Vector2d(Vector2d v) {
-        this.x = v.x;
-        this.y = v.y;
-    }
+    
     public Vector2d(Vector2 v) {
-        this.x = v.x;
-        this.y = v.y;
+       this(v.x, v.y);
     }
 
     public double get_x() {

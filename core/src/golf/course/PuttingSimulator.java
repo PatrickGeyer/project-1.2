@@ -8,10 +8,11 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.Vector2;
 
 
-public class PuttingSimulator {
+public class PuttingSimulator implements Serializable {
     public PuttingCourse course;
     private PhysicsEngine engine;
     private Vector2d ballPosition;
+    public transient CourseCallback callback = new CourseCallback();
 
     public PuttingSimulator(PuttingCourse course, PhysicsEngine engine) {
         this.course = course;
@@ -30,23 +31,55 @@ public class PuttingSimulator {
     public void step() {
         this.step(0.01);
     }
+
     public void step(double h) {
         for(int i = 0; i < this.course.objects.size(); i++) {
-            Vector3[] vs = this.engine.solve(this.course.objects.get(i), this.course, h);
-            this.course.objects.get(i).position = vs[0];
-            this.course.objects.get(i).position.z = (float) this.course.height.evaluate((float) this.course.objects.get(i).position.x,(float) this.course.objects.get(i).position.y);
-            this.course.objects.get(i).velocity = vs[1];
+            if(this.course.objects.get(i).moving) {
+                Vector3[] vs = this.engine.solve(this.course.objects.get(i), this.course, h);
+                this.course.objects.get(i).position = vs[0];
+                this.course.objects.get(i).position.z = (float) this.course.height.evaluate((float) this.course.objects.get(i).position.x,(float) this.course.objects.get(i).position.y);
+                this.course.objects.get(i).velocity = vs[1];
+
+                if(this.course.objects.get(i) instanceof Ball) {
+
+                    // Check that velocity and forces on ball are close to zero
+                    if(this.course.objects.get(i).velocity.len() < 0.01 && vs[2].len() < 0.2) {
+
+                        // If ball near flag
+
+                        if(this.course.checkIfCompleted((Ball) this.course.objects.get(i))) {
+                            ((Ball) this.course.objects.get(i)).complete = true;
+                            this.callback.onHole((Ball) this.course.objects.get(i));
+                        }
+
+                        // If ball in water
+                        else if(this.course.objects.get(i).position.z < 0) {
+                            this.callback.onShotFailed((Ball) this.course.objects.get(i));
+                        }
+                        this.callback.onAfterShot((Ball) this.course.objects.get(i));
+                        this.course.objects.get(i).moving = false;
+                    }
+                }
+            }
         }
     }
+
 
     public void take_shot(Vector2d v) {
         this.take_shot(this.course.getBalls().get(0), v);
     }
 
     public void take_shot(Ball b, Vector2 v) {
+        b.moving = true;
         b.shotCount++;
         v.clamp(0, (float) course.Vmax);
         b.velocity.add(new Vector3(v, 0));
+    }
+
+    public void step_until_next_shot() {
+        while(this.course.getBall().moving) {
+            this.step();
+        }
     }
 
     public boolean saveCourse(String filePath) {
@@ -71,5 +104,9 @@ public class PuttingSimulator {
             return false;
         }
         return true;
+    }
+
+    protected PuttingSimulator clone() throws CloneNotSupportedException {
+        return (PuttingSimulator) super.clone();
     }
 } 

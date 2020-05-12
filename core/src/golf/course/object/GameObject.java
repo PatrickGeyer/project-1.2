@@ -11,4 +11,5 @@ public class GameObject implements Serializable {
     public Vector3 position = new Vector3(0, 0, 0);
     public Vector3 acceleration = new Vector3(0, 0, 0);
     public double mass = 0.1;
+    public boolean moving = false;
 }

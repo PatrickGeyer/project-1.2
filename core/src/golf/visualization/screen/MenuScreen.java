@@ -38,8 +38,8 @@ public class MenuScreen implements Screen{
 
         //create buttons
         TextButton createCourse = new TextButton("Create new Course", skin);
-        TextButton playSelf = new TextButton("choose a course to play", skin);
-        TextButton playAI = new TextButton("choose a course for the AI to play", skin);
+        TextButton playSelf = new TextButton("Choose a course to play", skin);
+        TextButton playAI = new TextButton("Choose a course for the AI to play", skin);
         table.add(createCourse).fillX().uniformX();
         table.row();
         table.add(playSelf).fillX().uniformX();

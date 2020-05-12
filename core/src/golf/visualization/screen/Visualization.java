@@ -43,6 +43,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import golf.visualization.screen.BallInfoPanel;
 
 public class Visualization implements Screen {
+    public BallInfoPanel infoPanel;
     public Environment environment;
     public PerspectiveCamera cam;
     public List<ModelInstance> balls = new ArrayList();
@@ -71,8 +72,6 @@ public class Visualization implements Screen {
     }
 
     public void show() {
-
-        System.out.println("Hids");
 
         modelBatch = new ModelBatch();
         modelBuilder = new ModelBuilder();
@@ -151,9 +150,7 @@ public class Visualization implements Screen {
         flag = new ModelInstance(flagM);
 
 
-        // this.setScreen(new BallInfoPanel(this.simulation.course.getBalls().get(0)));
-
-        //  simulation.take_shot(this.simulation.course.getBalls().get(0), new Vector2(7, 0));
+        infoPanel = new BallInfoPanel(this.simulation.course.getBalls().get(0));
 
     }
 
@@ -196,6 +193,8 @@ public class Visualization implements Screen {
             );
             modelBatch.render(this.balls.get(i), environment);
         }
+
+        infoPanel.draw();
     }
 
     public void updatePhysics() {

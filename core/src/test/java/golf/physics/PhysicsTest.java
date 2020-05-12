@@ -52,6 +52,7 @@ Ball should roll down slope and settle in equilibrium
  */
   @Test
   public void settleInEquilibrium() {
+    course.getBalls().get(0).moving = true;
     course.height = new Function2d("(x - 10)^2 / 20");
     for(int i = 0; i < 10000; i++) {
       this.simulation.step();

@@ -105,6 +105,10 @@ public class PuttingCourse implements Serializable {
             .collect(Collectors.toList());
     }
 
+    public Ball getBall() {
+        return this.getBalls().get(0);
+    }
+
     // public String toString() {
     //     return "PuttingCourse{" +
     //     "height=" + height +
