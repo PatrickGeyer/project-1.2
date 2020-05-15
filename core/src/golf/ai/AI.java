@@ -20,19 +20,25 @@ public class AI {
         ArrayList<ShotResult> l = new ArrayList<ShotResult>();
 
         // Simulate shot from various angles similar to actual birds-flight direction to flag
-        for(int i = 0; i < 100; i++) {
-            PuttingSimulator sim = simulation.clone();
-            Vector2d shot = new Vector2d(vToEnd.x + 50 - i, vToEnd.y + 50 - i);
-            sim.take_shot(shot);
-            sim.step_until_next_shot();
-            l.add(new ShotResult(shot, sim));
-            if(sim.course.getBall().complete) {
-                break;
+        for(float x = 0f; x < 2*simulation.course.Vmax; x+=.2) {
+
+            for(float y = 0f; y < 2*simulation.course.Vmax; y+=.2) {
+
+                PuttingSimulator sim = simulation.clone();
+                Vector2d shot = new Vector2d(x - simulation.course.Vmax, y - simulation.course.Vmax);
+                // System.out.println(shot);
+                sim.take_shot(shot);
+                sim.step_until_next_shot();
+                l.add(new ShotResult(shot, sim));
+                if(sim.course.getBall().complete) {
+                    break;
+                }
             }
         }
 
         // Sort list of simulations to find closest hit
         Collections.sort(l, new OrderByDistance());
+        System.out.println("Taking shot: " + l.get(0).shot);
 
         return l.get(0).shot;
     }
@@ -48,6 +54,7 @@ class ShotResult {
     public ShotResult(Vector2d shot, PuttingSimulator sim) {
         this.shot = shot;
         this.simulation = sim;
+        // System.out.println(new Vector2d(this.simulation.course.getBall().position).dst(this.simulation.course.flag));
     }
 }
 class OrderByDistance implements Comparator<ShotResult> {

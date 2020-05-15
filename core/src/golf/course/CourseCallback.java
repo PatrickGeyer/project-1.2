@@ -20,6 +20,14 @@ public class CourseCallback {
         this.onAfterShot();
     }
 
+    public void onBeforeShot() {
+
+    }
+
+    public void onBeforeShot(Ball b) {
+        this.onBeforeShot();
+    }
+
     public void onHole() {
 
     }

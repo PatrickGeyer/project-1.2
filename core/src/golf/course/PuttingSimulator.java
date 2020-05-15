@@ -6,22 +6,23 @@ import golf.ai.*;
 
 import net.objecthunter.exp4j.*;
 import java.io.*;
+import java.util.ArrayList;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.Vector2;
 
 
 public class PuttingSimulator implements Serializable {
-    public PuttingCourse course;
-    private PhysicsEngine engine;
-    private Vector2d ballPosition;
-    private AI ai;
+    public PuttingCourse course = new PuttingCourse();
+    private PhysicsEngine engine = new Euler();
+    private AI ai = null;
+    public Vector2d ballPosition;
 
-    public transient CourseCallback callback = new CourseCallback();
-
+    public transient ArrayList<CourseCallback> callbacks = new ArrayList<CourseCallback>();
+    
     public PuttingSimulator(PuttingCourse course, PhysicsEngine engine) {
+        this();
         this.course = course;
         this.engine = engine;
-        this.ballPosition = course.get_start_position();
     }
     public PuttingSimulator(PuttingCourse course, PhysicsEngine engine, AI ai) {
         this(course, engine);
@@ -29,9 +30,17 @@ public class PuttingSimulator implements Serializable {
     }
 
     public PuttingSimulator() {
-        this.course = new PuttingCourse();
-        this.engine = new Euler();
         this.ballPosition = course.get_start_position();
+        PuttingSimulator self = this;
+        class Handler extends CourseCallback {
+            @Override
+            public void onBeforeShot(Ball b) {
+                if(ai instanceof AI) {
+                    take_shot(ai.calculate_shot(self));
+                }
+            }
+        }
+        callbacks.add(new Handler());
     }
     
     public void set_ball_position(Vector2d p) {
@@ -47,6 +56,17 @@ public class PuttingSimulator implements Serializable {
     }
 
     public void step(double h) {
+        boolean movingBallExists = false;
+        for(Ball b : this.course.getBalls()) {
+            if(b.complete || b.moving) {
+                movingBallExists = true;
+            }
+        }
+        if(!movingBallExists) {
+            for(CourseCallback c : callbacks)
+                c.onBeforeShot((Ball) this.course.objects.get(0));
+        }
+        
         for(int i = 0; i < this.course.objects.size(); i++) {
             if(this.course.objects.get(i).moving) {
                 Vector3[] vs = this.engine.solve(this.course.objects.get(i), this.course, h);
@@ -63,15 +83,23 @@ public class PuttingSimulator implements Serializable {
 
                         if(this.course.checkIfCompleted((Ball) this.course.objects.get(i))) {
                             ((Ball) this.course.objects.get(i)).complete = true;
-                            this.callback.onHole((Ball) this.course.objects.get(i));
+                            for(CourseCallback c : callbacks)
+                                c.onHole((Ball) this.course.objects.get(i));
                         }
 
                         // If ball in water
                         else if(this.course.objects.get(i).position.z < 0) {
-                            this.callback.onShotFailed((Ball) this.course.objects.get(i));
+                            for(CourseCallback c : callbacks)
+                                c.onShotFailed((Ball) this.course.objects.get(i));
                         }
-                        this.callback.onAfterShot((Ball) this.course.objects.get(i));
+                        for(CourseCallback c : callbacks)
+                            c.onAfterShot((Ball) this.course.objects.get(i));
+                                
                         this.course.objects.get(i).moving = false;
+                        if(!((Ball) this.course.objects.get(i)).complete) {
+                            for(CourseCallback c : callbacks)
+                                c.onBeforeShot((Ball) this.course.objects.get(i));
+                        }
                     }
                 }
             }
