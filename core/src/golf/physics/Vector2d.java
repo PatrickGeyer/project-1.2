@@ -1,5 +1,6 @@
 package golf.physics;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 public class Vector2d extends Vector2 {
 
@@ -13,6 +14,10 @@ public class Vector2d extends Vector2 {
     }
     
     public Vector2d(Vector2 v) {
+       this(v.x, v.y);
+    }
+
+    public Vector2d(Vector3 v) {
        this(v.x, v.y);
     }
 

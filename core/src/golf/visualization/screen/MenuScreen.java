@@ -1,5 +1,10 @@
 package golf.visualization.screen;
+
 import golf.visualization.Golf;
+import golf.physics.*;
+import golf.ai.*;
+import golf.course.*;
+import golf.InputOutput.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -12,10 +17,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import javax.swing.JFileChooser;
+import java.io.File;
+
 public class MenuScreen implements Screen{
 
     private Golf parent;
     private Stage stage;
+    private InputOutput io = new InputOutput();
 
     public MenuScreen(Golf box2dTutorial){
         parent = box2dTutorial;
@@ -59,28 +68,16 @@ public class MenuScreen implements Screen{
         playSelf.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // Open file chooser dialog
-                // fc.open() or similar
-
-                //reads course from a textfile
-                // f.addActionListener( {
-                //     filename = "C:/sdadas";
-                //     InputOutput io = new InputOutput();
-                //     this.course = io.read(filename);
-
-                // })
-                //let's user play course
-
-                // LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-                // new LwjglApplication(new Visualization(new PuttingSimulator(this.course, new EulerSolver(0.01))), config);
-                Gdx.app.exit();//exits the UI (for now)
+                PuttingCourse c = io.openDialog();
+                parent.setScreen(new Visualization(parent, new PuttingSimulator(c, new Euler())));
             }
         });
 
         playAI.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.exit();//exits the UI (for now)
+                PuttingCourse c = io.openDialog();
+                parent.setScreen(new Visualization(parent, new PuttingSimulator(c, new Euler(), new AI())));
             }
         });
 

@@ -1,9 +1,11 @@
 package golf.course;
-import golf.physics.*;
-import net.objecthunter.exp4j.*;
 
-import java.io.*;
+import golf.physics.*;
 import golf.course.object.*;
+import golf.ai.*;
+
+import net.objecthunter.exp4j.*;
+import java.io.*;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.Vector2;
 
@@ -12,11 +14,23 @@ public class PuttingSimulator implements Serializable {
     public PuttingCourse course;
     private PhysicsEngine engine;
     private Vector2d ballPosition;
+    private AI ai;
+
     public transient CourseCallback callback = new CourseCallback();
 
     public PuttingSimulator(PuttingCourse course, PhysicsEngine engine) {
         this.course = course;
         this.engine = engine;
+        this.ballPosition = course.get_start_position();
+    }
+    public PuttingSimulator(PuttingCourse course, PhysicsEngine engine, AI ai) {
+        this(course, engine);
+        this.ai = ai;
+    }
+
+    public PuttingSimulator() {
+        this.course = new PuttingCourse();
+        this.engine = new Euler();
         this.ballPosition = course.get_start_position();
     }
     
@@ -106,7 +120,14 @@ public class PuttingSimulator implements Serializable {
         return true;
     }
 
-    protected PuttingSimulator clone() throws CloneNotSupportedException {
-        return (PuttingSimulator) super.clone();
+    @Override
+    public PuttingSimulator clone() {
+        PuttingSimulator p = new PuttingSimulator();
+        try {
+            p = (PuttingSimulator) super.clone();
+        } catch(Exception e) {
+            
+        }
+        return p;
     }
 } 

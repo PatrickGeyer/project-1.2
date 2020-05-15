@@ -1,10 +1,13 @@
 package golf.InputOutput;
 
+import golf.course.*;
+
 import java.io.*;
 import java.util.Scanner;
-import golf.course.*;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import javax.swing.JFileChooser;
+import java.io.File;
 /**
  * input-output module to read or write courses from or to a file
  */
@@ -54,4 +57,34 @@ public class InputOutput {
         return path;
     }
 
+    public PuttingCourse openDialog() {
+        JFileChooser fc = new JFileChooser();
+
+        String path = "";
+        // fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        int returnVal = fc.showOpenDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            try {
+                path = file.getAbsolutePath();
+            } catch (Exception ex) {
+                System.out.println("problem accessing file" + file.getAbsolutePath() + "\n" + ex.getMessage());
+            }
+        } else {
+            System.out.println("File access cancelled by user.");
+        }
+        return read(path);
+    }
+
+    public void saveDialog(PuttingCourse c) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");
+        int userSelection = fileChooser.showSaveDialog(null);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            // System.out.println("Save as file: " + );
+            this.save(fileToSave.getAbsolutePath(), c);
+        }
+    }
 }

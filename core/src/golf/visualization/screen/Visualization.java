@@ -1,12 +1,15 @@
 package golf.visualization.screen;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Random;
-
 import golf.physics.*;
 import golf.course.*;
 import golf.course.object.*;
+import golf.InputOutput.*;
+import golf.visualization.Golf;
+import golf.visualization.screen.BallInfoPanel;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Random;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Screen;
@@ -39,10 +42,10 @@ import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.utils.TimeUtils;
-
-import golf.visualization.screen.BallInfoPanel;
+import com.badlogic.gdx.Input.Keys;
 
 public class Visualization implements Screen {
+    public Golf parent;
     public BallInfoPanel infoPanel;
     public Environment environment;
     public PerspectiveCamera cam;
@@ -63,8 +66,9 @@ public class Visualization implements Screen {
     private float step = 1.0f / 60.0f;
     
 
-    public Visualization(PuttingSimulator simulation) {
+    public Visualization(Golf parent, PuttingSimulator simulation) {
         this.simulation = simulation;
+        this.parent = parent;
     }
 
     public void hide() {
@@ -124,6 +128,24 @@ public class Visualization implements Screen {
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 startClick = new Vector2(screenX, screenY);
                 return true;
+            }
+            public boolean keyTyped (char c) {
+                System.out.println(c);
+                if(c == 's') {
+                    InputOutput io = new InputOutput();
+                    io.saveDialog(simulation.course);
+                }
+                System.out.println(c);
+                return false;
+            }
+            public boolean keyDown (int keycode) {
+
+                switch (keycode) {
+                    case Keys.BACKSPACE:
+                        parent.changeScreen(Golf.MENU);
+                        break;
+                }
+                return false;
             }
         });
         multiplexer.addProcessor(camController);

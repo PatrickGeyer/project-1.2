@@ -69,7 +69,7 @@ public class CreateCourseScreen implements Screen {
                 c.Vmax = maxVel;
                 c.holeTolerance = rad;
             
-                parent.setScreen(new Visualization(new PuttingSimulator(c, new Euler())));
+                parent.setScreen(new Visualization(parent, new PuttingSimulator(c, new Euler())));
             }
         });
 
