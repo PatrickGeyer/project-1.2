@@ -26,7 +26,7 @@ public class RungeKutta implements PhysicsEngine {
         return friction.add(gravity);
     }
 
-    public Vector3 getAcceleration(Vector3 position, Vector3 velocity, PuttingCourse c) {
+    public Vector3 getAcceleration(Vector3 velocity, Vector3 position, PuttingCourse c) {
         
         Vector2d gradient = c.height.gradient(position.x, position.y);
 
@@ -97,7 +97,10 @@ public class RungeKutta implements PhysicsEngine {
         response[0].z = (float) c.height.evaluate(response[0].x, response[0].y);
 
         //velocity vector
-        response[1] = new Vector3(updXV, updYV, 0f).add(obj.velocity);
+        response[1] = new Vector3();
+        response[1].x = obj.velocity.x + updXV;
+        response[1].y = obj.velocity.y + updYV;
+        //response[1] = new Vector3(updXV, updYV, 0f).add(obj.velocity);
 
         Vector3 f = this.force(obj, c, h);
        
