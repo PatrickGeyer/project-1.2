@@ -49,6 +49,7 @@ public class CreateCourseScreen implements Screen {
         final TextField velocityt = new TextField("3", skin);
         TextButton create = new TextButton("start", skin);
         create.addListener(new ChangeListener() {
+            
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 //should launch in visualization
@@ -69,6 +70,7 @@ public class CreateCourseScreen implements Screen {
                 c.Vmax = maxVel;
                 c.holeTolerance = rad;
             
+                //parent.setScreen(new Visualization(new PuttingSimulator(c, new RungeKutta())));
                 parent.setScreen(new Visualization(new PuttingSimulator(c, new Euler())));
             }
         });
