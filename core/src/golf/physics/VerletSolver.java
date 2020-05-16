@@ -35,11 +35,12 @@ public class VerletSolver implements PhysicsEngine {
     public Vector3[] solve(GameObject obj, PuttingCourse c, double h) {
         
         Vector3[] response = new Vector3[3];
-        
+
+        // Force vector
         Vector3 f = this.force(obj, c, h);
-        
+
         // Position vector
-        //s=ut+0.5at^2
+        //p(t+h) = p(t) + h*v + 1/2*h^2*F/m
         response[0] = new Vector3(
                 (float) (obj.position.x + (obj.velocity.x *h) +(h * h * 0.5 * f.x) / obj.mass),
                 (float) (obj.position.y + (obj.velocity.y *h) +(h * h * 0.5 * f.y) / obj.mass),
@@ -47,7 +48,7 @@ public class VerletSolver implements PhysicsEngine {
         );
 
         // Velocity vector
-        //v=u+at
+        //V(t+h) = V(t) + h*F/m
         response[1] = new Vector3(
                 (float) (obj.velocity.x + (h * f.x) / obj.mass),
                 (float) (obj.velocity.y + (h * f.y) / obj.mass),
