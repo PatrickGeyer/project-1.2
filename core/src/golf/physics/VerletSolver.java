@@ -6,11 +6,12 @@ import golf.course.*;
 import com.badlogic.gdx.math.Vector3;
 
 public class VerletSolver implements PhysicsEngine {
-
+    /*
+    private double h;
     public void set_step_size(double h) {
         this.h = h;
     }
-
+    */
     public Vector3 force(GameObject obj, PuttingCourse c, double h) {
 
         Vector2d gradient = c.height.gradient(obj.position.x, obj.position.y);
