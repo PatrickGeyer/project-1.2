@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 public class PhysicsTest {
 
   PuttingCourse course = new PuttingCourse();
-  PuttingSimulator simulation = new PuttingSimulator(this.course, new Euler());
+  PuttingSimulator simulation = new PuttingSimulator(this.course, new EulerSolver());
 
   public PhysicsTest() {
     course.height = new Function2d("1");

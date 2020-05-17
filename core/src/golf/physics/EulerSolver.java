@@ -6,7 +6,7 @@ import golf.course.*;
 import com.badlogic.gdx.math.Vector3;
 import java.io.*;
 
-public class Euler implements PhysicsEngine, Serializable {
+public class EulerSolver implements PhysicsEngine, Serializable {
 
     public Vector3 force(GameObject obj, PuttingCourse c, double h) {
 

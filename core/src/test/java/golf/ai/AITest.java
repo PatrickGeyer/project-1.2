@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 public class AITest {
 
   PuttingCourse course = new PuttingCourse();
-  PuttingSimulator simulation = new PuttingSimulator(this.course, new Euler());
+  PuttingSimulator simulation = new PuttingSimulator(this.course, new EulerSolver());
 
   public AITest() {
     course.height = new Function2d("1");

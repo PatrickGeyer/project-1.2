@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class CourseTest {
 
-  PuttingSimulator simulation = new PuttingSimulator(new PuttingCourse(), new Euler());
+  PuttingSimulator simulation = new PuttingSimulator(new PuttingCourse(), new EulerSolver());
 
   public CourseTest() {
   }

@@ -32,7 +32,7 @@ public class PuttingSimulator implements Cloneable, Serializable {
     }
 
     public PuttingSimulator() {
-        this(new PuttingCourse(), new Euler());
+        this(new PuttingCourse(), new EulerSolver());
     }
 
     public void addDefaultHandler() {

@@ -74,14 +74,14 @@ public class CreateCourseScreen implements Screen {
         create.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                parent.setScreen(new Visualization(parent, new PuttingSimulator(getCourse(), new Euler())));
+                parent.setScreen(new Visualization(parent, new PuttingSimulator(getCourse(), new EulerSolver())));
             }
         });
 
         createAI.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                parent.setScreen(new Visualization(parent, new PuttingSimulator(getCourse(), new Euler(), new AI())));
+                parent.setScreen(new Visualization(parent, new PuttingSimulator(getCourse(), new EulerSolver(), new AI())));
             }
         });
 
