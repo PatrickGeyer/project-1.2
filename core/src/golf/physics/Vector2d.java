@@ -1,8 +1,9 @@
 package golf.physics;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import java.io.Serializable;
 
-public class Vector2d extends Vector2 {
+public class Vector2d extends Vector2 implements Serializable {
 
     public double x;
     public double y;

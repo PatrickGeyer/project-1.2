@@ -16,6 +16,8 @@ public class AITest {
 
   public AITest() {
     course.height = new Function2d("1");
+    course.Vmax = 2;
+    course.flag = new Vector2d(1,1);
   }
 
   @Test
@@ -23,13 +25,9 @@ public class AITest {
     AI ai = new AI();
     simulation.take_shot(ai.calculate_shot(simulation));
     simulation.step_until_next_shot();
-    System.out.println(course.getBall().position.toString());
+    // System.out.println(course.getBall().position.toString());
+    // System.out.println(course.flag.toString());
     assertThat(course.getBall().complete, equalTo(true));
-  }
-
-  @Test
-  public void slopeTest() {
-    assertThat("Hello", containsString("Hello"));
   }
 
 }

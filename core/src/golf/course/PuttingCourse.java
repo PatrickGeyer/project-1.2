@@ -16,9 +16,9 @@ public class PuttingCourse implements Serializable {
     public double m = 45.93;
     public double frictionCoefficient = 0.131;            // Coefficient of friction (rolling ball) // Typical 0.065<=mu<=0.196
     public double Vmax = 10.0;            // Maximum initial ball speed [m/s]
-    public double holeTolerance = 0.02;  // Distance from hole for a successful putt [m]
+    public double holeTolerance = 0.2;  // Distance from hole for a successful putt [m]
 
-    public List<GameObject> objects = new ArrayList<GameObject>();
+    public ArrayList<GameObject> objects = new ArrayList<GameObject>();
     
     public PuttingCourse () {
         if(this.objects.size() == 0) {
@@ -91,7 +91,7 @@ public class PuttingCourse implements Serializable {
         if(
             this.flag.dst(new Vector2(b.position.x, b.position.y)) <= this.holeTolerance
             &&
-            b.velocity.len() == 0
+            b.velocity.len() <= 0.01
             ) {
                 return true;
             }

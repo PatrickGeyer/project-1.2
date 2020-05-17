@@ -2,7 +2,9 @@ package golf.course;
 
 import golf.course.object.Ball;
 
-public class CourseCallback {
+import java.io.*;
+
+public class CourseCallback implements Serializable {
 
     public void onShotFailed() {
 

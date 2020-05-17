@@ -4,8 +4,9 @@ import golf.course.object.GameObject;
 import golf.course.PuttingCourse;
 import golf.course.*;
 import com.badlogic.gdx.math.Vector3;
+import java.io.*;
 
-public class Euler implements PhysicsEngine {
+public class Euler implements PhysicsEngine, Serializable {
 
     public Vector3 force(GameObject obj, PuttingCourse c, double h) {
 

@@ -11,18 +11,20 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.Vector2;
 
 
-public class PuttingSimulator implements Serializable {
-    public PuttingCourse course = new PuttingCourse();
-    private PhysicsEngine engine = new Euler();
-    private AI ai = null;
+public class PuttingSimulator implements Cloneable, Serializable {
+    public PuttingCourse course;
+    private PhysicsEngine engine;
+    private transient AI ai = null;
     public Vector2d ballPosition;
 
     public transient ArrayList<CourseCallback> callbacks = new ArrayList<CourseCallback>();
     
     public PuttingSimulator(PuttingCourse course, PhysicsEngine engine) {
-        this();
         this.course = course;
         this.engine = engine;
+        
+        this.ballPosition = course.get_start_position();
+        addDefaultHandler();
     }
     public PuttingSimulator(PuttingCourse course, PhysicsEngine engine, AI ai) {
         this(course, engine);
@@ -30,14 +32,27 @@ public class PuttingSimulator implements Serializable {
     }
 
     public PuttingSimulator() {
-        this.ballPosition = course.get_start_position();
-        PuttingSimulator self = this;
+        this(new PuttingCourse(), new Euler());
+    }
+
+    public void addDefaultHandler() {
+        this.callbacks = new ArrayList<CourseCallback>();
         class Handler extends CourseCallback {
             @Override
             public void onBeforeShot(Ball b) {
                 if(ai instanceof AI) {
-                    take_shot(ai.calculate_shot(self));
+                    // System.out.println("HERE: " + PuttingSimulator.this.course.getBall().position);
+                    take_shot(ai.calculate_shot(PuttingSimulator.this));
                 }
+            }
+            @Override
+            public void onAfterShot(Ball b) {
+                // System.out.println("Ball is not at: " + b.position);
+            }
+            @Override
+            public void onHole(Ball b) {
+                b.complete = true;
+                System.out.println("Ball is not at: " + b.position);
             }
         }
         callbacks.add(new Handler());
@@ -80,7 +95,6 @@ public class PuttingSimulator implements Serializable {
                     if(this.course.objects.get(i).velocity.len() < 0.01 && vs[2].len() < 0.2) {
 
                         // If ball near flag
-
                         if(this.course.checkIfCompleted((Ball) this.course.objects.get(i))) {
                             ((Ball) this.course.objects.get(i)).complete = true;
                             for(CourseCallback c : callbacks)
@@ -152,10 +166,27 @@ public class PuttingSimulator implements Serializable {
     public PuttingSimulator clone() {
         PuttingSimulator p = new PuttingSimulator();
         try {
-            p = (PuttingSimulator) super.clone();
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            serializeToOutputStream(this, bos);
+            byte[] bytes = bos.toByteArray();
+            ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(bytes));
+            p = (PuttingSimulator)ois.readObject();
+            p.addDefaultHandler();
+            return p;
         } catch(Exception e) {
-            
+            System.out.println(e);
+            e.printStackTrace();
         }
         return p;
+    }
+    private void serializeToOutputStream(Serializable ser, OutputStream os) throws IOException {
+        ObjectOutputStream oos = null;
+        try {
+            oos = new ObjectOutputStream(os);
+            oos.writeObject(ser);
+            oos.flush();
+        } finally {
+            oos.close();
+        }
     }
 } 
