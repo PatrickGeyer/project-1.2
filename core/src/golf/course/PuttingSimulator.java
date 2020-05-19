@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class PuttingSimulator implements Cloneable, Serializable {
     public PuttingCourse course;
-    private PhysicsEngine engine;
+    public PhysicsEngine engine;
     private transient AI ai = null;
     public Vector2d ballPosition;
 
@@ -52,7 +52,7 @@ public class PuttingSimulator implements Cloneable, Serializable {
             @Override
             public void onHole(Ball b) {
                 b.complete = true;
-                System.out.println("Ball is not at: " + b.position);
+                System.out.println("Course complete!");
             }
         }
         callbacks.add(new Handler());
@@ -84,6 +84,7 @@ public class PuttingSimulator implements Cloneable, Serializable {
         
         for(int i = 0; i < this.course.objects.size(); i++) {
             if(this.course.objects.get(i).moving) {
+
                 Vector3[] vs = this.engine.solve(this.course.objects.get(i), this.course, h);
                 this.course.objects.get(i).position = vs[0];
                 this.course.objects.get(i).position.z = (float) this.course.height.evaluate((float) this.course.objects.get(i).position.x,(float) this.course.objects.get(i).position.y);
@@ -97,6 +98,7 @@ public class PuttingSimulator implements Cloneable, Serializable {
                         // If ball near flag
                         if(this.course.checkIfCompleted((Ball) this.course.objects.get(i))) {
                             ((Ball) this.course.objects.get(i)).complete = true;
+                            ((Ball) this.course.objects.get(i)).moving = false;
                             for(CourseCallback c : callbacks)
                                 c.onHole((Ball) this.course.objects.get(i));
                         }
@@ -110,10 +112,11 @@ public class PuttingSimulator implements Cloneable, Serializable {
                             c.onAfterShot((Ball) this.course.objects.get(i));
                                 
                         this.course.objects.get(i).moving = false;
-                        if(!((Ball) this.course.objects.get(i)).complete) {
-                            for(CourseCallback c : callbacks)
-                                c.onBeforeShot((Ball) this.course.objects.get(i));
-                        }
+                        // if(!((Ball) this.course.objects.get(i)).complete) {
+                        //     System.out.println("Course not complete");
+                        //     for(CourseCallback c : callbacks)
+                        //         c.onBeforeShot((Ball) this.course.objects.get(i));
+                        // }
                     }
                 }
             }

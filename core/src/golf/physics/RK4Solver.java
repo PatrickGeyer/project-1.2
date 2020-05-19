@@ -4,8 +4,9 @@ import golf.course.object.GameObject;
 import golf.course.PuttingCourse;
 import golf.course.*;
 import com.badlogic.gdx.math.Vector3;
+import java.io.*;
 
-public class RK4Solver implements PhysicsEngine {
+public class RK4Solver implements PhysicsEngine, Serializable {
     /*
     private double h;
     public void set_step_size(double h) {

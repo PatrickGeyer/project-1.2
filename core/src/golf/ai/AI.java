@@ -14,22 +14,27 @@ import java.io.Serializable;
 import com.badlogic.gdx.math.Vector2;
 
 public class AI implements Serializable {
+    
     public Vector2d calculate_shot(PuttingSimulator simulation, Ball ball){
 
-        // Calculate the direction & strength needed
+        // Calculate the direction & strength needed, could be used for heuristics
         Vector2 vToEnd = new Vector2(simulation.course.flag).sub(new Vector2d(ball.position));
 
+        // List of simulated shot results
         ArrayList<ShotResult> l = new ArrayList<ShotResult>();
 
-        // Simulate shot from various angles similar to actual birds-flight direction to flag
-        for(float x = (float) -simulation.course.Vmax; x <= simulation.course.Vmax; x+=.5) {
+        // Simulate shot from various angles
+        for(float x = (float) -simulation.course.Vmax; x <= simulation.course.Vmax; x+=.2) {
 
-            for(float y = (float) -simulation.course.Vmax; y <= simulation.course.Vmax; y+=.5) {
+            for(float y = (float) -simulation.course.Vmax; y <= simulation.course.Vmax; y+=.2) {
+                if(x == 0 && y == 0) continue;
 
                 PuttingSimulator sim = simulation.clone();
                 Vector2d shot = new Vector2d(x, y);
+
+                // ShotResult will take simulation and shot as parameters
+                // Calls simulation.step_until_next_shot to find ball landing position
                 l.add(new ShotResult(shot, sim));
-                System.out.println(l.get(l.size() - 1));
                 if(sim.course.getBall().complete) {
                     break;
                 }

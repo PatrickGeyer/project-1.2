@@ -5,10 +5,10 @@ import net.objecthunter.exp4j.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.io.Serializable;
+import java.io.*;
 import com.badlogic.gdx.math.Vector2;
 
-public class PuttingCourse implements Serializable {
+public class PuttingCourse implements Cloneable, Serializable {
     public Function2d height = new Function2d("sin(x/2)");
     public Vector2 flag = new Vector2(10, 10);
     public Vector2 start = new Vector2(0, 0);
@@ -120,5 +120,33 @@ public class PuttingCourse implements Serializable {
     //     ", gravitationalConstant=" + g +
     //     '}';
     // }
+
+
+    @Override
+    public PuttingCourse clone() {
+        PuttingCourse p = new PuttingCourse();
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            serializeToOutputStream(this, bos);
+            byte[] bytes = bos.toByteArray();
+            ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(bytes));
+            p = (PuttingCourse)ois.readObject();
+            return p;
+        } catch(Exception e) {
+            System.out.println(e);
+            e.printStackTrace();
+        }
+        return p;
+    }
+    private void serializeToOutputStream(Serializable ser, OutputStream os) throws IOException {
+        ObjectOutputStream oos = null;
+        try {
+            oos = new ObjectOutputStream(os);
+            oos.writeObject(ser);
+            oos.flush();
+        } finally {
+            oos.close();
+        }
+    }
 
 }

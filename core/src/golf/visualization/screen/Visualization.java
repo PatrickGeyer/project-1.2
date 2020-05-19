@@ -226,7 +226,7 @@ public class Visualization implements Screen {
 
         currentTime = newTime;
 
-        this.simulation.step(deltaTime);
+        this.simulation.step(0.01);
     }
 
 	public void resize(int width, int height) {

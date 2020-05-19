@@ -43,6 +43,11 @@ public class CreateCourseScreen implements Screen {
         stage = new Stage(new ScreenViewport());
     }
 
+    Vector2 parseVector(TextField f) {
+        String[] input = f.getText().split(",");
+        return new Vector2(new Float(input[0].replaceAll("[^\\d.]", "")), new Float(input[1].replaceAll("[^\\d.]", "")));
+    }
+
     public PuttingCourse getCourse() {
         String formula       = functiont.getText();
         double friction      = Double.parseDouble(frictiont.getText());
@@ -54,8 +59,8 @@ public class CreateCourseScreen implements Screen {
         PuttingCourse c = new PuttingCourse();
         c.height = new Function2d(formula);
         c.frictionCoefficient = friction;
-        c.flag = new Vector2(10,10);
-        c.start = new Vector2(0,0);
+        c.flag = parseVector(targett);
+        c.start = parseVector(startt);
         c.g = 9.81;
         c.m = 45;
         c.Vmax = maxVel;

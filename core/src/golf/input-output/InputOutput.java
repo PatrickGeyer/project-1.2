@@ -61,7 +61,6 @@ public class InputOutput {
         JFileChooser fc = new JFileChooser();
 
         String path = "";
-        // fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
         int returnVal = fc.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
