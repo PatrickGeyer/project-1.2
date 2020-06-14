@@ -3,7 +3,7 @@ package golf.visualization.screen;
 import golf.physics.*;
 import golf.course.*;
 import golf.course.object.*;
-import golf.InputOutput.*;
+import golf.inputoutput.*;
 import golf.visualization.Golf;
 import golf.visualization.screen.BallInfoPanel;
 
@@ -80,7 +80,7 @@ public class Visualization implements Screen {
         modelBatch = new ModelBatch();
         modelBuilder = new ModelBuilder();
 
-        courseMesh = createCourseMesh(20, 20, 0.25);
+        courseMesh = createCourseMesh(this.simulation.course.flag.x + 10, this.simulation.course.flag.y + 10, this.simulation.course.flag.len() / 50);
         shader = Visualization.createMeshShader();
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1.0f));

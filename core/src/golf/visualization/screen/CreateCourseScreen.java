@@ -25,14 +25,16 @@ public class CreateCourseScreen implements Screen {
     Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
     Label function = new Label("height function", skin);
     Label friction = new Label("friction coefficient:", skin);
+    Label wind = new Label("wind speed:", skin);
     Label start = new Label("starting point:", skin);
     Label target = new Label("target point", skin);
     Label radius = new Label("radius target", skin);
     Label velocity = new Label("maximum velocity:", skin);
     final TextField functiont= new TextField("sin(x)", skin);
     final TextField frictiont= new TextField("0.13", skin);
-    final TextField startt= new TextField("(x,y)", skin);
-    final TextField targett= new TextField("(x,y,x)", skin);
+    final TextField windSpeedt = new TextField("0", skin);
+    final TextField startt= new TextField("0,0", skin);
+    final TextField targett= new TextField("20,20", skin);
     final TextField radiust= new TextField("0.2", skin);
     final TextField velocityt = new TextField("3", skin);
     TextButton create = new TextButton("start", skin);
@@ -51,6 +53,7 @@ public class CreateCourseScreen implements Screen {
     public PuttingCourse getCourse() {
         String formula       = functiont.getText();
         double friction      = Double.parseDouble(frictiont.getText());
+        double windIntensity      = Double.parseDouble(windSpeedt.getText());
         String startingpoint = startt.getText();
         String targetpoint   = targett.getText();
         double rad           = Double.parseDouble(radiust.getText());
@@ -58,6 +61,7 @@ public class CreateCourseScreen implements Screen {
 
         PuttingCourse c = new PuttingCourse();
         c.height = new Function2d(formula);
+        c.windIntensity = windIntensity;
         c.frictionCoefficient = friction;
         c.flag = parseVector(targett);
         c.start = parseVector(startt);
@@ -95,6 +99,9 @@ public class CreateCourseScreen implements Screen {
         table.row();
         table.add(friction);
         table.add(frictiont);
+        table.row();
+        table.add(wind);
+        table.add(windSpeedt);
         table.row();
         table.add(start);
         table.add(startt);

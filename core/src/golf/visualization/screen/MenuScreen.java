@@ -4,7 +4,7 @@ import golf.visualization.Golf;
 import golf.physics.*;
 import golf.ai.*;
 import golf.course.*;
-import golf.InputOutput.*;
+import golf.inputoutput.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

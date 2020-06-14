@@ -91,6 +91,7 @@ public class PuttingSimulator implements Cloneable, Serializable {
                 this.course.objects.get(i).velocity = vs[1];
 
                 if(this.course.objects.get(i) instanceof Ball) {
+                    
 
                     // Check that velocity and forces on ball are close to zero
                     if(this.course.objects.get(i).velocity.len() < 0.01 && vs[2].len() < 0.2) {
@@ -121,6 +122,7 @@ public class PuttingSimulator implements Cloneable, Serializable {
                 }
             }
         }
+        this.course.elapsed += h;
     }
 
 

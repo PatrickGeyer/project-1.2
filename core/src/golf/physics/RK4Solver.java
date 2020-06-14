@@ -4,33 +4,8 @@ import golf.course.object.GameObject;
 import golf.course.PuttingCourse;
 import golf.course.*;
 import com.badlogic.gdx.math.Vector3;
-import java.io.*;
 
-public class RK4Solver implements PhysicsEngine, Serializable {
-    /*
-    private double h;
-    public void set_step_size(double h) {
-        this.h = h;
-    }
-    */
-    public Vector3 force(GameObject obj, PuttingCourse c, double h) {
-
-        Vector2d gradient = c.height.gradient(obj.position.x, obj.position.y);
-        
-        Vector3 friction = new Vector3(
-            obj.velocity.len() == 0 ? 0 : (float) (-c.frictionCoefficient * obj.mass * c.g * obj.velocity.x / (double) obj.velocity.len()),
-            obj.velocity.len() == 0 ? 0 : (float) (-c.frictionCoefficient * obj.mass * c.g * obj.velocity.y / (double) obj.velocity.len()),
-            0
-        );
-        
-        Vector3 gravity = new Vector3(
-            (float) (-obj.mass * c.g * gradient.x),
-            (float) (-obj.mass * c.g * gradient.y),
-            0
-        );
-
-        return friction.add(gravity);
-    }
+public class RK4Solver extends PhysicsEngine {
 
     public Vector3 getAcceleration(Vector3 velocity, Vector3 position, PuttingCourse c) {
         

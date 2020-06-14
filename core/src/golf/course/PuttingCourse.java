@@ -12,11 +12,16 @@ public class PuttingCourse implements Cloneable, Serializable {
     public Function2d height = new Function2d("sin(x/2)");
     public Vector2 flag = new Vector2(10, 10);
     public Vector2 start = new Vector2(0, 0);
+    public double windIntensity = 0;
+    // z represents time variable in below equation
+    public Function3d wind = new Function3d("sin(x) * cos(y) * cos(z)");
+    public Vector2 prevailingWindDirection = new Vector2(1, 1);
     public double g = 9.81;              // Gravitational acceleration
     public double m = 45.93;
     public double frictionCoefficient = 0.131;            // Coefficient of friction (rolling ball) // Typical 0.065<=mu<=0.196
     public double Vmax = 10.0;            // Maximum initial ball speed [m/s]
     public double holeTolerance = 0.2;  // Distance from hole for a successful putt [m]
+    public double elapsed = 0.0;
 
     public ArrayList<GameObject> objects = new ArrayList<GameObject>();
     

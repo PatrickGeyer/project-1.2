@@ -3,7 +3,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import golf.InputOutput.*;
+import golf.inputoutput.*;
 import golf.course.*;
 
 import java.lang.Thread;

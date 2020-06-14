@@ -1,4 +1,4 @@
-package golf.InputOutput;
+package golf.inputoutput;
 
 import golf.course.*;
 
