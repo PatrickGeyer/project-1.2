@@ -16,8 +16,8 @@ public class RK4Solver extends PhysicsEngine {
         if (velocity.x != 0 || velocity.y != 0) {
             //𝑥̈ =−𝑔h (𝑥,𝑦)−𝜇𝑔𝑥̇⁄√𝑥̇2 +𝑦̇2
             //𝑦̈ =−𝑔h (𝑥,𝑦)−𝜇𝑔𝑦̇⁄√𝑥̇2 +𝑦̇2
-            acceleration.x = (float) ((-c.g * gradient.x) - c.frictionCoefficient * c.g * velocity.x / (Math.sqrt(velocity.x*velocity.x + velocity.y*velocity.y)));
-            acceleration.y = (float) ((-c.g * gradient.y) - c.frictionCoefficient * c.g * velocity.y / (Math.sqrt(velocity.x*velocity.x + velocity.y*velocity.y)));
+            acceleration.x = (float) (-c.g * gradient.x - (c.frictionCoefficient * c.g * velocity.x) / (Math.sqrt(velocity.x*velocity.x + velocity.y*velocity.y)));
+            acceleration.y = (float) (-c.g * gradient.y - (c.frictionCoefficient * c.g * velocity.y) / (Math.sqrt(velocity.x*velocity.x + velocity.y*velocity.y)));
 
             return acceleration;
         } 
