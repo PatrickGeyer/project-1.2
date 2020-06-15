@@ -69,7 +69,7 @@ public class MenuScreen implements Screen{
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 PuttingCourse c = io.openDialog();
-                parent.setScreen(new Visualization(parent, new PuttingSimulator(c, new EulerSolver())));
+                parent.setScreen(new Visualization(parent, new PuttingSimulator(c, new RK4Solver())));
             }
         });
 

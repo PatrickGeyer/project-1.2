@@ -36,11 +36,11 @@ public class PhysicsEngine implements Serializable {
         wind = wind.clamp((float) c.windIntensity, (float) c.windIntensity);
         wind.z = 0;
 
-        return friction.add(gravity).add(wind);
+        return friction.add(gravity);
     }
 
     public Vector3 getAcceleration(GameObject obj, PuttingCourse c, double h) {
-        return this.force(obj, c, h).scl( 1 / (obj.mass / 1000));
+        return this.force(obj, c, h).scl((float) ( 1 / (obj.mass)));
     }
 
 
