@@ -7,6 +7,23 @@ import com.badlogic.gdx.math.Vector3;
 
 public class RK4Solver extends PhysicsEngine {
 
+    public Vector3 getAcceleration(Vector3 velocity, Vector3 position, PuttingCourse c) {
+        
+        Vector2d gradient = c.height.gradient(position.x, position.y);
+
+        Vector3 acceleration = new Vector3();
+
+        if (velocity.x != 0 || velocity.y != 0) {
+            //𝑥̈ =−𝑔h (𝑥,𝑦)−𝜇𝑔𝑥̇⁄√𝑥̇2 +𝑦̇2
+            //𝑦̈ =−𝑔h (𝑥,𝑦)−𝜇𝑔𝑦̇⁄√𝑥̇2 +𝑦̇2
+            acceleration.x = (float) (-c.g * gradient.x - (c.frictionCoefficient * c.g * velocity.x) / (Math.sqrt(velocity.x*velocity.x + velocity.y*velocity.y)));
+            acceleration.y = (float) (-c.g * gradient.y - (c.frictionCoefficient * c.g * velocity.y) / (Math.sqrt(velocity.x*velocity.x + velocity.y*velocity.y)));
+
+            return acceleration;
+        } 
+        return new Vector3(0,0,0);
+    }
+
     @Override
     public Vector3[] solve(GameObject obj, PuttingCourse c, double h) {
 
@@ -52,8 +69,8 @@ public class RK4Solver extends PhysicsEngine {
         float updY = (float) ((k1y + 2*k2y + 2*k3y + k4y) / 6);
         float updZ = (float) (c.height.evaluate(obj.position.x + updX, obj.position.y + updY)) - (float) (c.height.evaluate(obj.position.x, obj.position.y));
         
-        float updXV = (float) (k1vx + 2*k2vx + 2*k3vx + k4vx)/6;
-        float updYV = (float) (k1vy + 2*k2vy + 2*k3vy + k4vy)/6;
+        float updXV = (float) ((k1vx + 2*k2vx + 2*k3vx + k4vx) / 6);
+        float updYV = (float) ((k1vy + 2*k2vy + 2*k3vy + k4vy) / 6);
         
         //position vector
         response[0] = new Vector3(updX, updY, 0).add(obj.position);
