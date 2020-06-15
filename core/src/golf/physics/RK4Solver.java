@@ -69,8 +69,8 @@ public class RK4Solver extends PhysicsEngine {
         float updY = (float) ((k1y + 2*k2y + 2*k3y + k4y) / 6);
         float updZ = (float) (c.height.evaluate(obj.position.x + updX, obj.position.y + updY)) - (float) (c.height.evaluate(obj.position.x, obj.position.y));
         
-        float updXV = (float) (k1vx + 2*k2vx + 2*k3vx + k4vx)/6;
-        float updYV = (float) (k1vy + 2*k2vy + 2*k3vy + k4vy)/6;
+        float updXV = (float) ((k1vx + 2*k2vx + 2*k3vx + k4vx) / 6);
+        float updYV = (float) ((k1vy + 2*k2vy + 2*k3vy + k4vy) / 6);
         
         //position vector
         response[0] = new Vector3(updX, updY, 0).add(obj.position);
