@@ -50,6 +50,7 @@ public class Visualization implements Screen {
     public Environment environment;
     public PerspectiveCamera cam;
     public List<ModelInstance> balls = new ArrayList();
+    public List<ModelInstance> trees = new ArrayList();
     public ModelInstance arrow;
     public ModelInstance flag;
     public ModelBatch modelBatch;
@@ -152,11 +153,21 @@ public class Visualization implements Screen {
 
         Gdx.input.setInputProcessor(multiplexer);
 
-        for(int i = 0; i < this.simulation.course.getBalls().size(); i++) {
-            Model model = modelBuilder.createSphere(.4f, .4f, .4f, 24, 24, 
+        for(Ball b : this.simulation.course.getBalls()) {
+            Model model = modelBuilder.createSphere((float) b.radius, (float) b.radius, (float) b.radius, 24, 24, 
                 new Material(ColorAttribute.createDiffuse(Color.WHITE)),
                 Usage.Position | Usage.Normal | Usage.TextureCoordinates);
             this.balls.add(new ModelInstance(model));
+        }
+        for(Obstacle o : this.simulation.course.getObstacles()) {
+            Model model = modelBuilder.createCone(o.dimensions.x, o.dimensions.y, o.dimensions.z, 24, 
+                new Material(ColorAttribute.createDiffuse(Color.GREEN)),
+                Usage.Position | Usage.Normal | Usage.TextureCoordinates);
+            this.trees.add(new ModelInstance(model));
+            o.position.z = (float) this.simulation.course.height.evaluate(o.position.x, o.position.y);
+            this.trees.get(this.trees.size() - 1).transform.setTranslation(
+                o.position
+            ).rotate(new Vector3(1, 0, 0), 90);
         }
 
         Model flagM = modelBuilder.createArrow(
@@ -192,6 +203,10 @@ public class Visualization implements Screen {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
+        for(int i = 0; i < this.trees.size(); i++) {
+            modelBatch.render(this.trees.get(i), environment);
+        }
+
         shader.begin();
         shader.setUniformMatrix("u_projTrans", cam.combined);
         shader.setUniformi("u_texture", 0);
@@ -215,6 +230,7 @@ public class Visualization implements Screen {
             );
             modelBatch.render(this.balls.get(i), environment);
         }
+        
 
         infoPanel.draw();
     }

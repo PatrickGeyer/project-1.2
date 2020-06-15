@@ -70,6 +70,20 @@ public class PuttingSimulator implements Cloneable, Serializable {
         this.step(0.01);
     }
 
+    public boolean intersects(Ball ball, Obstacle obstacle) {
+        // get box closest point to sphere center by clamping
+        var x = Math.max(obstacle.position.x, Math.min(ball.position.x, obstacle.position.x+obstacle.dimensions.x));
+        var y = Math.max(obstacle.position.y, Math.min(ball.position.y, obstacle.position.y+obstacle.dimensions.y));
+        var z = Math.max(obstacle.position.z, Math.min(ball.position.z, obstacle.position.z+obstacle.dimensions.z));
+
+        // this is the same as isPointInsideSphere
+        var distance = Math.sqrt((x - ball.position.x) * (x - ball.position.x) +
+                                (y - ball.position.y) * (y - ball.position.y) +
+                                (z - ball.position.z) * (z - ball.position.z));
+        
+        return distance < ball.radius;
+    }
+
     public void step(double h) {
         boolean movingBallExists = false;
         for(Ball b : this.course.getBalls()) {
@@ -91,6 +105,12 @@ public class PuttingSimulator implements Cloneable, Serializable {
                 this.course.objects.get(i).velocity = vs[1];
 
                 if(this.course.objects.get(i) instanceof Ball) {
+
+                    for(Obstacle o : this.course.getObstacles()) {
+                        if(this.intersects((Ball) this.course.objects.get(i), o)) {
+                            this.course.objects.get(i).velocity.scl((float) o.restitution);
+                        }
+                    }
                     
 
                     // Check that velocity and forces on ball are close to zero
