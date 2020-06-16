@@ -29,6 +29,12 @@ public class PuttingCourse implements Cloneable, Serializable {
         if(this.objects.size() == 0) {
             this.objects.add(new Ball());
         }
+
+        // Add any obstacles needed 
+        Tree t = new Tree();
+        t.position.x = 5;
+        t.position.y = 20;
+        this.objects.add(t);
     }
 
     public PuttingCourse (Function2d height, Vector2d flag, Vector2d start) {
@@ -107,6 +113,12 @@ public class PuttingCourse implements Cloneable, Serializable {
         return this.objects.stream()
             .filter(p -> p instanceof Ball)
             .map(p -> (Ball) p)
+            .collect(Collectors.toList());
+    }
+    public List<Obstacle> getObstacles() {
+        return this.objects.stream()
+            .filter(p -> p instanceof Obstacle)
+            .map(p -> (Obstacle) p)
             .collect(Collectors.toList());
     }
 
