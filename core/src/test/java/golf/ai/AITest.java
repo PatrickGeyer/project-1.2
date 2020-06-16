@@ -30,4 +30,15 @@ public class AITest {
     assertThat(course.getBall().complete, equalTo(true));
   }
 
+
+    @Test
+  public void flatBranchingTest() {
+    AI ai = new AI();
+    simulation.take_shot(ai.calculate_shot(2, simulation));
+    simulation.step_until_next_shot();
+    // System.out.println(course.getBall().position.toString());
+    // System.out.println(course.flag.toString());
+    assertThat(course.getBall().complete, equalTo(true));
+  }
+
 }
