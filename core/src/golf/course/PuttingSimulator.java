@@ -118,7 +118,7 @@ public class PuttingSimulator implements Cloneable, Serializable {
                           else{
                             this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1), this.course.objects.get(0).velocity.y, this.course.objects.get(0).velocity.z);
                           }
-                        }// the velocity.x is not multiplied by -1, otherwise it would result in a mirrored shot back
+                        }
                     }
                     
 
