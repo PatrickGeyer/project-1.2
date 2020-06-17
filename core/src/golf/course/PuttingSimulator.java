@@ -112,12 +112,31 @@ public class PuttingSimulator implements Cloneable, Serializable {
 
                     for(Obstacle o : this.course.getObstacles()) {//objects contains ball, tree etc.
                         if(this.intersects((Ball) this.course.objects.get(0), o)) {///////////scale the velocity in some form //changed i with 0 as object 0 is always the ball?
-                          if(this.course.objects.get(0).velocity.x>this.course.objects.get(0).velocity.y){
+                         /* if(this.course.objects.get(0).velocity.x>this.course.objects.get(0).velocity.y){
                                 this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x, this.course.objects.get(0).velocity.y*(-1), this.course.objects.get(0).velocity.z);
                           }
-                          else{
+                          else{//y>x
                             this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1), this.course.objects.get(0).velocity.y, this.course.objects.get(0).velocity.z);
-                          }
+                          }*/
+                          /*   Float ball=this.course.objects.get(0).position.y +1;//y position of ball +1
+                            Float treemin =this.course.objects.get(1).position.y -3;//min y tree
+                            if(Float.compare(ball, treemin) == 0){
+                                this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1), this.course.objects.get(0).velocity.y*(-1), this.course.objects.get(0).velocity.z);
+                            }
+                            else{
+                                this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1), this.course.objects.get(0).velocity.y*(-1), this.course.objects.get(0).velocity.z);
+                            }*/ 
+                          float b=this.course.objects.get(0).position.y+1;
+                          float t = this.course.objects.get(1).position.y -3;//change minus value according to x/y tree
+                          float bx=this.course.objects.get(0).position.x;//where the ball is in width
+                          float tx = this.course.objects.get(1).position.x +3;//where the tree stops existing in width (x)
+                        if((Float.compare(b,t)>=0)&&(Float.compare(bx,tx)<0)){//checks if something behind and in the same x position
+                            this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x, this.course.objects.get(0).velocity.y*(-1), this.course.objects.get(0).velocity.z);
+                        }
+                        else{
+                            this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1), this.course.objects.get(0).velocity.y, this.course.objects.get(0).velocity.z);
+                        }
+
                         }
                     }
                     

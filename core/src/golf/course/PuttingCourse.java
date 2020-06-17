@@ -32,8 +32,8 @@ public class PuttingCourse implements Cloneable, Serializable {
 
         // Add any obstacles needed 
         Tree t = new Tree();
-        t.position.x = 10;
-        t.position.y = 15;
+        t.position.x = 20;
+        t.position.y = 12;
         this.objects.add(t);
     }
 
