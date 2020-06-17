@@ -26,7 +26,6 @@ public class EulerSolver extends PhysicsEngine {
             (float) (obj.velocity.z + (h * f.z) / obj.mass)
         );
         response[2] = f;
-
         return response;
     }
 }
