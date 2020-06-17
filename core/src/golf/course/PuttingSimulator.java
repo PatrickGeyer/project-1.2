@@ -17,6 +17,8 @@ public class PuttingSimulator implements Cloneable, Serializable {
     private transient AI ai = null;
     public Vector2d ballPosition;
 
+    public int maxShots = 50;
+
     public transient ArrayList<CourseCallback> callbacks = new ArrayList<CourseCallback>();
     
     public PuttingSimulator(PuttingCourse course, PhysicsEngine engine) {
@@ -52,7 +54,7 @@ public class PuttingSimulator implements Cloneable, Serializable {
             @Override
             public void onHole(Ball b) {
                 b.complete = true;
-                System.out.println("Course complete!");
+                // System.out.println("Course complete!");
             }
         }
         callbacks.add(new Handler());
@@ -189,6 +191,20 @@ public class PuttingSimulator implements Cloneable, Serializable {
         while(this.course.getBall().moving) {
             this.step();
         }
+    }
+
+    public int play_until_done(AI ai) throws Exception {
+        int shots = 0;
+        while(this.course.getBall().complete == false) {
+            take_shot(ai.calculate_shot(this));
+            step_until_next_shot();
+
+            if(shots > this.maxShots) {
+                throw new Exception("Too many shots");
+            }
+            shots++;
+        }
+        return shots;
     }
 
     public boolean saveCourse(String filePath) {

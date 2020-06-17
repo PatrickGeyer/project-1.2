@@ -27,7 +27,6 @@ public class RK4Solver extends PhysicsEngine {
         ob1.velocity.add(new Vector3((float) (0.5 * lx0), (float) (0.5 * ly0), 0));
         a = getAcceleration(ob1, c, h);
         lx1 = h * a.x;
-                System.out.println(lx1);
 
         ly1 = h * a.y;
         kx2 = h * (vx + 0.5 * lx1);
