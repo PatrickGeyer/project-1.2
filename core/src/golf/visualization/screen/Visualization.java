@@ -160,14 +160,14 @@ public class Visualization implements Screen {
             this.balls.add(new ModelInstance(model));
         }
         for(Obstacle o : this.simulation.course.getObstacles()) {
-            Model model = modelBuilder.createCone(o.dimensions.x, o.dimensions.y, o.dimensions.z, 24, 
+            Model model = modelBuilder.createBox(o.dimensions.x, o.dimensions.y, o.dimensions.z,
                 new Material(ColorAttribute.createDiffuse(Color.GREEN)),
                 Usage.Position | Usage.Normal | Usage.TextureCoordinates);
             this.trees.add(new ModelInstance(model));
-            o.position.z = (float) this.simulation.course.height.evaluate(o.position.x, o.position.y);
+            //o.position.z = (float) this.simulation.course.height.evaluate(o.position.x, o.position.y);
             this.trees.get(this.trees.size() - 1).transform.setTranslation(
                 o.position
-            ).rotate(new Vector3(1, 0, 0), 90);
+            );
         }
 
         Model flagM = modelBuilder.createArrow(

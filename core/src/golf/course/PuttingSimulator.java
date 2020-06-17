@@ -66,22 +66,26 @@ public class PuttingSimulator implements Cloneable, Serializable {
         return this.ballPosition;
     }
 
-    public void step() {
+    public void step() {//called every 0.01 second
         this.step(0.01);
     }
 
     public boolean intersects(Ball ball, Obstacle obstacle) {
         // get box closest point to sphere center by clamping
-        var x = Math.max(obstacle.position.x, Math.min(ball.position.x, obstacle.position.x+obstacle.dimensions.x));
+     /*   var x = Math.max(obstacle.position.x, Math.min(ball.position.x, obstacle.position.x+obstacle.dimensions.x));
         var y = Math.max(obstacle.position.y, Math.min(ball.position.y, obstacle.position.y+obstacle.dimensions.y));
         var z = Math.max(obstacle.position.z, Math.min(ball.position.z, obstacle.position.z+obstacle.dimensions.z));
 
-        // this is the same as isPointInsideSphere
+       // this is the same as isPointInsideSphere
         var distance = Math.sqrt((x - ball.position.x) * (x - ball.position.x) +
                                 (y - ball.position.y) * (y - ball.position.y) +
                                 (z - ball.position.z) * (z - ball.position.z));
         
-        return distance < ball.radius;
+        return distance < ball.radius;*/
+        if(Math.abs(obstacle.position.x-ball.position.x)<obstacle.dimensions.x && Math.abs(obstacle.position.y-ball.position.y)<obstacle.dimensions.x){
+            return true;
+        }
+        else return false;
     }
 
     public void step(double h) {
@@ -104,12 +108,17 @@ public class PuttingSimulator implements Cloneable, Serializable {
                 this.course.objects.get(i).position.z = (float) this.course.height.evaluate((float) this.course.objects.get(i).position.x,(float) this.course.objects.get(i).position.y);
                 this.course.objects.get(i).velocity = vs[1];
 
-                if(this.course.objects.get(i) instanceof Ball) {
+                if(this.course.objects.get(i) instanceof Ball) {//if the ball still exists
 
-                    for(Obstacle o : this.course.getObstacles()) {
-                        if(this.intersects((Ball) this.course.objects.get(i), o)) {
-                            this.course.objects.get(i).velocity.scl((float) o.restitution);
-                        }
+                    for(Obstacle o : this.course.getObstacles()) {//objects contains ball, tree etc.
+                        if(this.intersects((Ball) this.course.objects.get(0), o)) {///////////scale the velocity in some form //changed i with 0 as object 0 is always the ball?
+                          if(this.course.objects.get(0).velocity.x>this.course.objects.get(0).velocity.y){
+                                this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x, this.course.objects.get(0).velocity.y*(-1), this.course.objects.get(0).velocity.z);
+                          }
+                          else{
+                            this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1), this.course.objects.get(0).velocity.y, this.course.objects.get(0).velocity.z);
+                          }
+                        }// the velocity.x is not multiplied by -1, otherwise it would result in a mirrored shot back
                     }
                     
 
@@ -139,9 +148,9 @@ public class PuttingSimulator implements Cloneable, Serializable {
                         //         c.onBeforeShot((Ball) this.course.objects.get(i));
                         // }
                     }
-                }
+                }//end if statement
             }
-        }
+        }//end for statement
         this.course.elapsed += h;
     }
 
