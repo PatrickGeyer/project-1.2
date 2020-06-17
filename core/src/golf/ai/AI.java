@@ -14,14 +14,40 @@ import java.io.Serializable;
 import com.badlogic.gdx.math.Vector2;
 
 public class AI implements Serializable {
-    
-    public Vector2d calculate_shot(PuttingSimulator simulation, Ball ball){
 
-        // Calculate the direction & strength needed, could be used for heuristics
-        Vector2 vToEnd = new Vector2(simulation.course.flag).sub(new Vector2d(ball.position));
+    public ArrayList<ShotResult> list_shots_n_layers(int layers, PuttingSimulator simulation) {
+        ArrayList<ShotResult> l = get_shots(simulation.clone());
+        if(layers > 0) {
+            for(ShotResult s : l) {
+                ArrayList<ShotResult> newLayer = list_shots_n_layers(layers - 1, s.simulation);
+                for(ShotResult n: newLayer) {
+                    n.previous = s;
+                }
+                l.addAll(newLayer);
+            }
+        }
+        return l;
+    }
 
-        // List of simulated shot results
-        ArrayList<ShotResult> l = new ArrayList<ShotResult>();
+    public Vector2d calculate_shot(int layers, PuttingSimulator simulation) {
+        ArrayList<ShotResult> l = list_shots_n_layers(layers, simulation);
+        // Sort list of simulations to find closest hit
+        Collections.sort(l, new OrderByDistance());
+        System.out.println("Taking shot: " 
+        + l.get(0).shot 
+        + " with distance " 
+        + l.get(0).distance 
+        + " from " 
+        + simulation.course.getBall().position 
+        + " to " 
+        + l.get(0).simulation.course.getBall().position
+        );
+
+        return l.get(0).shot;
+    }
+
+    public ArrayList<ShotResult> get_shots(PuttingSimulator simulation) {
+         ArrayList<ShotResult> l = new ArrayList<ShotResult>();
 
         // Simulate shot from various angles
         for(float x = (float) -simulation.course.Vmax; x <= simulation.course.Vmax; x+=.2) {
@@ -40,6 +66,16 @@ public class AI implements Serializable {
                 }
             }
         }
+        return l;
+    }
+    
+    public Vector2d calculate_shot(PuttingSimulator simulation, Ball ball){
+
+        // Calculate the direction & strength needed, could be used for heuristics
+        Vector2 vToEnd = new Vector2(simulation.course.flag).sub(new Vector2d(simulation.course.getBall().position));
+
+        // List of simulated shot results
+        ArrayList<ShotResult> l = get_shots(simulation);
 
         // Sort list of simulations to find closest hit
         Collections.sort(l, new OrderByDistance());
@@ -67,6 +103,7 @@ class ShotResult {
     Vector2d end;
     PuttingSimulator simulation;
     Float distance;
+    ShotResult previous;
 
     public ShotResult(Vector2d shot, PuttingSimulator sim) {
         this.shot = shot;
