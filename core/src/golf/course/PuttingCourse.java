@@ -22,6 +22,7 @@ public class PuttingCourse implements Cloneable, Serializable {
     public double Vmax = 10.0;            // Maximum initial ball speed [m/s]
     public double holeTolerance = 0.2;  // Distance from hole for a successful putt [m]
     public double elapsed = 0.0;
+    public int windDuration = 3;
 
     public ArrayList<GameObject> objects = new ArrayList<GameObject>();
     
@@ -32,8 +33,8 @@ public class PuttingCourse implements Cloneable, Serializable {
 
         // Add any obstacles needed 
         Tree t = new Tree();
-        t.position.x = 10;
-        t.position.y = 15;
+        t.position.x = t.dimensions.x;
+        t.position.y = t.dimensions.y + 5;
         this.objects.add(t);
     }
 

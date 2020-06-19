@@ -18,7 +18,7 @@ public class EulerSolver extends PhysicsEngine {
         );
 
         // Force vector
-        Vector3 f = this.force(obj, c, h);
+        Vector3 f = this.force(obj, c);
 
         response[1] = new Vector3(
             (float) (obj.velocity.x + (h * f.x) / obj.mass), 

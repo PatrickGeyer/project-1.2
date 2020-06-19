@@ -113,12 +113,12 @@ public class PuttingSimulator implements Cloneable, Serializable {
                 if(this.course.objects.get(i) instanceof Ball) {//if the ball still exists
 
                     for(Obstacle o : this.course.getObstacles()) {//objects contains ball, tree etc.
-                        if(this.intersects((Ball) this.course.objects.get(0), o)) {///////////scale the velocity in some form //changed i with 0 as object 0 is always the ball?
-                          if(this.course.objects.get(0).velocity.x>this.course.objects.get(0).velocity.y){
-                                this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x, this.course.objects.get(0).velocity.y*(-1), this.course.objects.get(0).velocity.z);
+                        if(this.intersects((Ball) this.course.objects.get(i), o)) {///////////scale the velocity in some form //changed i with 0 as object 0 is always the ball?
+                          if(this.course.objects.get(i).velocity.x>this.course.objects.get(0).velocity.y){
+                                this.course.objects.get(i).velocity = new Vector3(this.course.objects.get(i).velocity.x, this.course.objects.get(i).velocity.y*(-1), this.course.objects.get(i).velocity.z);
                           }
                           else{
-                            this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1), this.course.objects.get(0).velocity.y, this.course.objects.get(0).velocity.z);
+                            this.course.objects.get(i).velocity = new Vector3(this.course.objects.get(i).velocity.x*(-1), this.course.objects.get(i).velocity.y, this.course.objects.get(i).velocity.z);
                           }
                         }
                     }
@@ -166,10 +166,12 @@ public class PuttingSimulator implements Cloneable, Serializable {
         b.shotCount++;
         v.clamp(0, (float) course.Vmax);
         b.velocity.add(new Vector3(v, 0));
+        course.elapsed = 0;
     }
 
     public void step_until_next_shot() {
         while(this.course.getBall().moving) {
+            // System.out.println(this.course.getBall().velocity);
             this.step();
         }
     }
@@ -185,6 +187,7 @@ public class PuttingSimulator implements Cloneable, Serializable {
             }
             shots++;
         }
+
         return shots;
     }
 

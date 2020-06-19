@@ -12,7 +12,7 @@ public class VerletSolver extends PhysicsEngine {
         Vector3[] response = new Vector3[3];
 
         // Force vector
-        Vector3 f = this.force(obj, c, h);
+        Vector3 f = this.force(obj, c);
 
         // Position vector
         //p(t+h) = p(t) + h*v + 1/2*h^2*F/m

@@ -61,7 +61,7 @@ public class RK4Solver extends PhysicsEngine {
              0f).add(obj.velocity);
 
         //force vector
-        response[2] = this.force(obj, c, h);
+        response[2] = this.force(obj, c);
 
         return response;
         

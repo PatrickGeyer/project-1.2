@@ -7,7 +7,11 @@ import java.io.*;
 
 public class PhysicsEngine implements Serializable {
 
-    public Vector3 force(GameObject obj, PuttingCourse c, double h) {
+    public Vector3 force(GameObject obj, PuttingCourse c) {
+        return this.force(obj, c, c.windDuration == 0 ? 0 : 1 - Math.min(c.elapsed/c.windDuration, 1));
+    }
+
+    public Vector3 force(GameObject obj, PuttingCourse c, double windFactor) {
 
         Vector2d gradient = c.height.gradient(obj.position.x, obj.position.y);
         // Friction
@@ -35,12 +39,13 @@ public class PhysicsEngine implements Serializable {
         wind = wind.scl((float) c.windIntensity);
         wind = wind.clamp((float) c.windIntensity, (float) c.windIntensity);
         wind.z = 0;
+        wind.scl((float) windFactor);
 
-        return friction.add(gravity);
+        return friction.add(gravity).add(wind);
     }
 
     public Vector3 getAcceleration(GameObject obj, PuttingCourse c, double h) {
-        return this.force(obj, c, h).scl((float) ( 1 / (obj.mass)));
+        return this.force(obj, c).scl((float) ( 1 / (obj.mass)));
     }
 
 

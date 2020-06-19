@@ -5,10 +5,12 @@ import net.objecthunter.exp4j.*;
 import org.junit.Test;
 
 import golf.course.*;
+import golf.course.object.*;
 import golf.physics.*;
 import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 import java.util.HashMap; // import the HashMap class
+import com.badlogic.gdx.math.Vector3;
 
 public class PhysicsTest {
 
@@ -18,6 +20,15 @@ public class PhysicsTest {
   public PhysicsTest() {
     course.height = new Function2d("1");
   }
+
+
+  // @Test void collisionTest() {
+  //   Tree t = new Tree();
+  //   t.position = new Vector3(1,1,1);
+  //   t.dimensions = new Vector3(2, 2, 1);
+  //   this.course.objects.add(t);
+
+  // }
 
   // @Test
   // public void velocityTest() {

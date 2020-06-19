@@ -15,9 +15,11 @@ import com.badlogic.gdx.math.Vector2;
 
 public class AI implements Serializable {
 
-    int layers = 1;
+    public int layers = 1;
     public double restrictAngle = 0;
     public int possibilitiesExamined = 0;
+    public int possibilitiesExaminedTotal = 0;
+    public boolean returnOnHole = true;
 
     public AI() {
 
@@ -31,23 +33,29 @@ public class AI implements Serializable {
 
         // List of simulated shot results
         ArrayList<ShotResult> l = list_shots_n_layers(this.layers, simulation);
-
-        this.possibilitiesExamined = l.size();
-
-        // Sort list of simulations to find closest hit
+               // Sort list of simulations to find closest hit
         Collections.sort(l, new OrderByDistance());
-        System.out.println("Taking shot: " 
-        + l.get(0).shot 
-        + " with distance " 
-        + l.get(0).distance 
-        + " from " 
-        + simulation.course.getBall().position 
-        + " to " 
-        + l.get(0).simulation.course.getBall().position
-        + " out of available end layer shots: " + l.size()
-        );
+        this.possibilitiesExamined = l.size();
+        this.possibilitiesExaminedTotal+= possibilitiesExamined;
 
-        return l.get(0).shot;
+        // If multilayered, we need to return the first shot of sequence
+        ShotResult s = l.get(0);
+        while(s.previous != null) {
+            s = s.previous;
+        }
+
+        // System.out.println("Taking shot: " 
+        // + s.shot 
+        // + " with distance " 
+        // + s.distance 
+        // + " from " 
+        // + simulation.course.getBall().position 
+        // + " to " 
+        // + s.simulation.course.getBall().position
+        // + " out of available end layer shots: " + l.size()
+        // );
+
+        return s.shot;
     }
 
     public Vector2d calculate_shot(PuttingSimulator simulation){
@@ -55,18 +63,27 @@ public class AI implements Serializable {
     }
 
     public ArrayList<ShotResult> list_shots_n_layers(int layers, PuttingSimulator simulation) {
+
         ArrayList<ShotResult> l = get_shots(simulation.clone());
 
         // System.out.println("calculating shots for layer: " + layers + ", shot count: " + l.size());
-
+        for(ShotResult n: l) {
+            if( n.simulation.course.getBall().complete && this.returnOnHole) {
+                return l;
+            }
+        }
         if(layers - 1 > 0) {
             ArrayList<ShotResult> sub = new ArrayList();
+            outerloop:
             for(ShotResult s : l) {
                 ArrayList<ShotResult> newLayer = list_shots_n_layers(layers - 1, s.simulation);
+                sub.addAll(newLayer);
                 for(ShotResult n: newLayer) {
                     n.previous = s;
+                    if( n.simulation.course.getBall().complete && this.returnOnHole) {
+                        break outerloop;
+                    }
                 }
-                sub.addAll(newLayer);
             }
             // System.out.println("finished: " + layers);
             return sub;
@@ -79,7 +96,9 @@ public class AI implements Serializable {
     public ArrayList<ShotResult> get_shots(PuttingSimulator simulation) {
         ArrayList<ShotResult> l = new ArrayList<ShotResult>();
         Vector2 vToEnd = new Vector2(simulation.course.flag).sub(new Vector2d(simulation.course.getBall().position));
+        // System.out.println(vToEnd);
 
+        outerloop:
         // Simulate shot from various angles
         for(float x = (float) -simulation.course.Vmax; x <= simulation.course.Vmax; x+=.2) {
 
@@ -88,7 +107,7 @@ public class AI implements Serializable {
 
                 Vector2d shot = new Vector2d(x, y);
 
-                if(this.restrictAngle > 0 && shot.angle(vToEnd) > this.restrictAngle) {
+                if(this.restrictAngle > 0 && Math.abs(shot.angle(vToEnd)) > this.restrictAngle) {
                     continue;
                 }
 
@@ -97,9 +116,9 @@ public class AI implements Serializable {
                 // ShotResult will take simulation and shot as parameters
                 // Calls simulation.step_until_next_shot to find ball landing position
                 l.add(new ShotResult(shot, sim));
-                // if(sim.course.getBall().complete) {
-                //     break;
-                // }
+                if(sim.course.getBall().complete && this.returnOnHole) {
+                    break outerloop;
+                }
             }
         }
         return l;
@@ -113,18 +132,20 @@ class ShotResult {
     Vector2d end;
     PuttingSimulator simulation;
     Float distance;
-    ShotResult previous;
+    ShotResult previous = null;
 
     public ShotResult(Vector2d shot, PuttingSimulator sim) {
         this.shot = shot;
         this.simulation = sim;
+
+        this.simulation.course.windDuration = 0;
         
         this.start = new Vector2d(this.simulation.course.getBall().position);
         this.simulation.take_shot(shot);
         this.simulation.step_until_next_shot();
 
-        this.end = new Vector2d(this.simulation.course.getBall().position);
-        this.distance = end.dst(sim.course.flag);
+        // this.end = new Vector2d(this.simulation.course.getBall().position);
+        // this.distance = end.dst(sim.course.flag);
     }
 
     public String toString() {
