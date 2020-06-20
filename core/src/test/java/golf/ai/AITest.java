@@ -85,8 +85,8 @@ public class AITest {
   public void windTest() {
 
     course.height = new Function2d("1");
-    course.Vmax = 2;
-    course.frictionCoefficient = 0.5;
+    course.Vmax = 5;
+    course.frictionCoefficient = 0.1;
     course.flag = new Vector2d(10,10);
 
     ArrayList<WindTest> tests = new ArrayList();

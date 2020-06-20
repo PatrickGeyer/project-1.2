@@ -32,10 +32,10 @@ public class PuttingCourse implements Cloneable, Serializable {
         }
 
         // Add any obstacles needed 
-        Tree t = new Tree();
-        t.position.x = 20;
-        t.position.y = 12;
-        this.objects.add(t);
+        // Tree t = new Tree();
+        // t.position.x = 20;
+        // t.position.y = 12;
+        // this.objects.add(t);
     }
 
     public PuttingCourse (Function2d height, Vector2d flag, Vector2d start) {

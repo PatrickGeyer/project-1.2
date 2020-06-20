@@ -112,6 +112,7 @@ public class PuttingSimulator implements Cloneable, Serializable {
 
                 if(this.course.objects.get(i) instanceof Ball) {//if the ball still exists
 
+if(false){
                     for(Obstacle o : this.course.getObstacles()) {//objects contains ball, tree etc.
                         if(this.intersects((Ball) this.course.objects.get(0), o)) {///////////scale the velocity in some form //changed i with 0 as object 0 is always the ball?
                          /* if(this.course.objects.get(0).velocity.x>this.course.objects.get(0).velocity.y){
@@ -138,10 +139,11 @@ public class PuttingSimulator implements Cloneable, Serializable {
                         else{
                             this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1), this.course.objects.get(0).velocity.y, this.course.objects.get(0).velocity.z);
                         }
+                        this.course.objects.get(0).velocity = this.course.objects.get(0).velocity.scl((float) o.restitution);
 
                         }
                     }
-                    
+}
 
                     // Check that velocity and forces on ball are close to zero
                     if(this.course.objects.get(i).velocity.len() < 0.01 && vs[2].len() < 0.2) {

@@ -144,8 +144,8 @@ class ShotResult {
         this.simulation.take_shot(shot);
         this.simulation.step_until_next_shot();
 
-        // this.end = new Vector2d(this.simulation.course.getBall().position);
-        // this.distance = end.dst(sim.course.flag);
+        this.end = new Vector2d(this.simulation.course.getBall().position);
+        this.distance = end.dst(sim.course.flag);
     }
 
     public String toString() {

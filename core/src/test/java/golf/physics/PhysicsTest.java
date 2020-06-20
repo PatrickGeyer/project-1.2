@@ -98,8 +98,8 @@ Ball should roll down slope and settle in equilibrium
     // p(0) = 0, c = 0
     // p(t) = (-1/2)t^2 + t
 
-    int steps = 11;
-    double interval = 0.1;
+    int steps = 6;
+    double interval = 0.2;
     Expression e = new ExpressionBuilder("(-1/2)t^2 + t")
             .variables("t")
             .build();
