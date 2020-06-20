@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 
 
 public class PuttingSimulator implements Cloneable, Serializable {
+    public float x,y,z;
     public PuttingCourse course;
     public PhysicsEngine engine;
     private transient AI ai = null;
@@ -89,7 +90,13 @@ public class PuttingSimulator implements Cloneable, Serializable {
         }
         else return false;
     }
-
+    
+   public void positionn(){
+        x = this.course.objects.get(0).position.x;
+        y = this.course.objects.get(0).position.y;
+        z = this.course.objects.get(0).position.z;
+     }
+    
     public void step(double h) {
         boolean movingBallExists = false;
         for(Ball b : this.course.getBalls()) {
@@ -102,6 +109,10 @@ public class PuttingSimulator implements Cloneable, Serializable {
                 c.onBeforeShot((Ball) this.course.objects.get(0));
         }
         
+          if(this.course.objects.get(0).velocity.len() < 0.01){
+            positionn();//calls positionn() method to store the x,y,z values of the 'last position'
+        }
+        
         for(int i = 0; i < this.course.objects.size(); i++) {
             if(this.course.objects.get(i).moving) {
 
@@ -111,6 +122,14 @@ public class PuttingSimulator implements Cloneable, Serializable {
                 this.course.objects.get(i).velocity = vs[1];
 
                 if(this.course.objects.get(i) instanceof Ball) {//if the ball still exists
+                    if(this.course.objects.get(0).position.z < 0) {
+                        this.course.objects.get(0).position.x=x;
+                        this.course.objects.get(0).position.y=y;
+                        this.course.objects.get(0).position.z=z;
+                        this.course.objects.get(0).velocity = new Vector3(0,0,0);
+                       // System.out.println(x + "   " + y + "   " + z);
+                        
+                    }
 
 if(false){
                     for(Obstacle o : this.course.getObstacles()) {//objects contains ball, tree etc.
@@ -130,10 +149,10 @@ if(false){
                                 this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1), this.course.objects.get(0).velocity.y*(-1), this.course.objects.get(0).velocity.z);
                             }*/ 
                           float b=this.course.objects.get(0).position.y+1;
-                          float t = this.course.objects.get(1).position.y -3;//change minus value according to x/y tree
-                          float bx=this.course.objects.get(0).position.x;//where the ball is in width
-                          float tx = this.course.objects.get(1).position.x +3;//where the tree stops existing in width (x)
-                        if((Float.compare(b,t)>=0)&&(Float.compare(bx,tx)<0)){//checks if something behind and in the same x position
+                          float t = this.course.objects.get(1).position.y -3;//3=half of tree
+                          float bx=this.course.objects.get(0).position.x;
+                          float tx = this.course.objects.get(1).position.x +3;
+                        if((Float.compare(b,t)>=0)&&(Float.compare(bx,tx)<0)){//checks if tree is behind ball
                             this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x, this.course.objects.get(0).velocity.y*(-1), this.course.objects.get(0).velocity.z);
                         }
                         else{
@@ -157,10 +176,10 @@ if(false){
                         }
 
                         // If ball in water
-                        else if(this.course.objects.get(i).position.z < 0) {
+                       /* else if(this.course.objects.get(i).position.z < 0) {
                             for(CourseCallback c : callbacks)
                                 c.onShotFailed((Ball) this.course.objects.get(i));
-                        }
+                        }*/
                         for(CourseCallback c : callbacks)
                             c.onAfterShot((Ball) this.course.objects.get(i));
                                 
