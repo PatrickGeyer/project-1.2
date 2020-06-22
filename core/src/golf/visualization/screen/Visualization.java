@@ -164,7 +164,7 @@ public class Visualization implements Screen {
                 new Material(ColorAttribute.createDiffuse(Color.GREEN)),
                 Usage.Position | Usage.Normal | Usage.TextureCoordinates);
             this.trees.add(new ModelInstance(model));
-            //o.position.z = (float) this.simulation.course.height.evaluate(o.position.x, o.position.y);
+            o.position.z = (float) this.simulation.course.height.evaluate(o.position.x, o.position.y);
             this.trees.get(this.trees.size() - 1).transform.setTranslation(
                 o.position
             );

@@ -9,7 +9,7 @@ import java.io.*;
 import com.badlogic.gdx.math.Vector2;
 
 public class PuttingCourse implements Cloneable, Serializable {
-    public Function2d height = new Function2d("sin(x/2)");
+    public Function2d height = new Function2d("0.9");
     public Vector2 flag = new Vector2(10, 10);
     public Vector2 start = new Vector2(0, 0);
     public double windIntensity = 0;
@@ -32,10 +32,35 @@ public class PuttingCourse implements Cloneable, Serializable {
         }
 
         // Add any obstacles needed 
-        // Tree t = new Tree();
-        // t.position.x = 20;
-        // t.position.y = 12;
-        // this.objects.add(t);
+         Tree a = new Tree();
+         a.position.x = 6;
+         a.position.y = 5;
+         this.objects.add(a);
+
+         Tree b = new Tree();
+         b.position.x = 6;
+         b.position.y = 7;
+         this.objects.add(b);
+
+         Tree c = new Tree();
+         c.position.x = 2;
+         c.position.y = 5;
+         this.objects.add(c);
+
+         Tree d = new Tree();
+         d.position.x = 2;
+         d.position.y = 8;
+         this.objects.add(d);
+
+         Tree e = new Tree();
+         e.position.x = 7;
+         e.position.y = 13;
+         this.objects.add(e);
+
+         Tree f = new Tree();
+         f.position.x = 18;
+         f.position.y = 19;
+         this.objects.add(f);
     }
 
     public PuttingCourse (Function2d height, Vector2d flag, Vector2d start) {

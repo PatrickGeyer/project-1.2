@@ -1,5 +1,6 @@
 package golf.course;
 
+
 import golf.physics.*;
 import golf.course.object.*;
 import golf.ai.*;
@@ -74,19 +75,8 @@ public class PuttingSimulator implements Cloneable, Serializable {
     }
 
     public boolean intersects(Ball ball, Obstacle obstacle) {
-        // get box closest point to sphere center by clamping
-     /*   var x = Math.max(obstacle.position.x, Math.min(ball.position.x, obstacle.position.x+obstacle.dimensions.x));
-        var y = Math.max(obstacle.position.y, Math.min(ball.position.y, obstacle.position.y+obstacle.dimensions.y));
-        var z = Math.max(obstacle.position.z, Math.min(ball.position.z, obstacle.position.z+obstacle.dimensions.z));
-
-       // this is the same as isPointInsideSphere
-        var distance = Math.sqrt((x - ball.position.x) * (x - ball.position.x) +
-                                (y - ball.position.y) * (y - ball.position.y) +
-                                (z - ball.position.z) * (z - ball.position.z));
-        
-        return distance < ball.radius;*/
-        if(Math.abs(obstacle.position.x-ball.position.x)<obstacle.dimensions.x && Math.abs(obstacle.position.y-ball.position.y)<obstacle.dimensions.x){
-            return true;
+        if(ball.position.x>=(obstacle.position.x-obstacle.dimensions.x)&&ball.position.x<=obstacle.position.x&&ball.position.y<=(obstacle.position).y-0.5&&ball.position.y>=(obstacle.position.y-3)){    
+                return true;
         }
         else return false;
     }
@@ -98,6 +88,7 @@ public class PuttingSimulator implements Cloneable, Serializable {
      }
     
     public void step(double h) {
+        int a = 0;
         boolean movingBallExists = false;
         for(Ball b : this.course.getBalls()) {
             if(b.complete || b.moving) {
@@ -122,6 +113,7 @@ public class PuttingSimulator implements Cloneable, Serializable {
                 this.course.objects.get(i).velocity = vs[1];
 
                 if(this.course.objects.get(i) instanceof Ball) {//if the ball still exists
+                    
                     if(this.course.objects.get(0).position.z < 0) {
                         this.course.objects.get(0).position.x=x;
                         this.course.objects.get(0).position.y=y;
@@ -131,38 +123,46 @@ public class PuttingSimulator implements Cloneable, Serializable {
                         
                     }
 
-if(false){
-                    for(Obstacle o : this.course.getObstacles()) {//objects contains ball, tree etc.
-                        if(this.intersects((Ball) this.course.objects.get(0), o)) {///////////scale the velocity in some form //changed i with 0 as object 0 is always the ball?
-                         /* if(this.course.objects.get(0).velocity.x>this.course.objects.get(0).velocity.y){
-                                this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x, this.course.objects.get(0).velocity.y*(-1), this.course.objects.get(0).velocity.z);
-                          }
-                          else{//y>x
-                            this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1), this.course.objects.get(0).velocity.y, this.course.objects.get(0).velocity.z);
-                          }*/
-                          /*   Float ball=this.course.objects.get(0).position.y +1;//y position of ball +1
-                            Float treemin =this.course.objects.get(1).position.y -3;//min y tree
-                            if(Float.compare(ball, treemin) == 0){
-                                this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1), this.course.objects.get(0).velocity.y*(-1), this.course.objects.get(0).velocity.z);
+
+                    for(Obstacle o : this.course.getObstacles()) {
+                        a++;
+                            if(this.intersects((Ball) this.course.objects.get(0), o)) {//changed i with 0 as object 0 is always the ball?
+                            float btest1y=this.course.objects.get(0).position.y+0.2f;//y bal, bit further (larger y)
+                            float btest2y=this.course.objects.get(0).position.y-0.2f;//y bal, bit further (smaller y)
+                            float oy=this.course.objects.get(a).position.y-0.5f;//y object
+                            float oy2=this.course.objects.get(a).position.y-3;//y object 2 back
+
+                            float bx=this.course.objects.get(0).position.x;//x ball
+                            float ox=this.course.objects.get(a).position.x;//x object
+                            float ox2=this.course.objects.get(a).position.x-2;//x object 2 back
+                            float btest1x=this.course.objects.get(0).position.x+0.2f;//x bal, bit further (larger y)
+                            float btest2x=this.course.objects.get(0).position.x-0.2f;//x bal, bit further (smaller y)
+                            double xdirection=this.course.objects.get(0).velocity.x;
+                            //this.course.objects.get(0).velocity = new Vector3(0,0,0);
+                            if(xdirection>0){
+                                if(((Float.compare(btest1y,oy2)>=0)&&(Float.compare(btest1y,oy)<0)&&(Float.compare(btest2x,ox2)>0)&&(Float.compare(btest2x,ox)<0))){//checks if tree is behind ball
+
+                                    this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x, this.course.objects.get(0).velocity.y*(-1), this.course.objects.get(0).velocity.z);
+                                }
+                                else{
+                                    this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1), this.course.objects.get(0).velocity.y, this.course.objects.get(0).velocity.z);
+                                }
                             }
-                            else{
-                                this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1), this.course.objects.get(0).velocity.y*(-1), this.course.objects.get(0).velocity.z);
-                            }*/ 
-                          float b=this.course.objects.get(0).position.y+1;
-                          float t = this.course.objects.get(1).position.y -3;//3=half of tree
-                          float bx=this.course.objects.get(0).position.x;
-                          float tx = this.course.objects.get(1).position.x +3;
-                        if((Float.compare(b,t)>=0)&&(Float.compare(bx,tx)<0)){//checks if tree is behind ball
-                            this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x, this.course.objects.get(0).velocity.y*(-1), this.course.objects.get(0).velocity.z);
-                        }
-                        else{
-                            this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1), this.course.objects.get(0).velocity.y, this.course.objects.get(0).velocity.z);
-                        }
-                        this.course.objects.get(0).velocity = this.course.objects.get(0).velocity.scl((float) o.restitution);
+
+                            else{//ball moving to the left
+                                if(((Float.compare(btest1y,oy2)>=0)&&(Float.compare(btest1y,oy)<0)&&(Float.compare(btest1x,ox2)>0)&&(Float.compare(btest1x,ox)<0))){//checks if tree is behind ball
+                        
+                                    this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x, this.course.objects.get(0).velocity.y*(-1), this.course.objects.get(0).velocity.z);
+                                }
+                                else{
+                                    this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1), this.course.objects.get(0).velocity.y, this.course.objects.get(0).velocity.z);
+                                }
+
+                            }
 
                         }
                     }
-}
+
 
                     // Check that velocity and forces on ball are close to zero
                     if(this.course.objects.get(i).velocity.len() < 0.01 && vs[2].len() < 0.2) {
@@ -190,9 +190,9 @@ if(false){
                         //         c.onBeforeShot((Ball) this.course.objects.get(i));
                         // }
                     }
-                }//end if statement
+                }
             }
-        }//end for statement
+        }
         this.course.elapsed += h;
     }
 
