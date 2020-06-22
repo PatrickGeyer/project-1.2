@@ -302,6 +302,11 @@ public class Visualization implements Screen {
                     float whiteness = Math.max( (float) height / 10, 0);
                     c = new Color(whiteness, 1, whiteness, 1);
                 }
+		
+		if (x>10 && x<17 && y>19){
+			// Sand
+                    c = new Color( 1, 1, 0, 1);
+                }
 
                 v1 = new MeshPartBuilder.VertexInfo().setPos(pos1).setNor(nor1).setCol(c).setUV(0.0f, 0.0f);
                 v2 = new MeshPartBuilder.VertexInfo().setPos(pos2).setNor(nor2).setCol(c).setUV(0.0f, 0.5f);
