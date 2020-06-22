@@ -138,24 +138,24 @@ public class PuttingSimulator implements Cloneable, Serializable {
                             float btest1x=this.course.objects.get(0).position.x+0.2f;//x bal, bit further (larger y)
                             float btest2x=this.course.objects.get(0).position.x-0.2f;//x bal, bit further (smaller y)
                             double xdirection=this.course.objects.get(0).velocity.x;
-                            //this.course.objects.get(0).velocity = new Vector3(0,0,0);
+                            float L = 0.9f;// coefficient of restitution λ
                             if(xdirection>0){
                                 if(((Float.compare(btest1y,oy2)>=0)&&(Float.compare(btest1y,oy)<0)&&(Float.compare(btest2x,ox2)>0)&&(Float.compare(btest2x,ox)<0))){//checks if tree is behind ball
 
-                                    this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x, this.course.objects.get(0).velocity.y*(-1), this.course.objects.get(0).velocity.z);
+                                    this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*L, this.course.objects.get(0).velocity.y*(-1)*L, this.course.objects.get(0).velocity.z*L);
                                 }
                                 else{
-                                    this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1), this.course.objects.get(0).velocity.y, this.course.objects.get(0).velocity.z);
+                                    this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1)*L, this.course.objects.get(0).velocity.y*L, this.course.objects.get(0).velocity.z*L);
                                 }
                             }
 
                             else{//ball moving to the left
                                 if(((Float.compare(btest1y,oy2)>=0)&&(Float.compare(btest1y,oy)<0)&&(Float.compare(btest1x,ox2)>0)&&(Float.compare(btest1x,ox)<0))){//checks if tree is behind ball
                         
-                                    this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x, this.course.objects.get(0).velocity.y*(-1), this.course.objects.get(0).velocity.z);
+                                    this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*L, this.course.objects.get(0).velocity.y*(-1)*L, this.course.objects.get(0).velocity.z*L);
                                 }
                                 else{
-                                    this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1), this.course.objects.get(0).velocity.y, this.course.objects.get(0).velocity.z);
+                                    this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1)*L, this.course.objects.get(0).velocity.y*L, this.course.objects.get(0).velocity.z*L);
                                 }
 
                             }
