@@ -138,7 +138,7 @@ public class PuttingSimulator implements Cloneable, Serializable {
                     
                     if(this.course.objects.get(i).position.z < 0) {
 
-                        this.course.objects.get(i).shotCount++;
+                        ((Ball) this.course.objects.get(i)).shotCount++;
                         this.course.objects.get(i).position = lastPosition;
                         this.course.objects.get(i).velocity = new Vector3(0,0,0);
                         this.course.objects.get(i).moving = false;                        

@@ -79,8 +79,8 @@ Ball should roll down slope and settle in equilibrium
     // Which engines we wish to test
     ArrayList<PuttingSimulator> engines = new ArrayList<PuttingSimulator>() { 
         { 
-            add(new PuttingSimulator(course.clone(), new EulerSolver()));
-            add(new PuttingSimulator(course.clone(), new VerletSolver()));
+            // add(new PuttingSimulator(course.clone(), new EulerSolver()));
+            // add(new PuttingSimulator(course.clone(), new VerletSolver()));
             add(new PuttingSimulator(course.clone(), new RK4Solver()));
         } 
     };
@@ -98,8 +98,8 @@ Ball should roll down slope and settle in equilibrium
     // p(0) = 0, c = 0
     // p(t) = (-1/2)t^2 + t
 
-    int steps = 6;
-    double interval = 0.2;
+    int steps = 1001;
+    double interval = 0.001;
     Expression e = new ExpressionBuilder("(-1/2)t^2 + t")
             .variables("t")
             .build();
@@ -119,9 +119,13 @@ class AccuracyTester {
 
   ArrayList<Timestep> timesteps = new ArrayList<Timestep>();
   Double[] realResults;
+  long time = 0;
+
 
   public AccuracyTester(ArrayList<PuttingSimulator> engines, Double[] realResults, double interval, int steps) {
 
+    long start = System.nanoTime();
+  
     this.realResults = realResults;
 
     // Loop i steps of each simulation
@@ -137,6 +141,10 @@ class AccuracyTester {
 
       timesteps.add(t);
     }
+
+    // do stuff
+    long end = System.nanoTime();
+    time = (end - start) / 1000;
 
   }
 
@@ -157,10 +165,14 @@ class AccuracyTester {
       }
       System.out.println();
     }
+        System.out.print("Microseconds: " + time);
+
   }
 }
 
 class Timestep {
+
+
 
   class Result {
     double accuracy;
