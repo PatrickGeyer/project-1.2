@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 
 
 public class PuttingSimulator implements Cloneable, Serializable {
-    public float x,y,z;
+    public Vector3 lastPosition = new Vector3(0,0,0);
     public PuttingCourse course;
     public PhysicsEngine engine;
     private transient AI ai = null;
@@ -51,6 +51,7 @@ public class PuttingSimulator implements Cloneable, Serializable {
             }
             @Override
             public void onAfterShot(Ball b) {
+                lastPosition = b.position;
                 // System.out.println("Ball is not at: " + b.position);
             }
             @Override
@@ -74,21 +75,46 @@ public class PuttingSimulator implements Cloneable, Serializable {
         this.step(0.01);
     }
 
-    public boolean intersects(Ball ball, Obstacle obstacle) {
-        if(ball.position.x>=(obstacle.position.x-obstacle.dimensions.x)&&ball.position.x<=obstacle.position.x&&ball.position.y<=(obstacle.position).y-0.5&&ball.position.y>=(obstacle.position.y-3)){    
-                return true;
+    // Returns a vector to scale velocity by - depending on which side of object is hit
+    public Vector3 intersects(Ball ball, Obstacle o) {
+        double x1 = ball.position.x - ball.radius;
+        double y1 = ball.position.y - ball.radius;
+        double x2 = ball.position.x + ball.radius;
+        double y2 = ball.position.y + ball.radius;
+
+        double x3 = o.position.x;
+        double y3 = o.position.y;
+        double x4 = o.position.x + o.dimensions.x;
+        double y4 = o.position.y + o.dimensions.y;
+
+        // System.out.println(x3);
+        // System.out.println(y3);
+        // System.out.println(x4);
+        // System.out.println(y4);
+        //         System.out.println("---");
+        //         System.out.println(x1);
+        // System.out.println(y1);
+        // System.out.println(x2);
+        // System.out.println(y2);
+        //         System.out.println(o.position);
+        //         System.out.println(o.dimensions);
+
+
+        if((x1 < x4) && (x3 < x2) && (y1 < y4) && (y3 < y2)){
+            Vector3 v = new Vector3(1,1,1);
+            //if bouncing off and chnaging y direcvtion i.e. bouncing between x corrdinstes of obstacle
+            if((x1 < x4) && (x3 < x2)) {
+                v.y = -1;
+                //if bouncing off and chnaging x direcvtion
+            } else {
+                v.x = -1;
+            }
+            return v;
         }
-        else return false;
+        return null;
     }
     
-   public void positionn(){
-        x = this.course.objects.get(0).position.x;
-        y = this.course.objects.get(0).position.y;
-        z = this.course.objects.get(0).position.z;
-     }
-    
     public void step(double h) {
-        int a = 0;
         boolean movingBallExists = false;
         for(Ball b : this.course.getBalls()) {
             if(b.complete || b.moving) {
@@ -98,10 +124,6 @@ public class PuttingSimulator implements Cloneable, Serializable {
         if(!movingBallExists) {
             for(CourseCallback c : callbacks)
                 c.onBeforeShot((Ball) this.course.objects.get(0));
-        }
-        
-          if(this.course.objects.get(0).velocity.len() < 0.01){
-            positionn();//calls positionn() method to store the x,y,z values of the 'last position'
         }
         
         for(int i = 0; i < this.course.objects.size(); i++) {
@@ -114,51 +136,19 @@ public class PuttingSimulator implements Cloneable, Serializable {
 
                 if(this.course.objects.get(i) instanceof Ball) {//if the ball still exists
                     
-                    if(this.course.objects.get(0).position.z < 0) {
-                        this.course.objects.get(0).position.x=x;
-                        this.course.objects.get(0).position.y=y;
-                        this.course.objects.get(0).position.z=z;
-                        this.course.objects.get(0).velocity = new Vector3(0,0,0);
-                       // System.out.println(x + "   " + y + "   " + z);
-                        
+                    if(this.course.objects.get(i).position.z < 0) {
+                        this.course.objects.get(i).position = lastPosition;
+                        this.course.objects.get(i).velocity = new Vector3(0,0,0);
+                        this.course.objects.get(i).moving = false;                        
                     }
 
 
                     for(Obstacle o : this.course.getObstacles()) {
-                        a++;
-                            if(this.intersects((Ball) this.course.objects.get(0), o)) {//changed i with 0 as object 0 is always the ball?
-                            float btest1y=this.course.objects.get(0).position.y+0.2f;//y bal, bit further (larger y)
-                            float btest2y=this.course.objects.get(0).position.y-0.2f;//y bal, bit further (smaller y)
-                            float oy=this.course.objects.get(a).position.y-0.5f;//y object
-                            float oy2=this.course.objects.get(a).position.y-3;//y object 2 back
-
-                            float bx=this.course.objects.get(0).position.x;//x ball
-                            float ox=this.course.objects.get(a).position.x;//x object
-                            float ox2=this.course.objects.get(a).position.x-2;//x object 2 back
-                            float btest1x=this.course.objects.get(0).position.x+0.2f;//x bal, bit further (larger y)
-                            float btest2x=this.course.objects.get(0).position.x-0.2f;//x bal, bit further (smaller y)
-                            double xdirection=this.course.objects.get(0).velocity.x;
-                            float L = 0.9f;// coefficient of restitution λ
-                            if(xdirection>0){
-                                if(((Float.compare(btest1y,oy2)>=0)&&(Float.compare(btest1y,oy)<0)&&(Float.compare(btest2x,ox2)>0)&&(Float.compare(btest2x,ox)<0))){//checks if tree is behind ball
-
-                                    this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*L, this.course.objects.get(0).velocity.y*(-1)*L, this.course.objects.get(0).velocity.z*L);
-                                }
-                                else{
-                                    this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1)*L, this.course.objects.get(0).velocity.y*L, this.course.objects.get(0).velocity.z*L);
-                                }
-                            }
-
-                            else{//ball moving to the left
-                                if(((Float.compare(btest1y,oy2)>=0)&&(Float.compare(btest1y,oy)<0)&&(Float.compare(btest1x,ox2)>0)&&(Float.compare(btest1x,ox)<0))){//checks if tree is behind ball
-                        
-                                    this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*L, this.course.objects.get(0).velocity.y*(-1)*L, this.course.objects.get(0).velocity.z*L);
-                                }
-                                else{
-                                    this.course.objects.get(0).velocity = new Vector3(this.course.objects.get(0).velocity.x*(-1)*L, this.course.objects.get(0).velocity.y*L, this.course.objects.get(0).velocity.z*L);
-                                }
-
-                            }
+                        Vector3 v = this.intersects((Ball) this.course.objects.get(0), o);
+                        if(v != null) {//changed i with 0 as object 0 is always the ball?
+                            this.course.objects.get(i).velocity.scl(v);
+                            System.out.println("intersect" + v);
+                            // this.course.objects.get(i).velocity.scl((float) 0);
 
                         }
                     }

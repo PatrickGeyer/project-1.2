@@ -16,6 +16,8 @@ public class GameObject implements Serializable {
     public Vector3 acceleration = new Vector3(0, 0, 0);
     public double mass = 0.1;
     public boolean moving = false;
+    int xy = 2;
+    public Vector3 dimensions = new Vector3(xy, xy, 2);
 
     @Override
     public GameObject clone() {

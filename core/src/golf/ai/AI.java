@@ -16,7 +16,7 @@ import com.badlogic.gdx.math.Vector2;
 public class AI implements Serializable {
 
     public int layers = 1;
-    public double restrictAngle = 0;
+    public double restrictAngle = 180;
     public int possibilitiesExamined = 0;
     public int possibilitiesExaminedTotal = 0;
     public boolean returnOnHole = true;

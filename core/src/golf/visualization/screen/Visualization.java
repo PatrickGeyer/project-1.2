@@ -166,7 +166,7 @@ public class Visualization implements Screen {
             this.trees.add(new ModelInstance(model));
             o.position.z = (float) this.simulation.course.height.evaluate(o.position.x, o.position.y);
             this.trees.get(this.trees.size() - 1).transform.setTranslation(
-                o.position
+                o.clone().position.add(o.clone().dimensions.scl(.5f)) // libgdx box anchor point is in its middle, when we want on bottom left corner.
             );
         }
 

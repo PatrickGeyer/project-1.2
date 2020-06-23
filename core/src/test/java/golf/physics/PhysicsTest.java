@@ -69,7 +69,7 @@ Ball should roll down slope and settle in equilibrium
   public void accuracyTestFriction() {
     
     PuttingCourse course = new PuttingCourse();
-    course.height = new Function2d("1");
+    course.height = new Function2d("x^2");
     course.frictionCoefficient = 0.1;
     course.g = 10;
     course.m = 1000;
@@ -98,8 +98,8 @@ Ball should roll down slope and settle in equilibrium
     // p(0) = 0, c = 0
     // p(t) = (-1/2)t^2 + t
 
-    int steps = 6;
-    double interval = 0.2;
+    int steps = 11;
+    double interval = 0.1;
     Expression e = new ExpressionBuilder("(-1/2)t^2 + t")
             .variables("t")
             .build();
