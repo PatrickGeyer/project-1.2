@@ -103,7 +103,7 @@ public class PuttingSimulator implements Cloneable, Serializable {
         if((x1 < x4) && (x3 < x2) && (y1 < y4) && (y3 < y2)){
             Vector3 v = new Vector3(1,1,1);
             //if bouncing off and chnaging y direcvtion i.e. bouncing between x corrdinstes of obstacle
-            if((x1 < x4) && (x3 < x2)) {
+            if((x1 < x4) && (x3 < x2) && ((y1 < y3) || (y2 > y4))  ) {
                 v.y = -1;
                 //if bouncing off and chnaging x direcvtion
             } else {
