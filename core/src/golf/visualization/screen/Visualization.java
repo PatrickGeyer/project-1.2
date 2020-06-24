@@ -293,14 +293,14 @@ public class Visualization implements Screen {
                 );
 
                 Color c = new Color(0, 0, 0, 1);
-
+		Sandpit s = new Sandpit();
+		    
                 if(height >= 0) {
                     // Grass
                     float whiteness = Math.max( (float) height / 10, 0);
                     c = new Color(whiteness, 1, whiteness, 1);
-
                 }
-                if (x>10 && x<17 && y>19 && y<28){
+                if (s.isSand(x,y)){
                     // Sand
                     c = new Color( 1, 1, 0, 1);
                 }
