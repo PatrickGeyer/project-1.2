@@ -21,7 +21,9 @@ public class PhysicsEngine implements Serializable {
             0
         );
         //Sand pit Friection
-        if(obj.position.x>10 && obj.position.x<17 && obj.position.y>19 && obj.position.y<28){
+        Sandpit s = new Sandpit();
+        
+        if(s.isSand(obj.position.x,obj.position.y)){
              friction = new Vector3(
                     obj.velocity.len() == 0 ? 0 : (float) (-c.frictionCoefficientSand * obj.mass * c.g * obj.velocity.x / (double) obj.velocity.len()),
                     obj.velocity.len() == 0 ? 0 : (float) (-c.frictionCoefficientSand * obj.mass * c.g * obj.velocity.y / (double) obj.velocity.len()),
